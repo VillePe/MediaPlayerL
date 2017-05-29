@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    tools:context=".RemoteViewPlaybackNotification"
+    android:layout_height="128dp">
+    <ImageView
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:src="@mipmap/noimagefound"
+        android:id="@+id/remote_view_image"
+        android:padding="3dp"
+        android:layout_height="match_parent">
+
+    </ImageView>
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/remote_view_title"
+            android:text="@string/title"
+            android:textSize="18sp"
+            android:textColor="#500000"
+            android:layout_width="match_parent"
+            android:layout_height="40sp" />
+        <TextView
+            android:id="@+id/remote_view_artist"
+            android:textSize="15sp"
+            android:text="@string/artist"
+            android:textColor="#333311"
+            android:layout_width="match_parent"
+            android:layout_height="22sp" />
+        <LinearLayout
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:layout_width="55dp"
+                android:layout_height="45dp"
+                android:id="@+id/remote_view_previous_button"
+                android:layout_margin="3dp"
+                android:background="@drawable/button_selector_previous"
+                style="?android:attr/buttonBarButtonStyle"
+                />
+            <Button
+                android:layout_width="55dp"
+                android:background="@drawable/button_selector_play"
+                android:layout_margin="3dp"
+                android:id="@+id/remote_view_play_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_height="45dp" />
+
+            <Button
+                android:layout_width="55dp"
+                android:background="@drawable/button_selector_next"
+                android:layout_margin="3dp"
+                android:id="@+id/remote_view_next_button"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_height="45dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">MPlayer + L</string>
+    <string name="action_settings">Settings</string>
+    <string name="lorem">
+        Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.
+        Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.
+        Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+        Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+    </string>
+    <string name="artist">Artist</string>
+    <string name="title">Title</string>
+    <string name="tracks">Tracks</string>
+    <string name="playback">Playback</string>
+    <string name="no_lyrics">No lyrics</string>
+    <string name="artists">Artists</string>
+    <string name="main_label">MPLayer + L</string>
+    <string name="playback_info">Info</string>
+</resources>
