@@ -1,12 +1,12 @@
 package com.vp.mplayerl;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.vp.mplayerl.misc.Artist;
-import com.vp.mplayerl.misc.Logger;
+import com.vp.mplayerl.misc.Playlist;
 import com.vp.mplayerl.misc.Track;
 import com.vp.mplayerl.misc.TrackAdapter;
 
@@ -22,37 +22,56 @@ import com.vp.mplayerl.misc.TrackAdapter;
  * Created by Ville on 27.10.2016.
  */
 
-public class TracksListActivity extends AppCompatActivity {
+public class PlaylistActivity extends AppCompatActivity {
+
+    public static final String PLAYLIST_INTENT_EXTRA_NAME = "parcelable_playlist";
 
     TrackAdapter trackAdapter;
     MediaPlayerService mediaPlayerService;
     MediaPlayerService.LocalBinder binder;
+    Playlist playlist = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tracks);
+        setContentView(R.layout.activity_playlist);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tracks_list_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.playlist_toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
         if (mediaPlayerService == null) {
             binder = (MediaPlayerService.LocalBinder) getIntent().getBundleExtra(MediaPlayerService.SERVICE_BINDER_KEY)
                     .getBinder(MediaPlayerService.SERVICE_BINDER_KEY);
-            mediaPlayerService = binder.getService();
+            if (binder != null) {
+                mediaPlayerService = binder.getService();
+            } else {
+                onBackPressed();
+                return;
+            }
+        }
+
+        if (playlist == null) {
+            playlist = mediaPlayerService.getPlaylist();
         }
 
         trackAdapter = new TrackAdapter(this, getLayoutInflater());
 
-        ListView tracksListView = (ListView) findViewById(R.id.tracks_list_listview);
+        ListView tracksListView = (ListView) findViewById(R.id.playlist_listview);
         tracksListView.setAdapter(trackAdapter);
         setOnClickListener(tracksListView);
-        registerForContextMenu(tracksListView);
 
-        initializeTracksList();
+        initializeTracksList(playlist);
+    }
+
+    public static Intent createPlaylistActivityIntent(Context ctx, MediaPlayerService service) {
+        final Intent intentOpenPlaylistActivity = new Intent(ctx, PlaylistActivity.class);
+        intentOpenPlaylistActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(service.getBinder()));
+        return intentOpenPlaylistActivity;
     }
 
     @Override
@@ -62,22 +81,8 @@ public class TracksListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_tracks_list, menu);
+        getMenuInflater().inflate(R.menu.menu_playlist, menu);
         return true;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.context_menu_track, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Track pickedTrack = (Track)trackAdapter.getItem(info.position);
-        mediaPlayerService.getPlaylist().addTrack(pickedTrack);
-        return super.onContextItemSelected(item);
     }
 
     public void setMediaPlayerService(MediaPlayerService service) {
@@ -91,25 +96,21 @@ public class TracksListActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch (id) {
-            case R.id.action_playback:
-                if (mediaPlayerService != null) {
-                    final Intent intentOpenPlaybackActivity = new Intent(this, PlaybackActivity.class);
-                    intentOpenPlaybackActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
-                    Track currentTrack = mediaPlayerService.getCurrentTrack();
-                    if (currentTrack != null) {
-                        intentOpenPlaybackActivity.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(mediaPlayerService.getCurrentTrack()));
+        if (id == R.id.action_playback) {
+            if (mediaPlayerService != null) {
+                final Intent intentOpenPlaybackActivity = new Intent(this, PlaybackActivity.class);
+                intentOpenPlaybackActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
+                Track currentTrack = mediaPlayerService.getCurrentTrack();
+                if (currentTrack != null) {
+                    intentOpenPlaybackActivity.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(mediaPlayerService.getCurrentTrack()));
 
-                        startActivity(intentOpenPlaybackActivity);
-                        return true;
-                    }
+                    startActivity(intentOpenPlaybackActivity);
+                    return true;
                 }
-                break;
-            case R.id.action_playlist:
-                if (mediaPlayerService != null) {
-                    startActivity(PlaylistActivity.createPlaylistActivityIntent(this, mediaPlayerService));
-                }
-                break;
+            }
+        }
+
+        switch (id) {
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -136,24 +137,13 @@ public class TracksListActivity extends AppCompatActivity {
 
             }
         });
-        lView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                return false;
-            }
-        });
     }
 
-    private void initializeTracksList() {
-        Bundle bundle = getIntent().getBundleExtra("artist");
-        if (bundle == null) {
-            Log.w("InitializeTracks", "Bundle was NULL!");
-        } else {
-            Artist artist = (Artist)bundle.getSerializable("artist");
-            if (artist == null) {
-                Log.w("Deserialize", "Artist in bundle was NULL!");
-            } else {
-                fillListWithArtist(artist);
+    private void initializeTracksList(Playlist playlist) {
+        for (int i = 0; i < playlist.size(); i++) {
+            Object track = playlist.getTrack(i);
+            if (track instanceof Track) {
+                trackAdapter.addTrack((Track) track);
             }
         }
     }
@@ -164,7 +154,7 @@ public class TracksListActivity extends AppCompatActivity {
                 trackAdapter.addTrack(t);
             }
         } else {
-            Logger.log("Artist had no tracks!");
+            Log.d("FillTracks", "Artist had no tracks!");
         }
     }
 }

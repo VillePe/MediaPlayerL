@@ -2,13 +2,11 @@ package com.vp.mplayerl;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.StringBuilderPrinter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vp.mplayerl.fileparsers.ParseController;
+import com.vp.mplayerl.misc.Logger;
+import com.vp.mplayerl.misc.OnTrackChangedListener;
 import com.vp.mplayerl.misc.Track;
 
 import java.util.Objects;
@@ -28,7 +28,7 @@ import java.util.TimerTask;
  * Created by Ville on 9.10.2016.
  */
 
-public class PlaybackActivity extends AppCompatActivity {
+public class PlaybackActivity extends AppCompatActivity implements OnTrackChangedListener{
 
     SeekBar seekBar;
     TextView currentTime;
@@ -60,6 +60,7 @@ public class PlaybackActivity extends AppCompatActivity {
                 .getBundleExtra(MediaPlayerService.SERVICE_BINDER_KEY)
                 .getBinder(MediaPlayerService.SERVICE_BINDER_KEY);
         mediaPlayerService = binder.getService();
+        mediaPlayerService.setOnTrackChangedListener(this);
         serviceBound = true;
 
         currentTime = ((TextView) this.findViewById(R.id.playback_current_time));
@@ -69,7 +70,7 @@ public class PlaybackActivity extends AppCompatActivity {
         bNext = (Button) this.findViewById(R.id.playback_b_next);
         bStop = (Button) this.findViewById(R.id.playback_b_stop);
 
-        this.track = setTrack();
+        this.track = getTrack();
         if (track == null) {
             Log.e("PlaybackActivity", "Track was null!");
             Toast.makeText(this, "Parsing track data failed", Toast.LENGTH_LONG).show();
@@ -88,9 +89,11 @@ public class PlaybackActivity extends AppCompatActivity {
 
             initializeLyrics();
 
+            playerTimer.schedule(new TimerListener(seekBar, mediaPlayerService), 1000, 1000);
+
             //bindToMPService();
 
-            Log.d("PlaybackActivity", "Activity " + this.getLocalClassName() + " created");
+            Logger.log("Activity " + this.getLocalClassName() + " created");
 
         }
     }
@@ -98,13 +101,13 @@ public class PlaybackActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("PlaybackActivity", "Activity started");
+        Logger.log("Activity started");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("PlaybackActivity", "Activity stopped");
+        Logger.log("Activity stopped");
     }
 
     public void setMediaPlayerService(MediaPlayerService service) {
@@ -130,8 +133,20 @@ public class PlaybackActivity extends AppCompatActivity {
                 break;
             case R.id.playback_track_info:
                 showTrackInfo(this.track);
+                break;
+            case R.id.action_playlist:
+                if (mediaPlayerService != null) {
+                    startActivity(PlaylistActivity.createPlaylistActivityIntent(this, mediaPlayerService));
+                }
+                break;
         }
         return true;
+    }
+
+    @Override
+    public void onTrackChanged(Track nextTrack) {
+        setTrack(nextTrack);
+        Logger.log("Playback changing track to " + nextTrack.getTitle());
     }
 
     private void showTrackInfo(Track track) {
@@ -168,19 +183,16 @@ public class PlaybackActivity extends AppCompatActivity {
             }
 
         } else {
-            Log.d("PlaybackActivity", "No service bound");
+            Logger.log("No service bound");
         }
     }
 
-    private Track setTrack() {
+    private Track getTrack() {
         if (this.getIntent().getExtras() != null) {
             Bundle bundle = this.getIntent().getExtras().getBundle(MediaPlayerService.TRACK_BUNDLE_KEY);
             Track t = (Track) bundle.getSerializable(MediaPlayerService.TRACK_BUNDLE_KEY);
             if (t != null) {
-                ((TextView) this.findViewById(R.id.playback_artist)).setText(t.getArtist());
-                ((TextView) this.findViewById(R.id.playback_title)).setText(t.getTitle());
-                ((TextView) this.findViewById(R.id.playback_track_length)).setText(Utils.convertSecondsToMinutesString(t.getLengthInSeconds()));
-                currentTime.setText("0:00");
+                setTrack(t);
                 return t;
             } else {
                 Log.i("PlaybackActivity", "Could not deserialize track!");
@@ -191,6 +203,15 @@ public class PlaybackActivity extends AppCompatActivity {
             Log.w("PlaybackActivity", "Extras in intent was NULL");
             return null;
         }
+    }
+
+    private void setTrack(Track track) {
+        this.track = track;
+        ((TextView) this.findViewById(R.id.playback_artist)).setText(track.getArtist());
+        ((TextView) this.findViewById(R.id.playback_title)).setText(track.getTitle());
+        ((TextView) this.findViewById(R.id.playback_track_length)).setText(Utils.convertSecondsToMinutesString(track.getLengthInSeconds()));
+        seekBar.setMax(track.getLengthInSeconds());
+        currentTime.setText("0:00");
     }
 
     private void initializeLyrics() {
@@ -206,7 +227,7 @@ public class PlaybackActivity extends AppCompatActivity {
                 MediaPlayer mPlayer = mediaPlayerService.getMediaPlayer();
                 if (mPlayer != null && fromUser) {
                     mPlayer.seekTo(progress*1000);
-                    Log.d("TST", "FROM USER!");
+                    Logger.log("FROM USER!");
                 }
             }
 
@@ -226,51 +247,51 @@ public class PlaybackActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("PlaybackActivity", "Service bound: " + serviceBound);
+                Logger.log("Service bound: " + serviceBound);
                 if (serviceBound) {
                     if (mediaPlayerService.isMediaPlayerNull()) {
-                        Log.d("PlaybackActivity", "Mediaplayer is NULL");
+                        Logger.log("Mediaplayer is NULL");
                         mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, track);
-                        playerTimer.schedule(new TimerListener(seekBar, mediaPlayerService), 1000, 1000);
                         bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
                     } else if (!mediaPlayerService.isMediaPrepared()) {
-                        Log.d("PlaybackActivity", "Mediaplayer is not prepared");
+                        Logger.log("Mediaplayer is not prepared");
                         mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, track);
-                        playerTimer.schedule(new TimerListener(seekBar, mediaPlayerService), 1000, 1000);
                         bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
                     } else {
-                        Log.d("PlaybackActivity", "Media is playing: " + mediaPlayerService.isMediaPlaying());
+                        Logger.log("Media is playing: " + mediaPlayerService.isMediaPlaying());
                         if (mediaPlayerService.isMediaPlaying()) {
                             if (mediaPlayerService.getCurrentTrack().equals(track)) {
                                 mediaPlayerService.performAction(MediaPlayerService.ACTION_PAUSE, track);
                                 bPlay.setBackground(getDrawable(R.drawable.button_selector_play));
                             } else {
-                                Log.d("PlaybackActivity", "Playback track is different than media player track");
+                                Logger.log("Playback track is different than media player track");
                                 mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, track);
-                                playerTimer.schedule(new TimerListener(seekBar, mediaPlayerService), 1000, 1000);
                                 bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
                             }
                         } else {
                             mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY, track);
-                            playerTimer.schedule(new TimerListener(seekBar, mediaPlayerService), 1000, 1000);
                             bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
                         }
                     }
 
                 } else {
-                    Log.d("PlaybackActivity", "No service bound");
+                    Logger.log("No service bound");
                 }
             }
         });
     }
 
-    private void setListenersOnTrackSwitchButton(Button b, String direction) {
+    private void setListenersOnTrackSwitchButton(final Button b, String direction) {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("PlaybackActivity", "Service bound: " + serviceBound);
+                Logger.log("Service bound: " + serviceBound);
                 if (serviceBound) {
-
+                    if (b.equals(bNext)) {
+                        mediaPlayerService.performAction(MediaPlayerService.ACTION_NEXT, track);
+                    } else {
+                        mediaPlayerService.performAction(MediaPlayerService.ACTION_PREVIOUS, track);
+                    }
                 }
             }
         });
@@ -280,7 +301,7 @@ public class PlaybackActivity extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("PlaybackActivity", "Service bound: " + serviceBound);
+                Logger.log("Service bound: " + serviceBound);
                 if (serviceBound) {
                     mediaPlayerService.performAction(MediaPlayerService.ACTION_STOP, track);
                     bPlay.setBackground(getDrawable(R.drawable.button_selector_play));
@@ -288,6 +309,7 @@ public class PlaybackActivity extends AppCompatActivity {
             }
         });
     }
+
 
     public class TimerListener extends TimerTask {
 
@@ -304,11 +326,20 @@ public class PlaybackActivity extends AppCompatActivity {
         @Override
         public void run() {
             int currentTimeInSeconds = 0;
-            MediaPlayer mPlayer = mediaPlayerService.getMediaPlayer();
-            if (mPlayer != null && seekBar != null && mPlayer.isPlaying()) {
-                currentTimeInSeconds = mPlayer.getCurrentPosition()/1000;
-                seekBar.setProgress(currentTimeInSeconds);
+            if (mediaPlayerService.isMediaPlaying() && mediaPlayerService.isMediaPrepared()) {
+                MediaPlayer mPlayer = mediaPlayerService.getMediaPlayer();
+                if (mPlayer != null && seekBar != null ) {
+                    if (track.equals(mediaPlayerService.getCurrentTrack())) {
+                        currentTimeInSeconds = mPlayer.getCurrentPosition() / 1000;
+                        seekBar.setProgress(currentTimeInSeconds);
+                    }
+                } else {
+                    Logger.log("Mediaplayer or seekbar was null! Could not set seekbar value");
+                }
+            } else {
+                Logger.log("Mediaplayer is not playing or it isn't prepared! Could not set seekbar value");
             }
+
         }
     }
 }

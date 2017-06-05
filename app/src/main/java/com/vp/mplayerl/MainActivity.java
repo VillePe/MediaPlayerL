@@ -4,25 +4,20 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.vp.mplayerl.misc.TrackAdapter;
+
 import java.io.File;
-
-import android.net.Uri;
-
-import com.vp.mplayerl.misc.Track;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_playlist) {
+        if (id == R.id.action_playback) {
             final Intent intentOpenPlaybackActivity = new Intent(this, PlaybackActivity.class);
             startActivity(intentOpenPlaybackActivity);
             return true;

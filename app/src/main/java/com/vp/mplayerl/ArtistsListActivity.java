@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +22,7 @@ import android.widget.ListView;
 
 import com.vp.mplayerl.misc.Artist;
 import com.vp.mplayerl.misc.ArtistAdapter;
+import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.Track;
 
 import java.io.File;
@@ -48,6 +49,7 @@ public class ArtistsListActivity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.main_listview);
         listView.setAdapter(artistAdapter);
         setOnClickListener(listView);
+        registerForContextMenu(listView);
 
         if (getIntent().getBundleExtra(MediaPlayerService.SERVICE_BINDER_KEY) == null) {
             mpServiceIntent = new Intent(this, MediaPlayerService.class);
@@ -73,7 +75,23 @@ public class ArtistsListActivity extends AppCompatActivity {
             stopService(mpServiceIntent);
             serviceBound = false;
         }
-        Log.d("ArtistsListActivity", "Activity stopped");
+        Logger.log("Activity stopped");
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.context_menu_artist, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Artist pickedArtist = (Artist)artistAdapter.getItem(info.position);
+        for (Track t : pickedArtist.getTracks()) {
+            mediaPlayerService.getPlaylist().addTrack(t);
+        }
+        return super.onContextItemSelected(item);
     }
 
     @Override
@@ -90,18 +108,27 @@ public class ArtistsListActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_playlist) {
-            if (mediaPlayerService != null) {
-                final Intent intentOpenPlaybackActivity = new Intent(this, PlaybackActivity.class);
-                intentOpenPlaybackActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
-                Track currentTrack = mediaPlayerService.getCurrentTrack();
-                if (currentTrack != null) {
-                    intentOpenPlaybackActivity.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(mediaPlayerService.getCurrentTrack()));
+        switch (id) {
+            case R.id.action_playback:
+                if (mediaPlayerService != null) {
+                    final Intent intentOpenPlaybackActivity = new Intent(this, PlaybackActivity.class);
+                    intentOpenPlaybackActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
+                    Track currentTrack = mediaPlayerService.getCurrentTrack();
+                    if (currentTrack != null) {
+                        intentOpenPlaybackActivity.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(mediaPlayerService.getCurrentTrack()));
 
-                    startActivity(intentOpenPlaybackActivity);
-                    return true;
+                        startActivity(intentOpenPlaybackActivity);
+                        return true;
+                    }
                 }
-            }
+                break;
+            case R.id.action_playlist:
+                if (mediaPlayerService != null) {
+                    final Intent intentOpenPlaylistActivity = new Intent(this, PlaylistActivity.class);
+                    intentOpenPlaylistActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
+                    startActivity(intentOpenPlaylistActivity);
+                }
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -114,7 +141,7 @@ public class ArtistsListActivity extends AppCompatActivity {
     private void bindToMPService() {
         boolean bindingSuccessful = bindService(mpServiceIntent, connection, Context.BIND_AUTO_CREATE);
 
-        Log.d("ArtistsListActivity", "Binded to service: " + bindingSuccessful);
+        Logger.log("Binded to service: " + bindingSuccessful);
     }
 
     private void setOnClickListener(ListView lView) {
@@ -225,7 +252,7 @@ public class ArtistsListActivity extends AppCompatActivity {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            Log.d("ArtistsListActivity", "Service is connected!");
+            Logger.log("Service is connected!");
             MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder) service;
             mediaPlayerService = binder.getService();
             serviceBound = true;
@@ -233,7 +260,7 @@ public class ArtistsListActivity extends AppCompatActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Log.d("ArtistsListActivity", "Service is disconnected!");
+            Logger.log("Service is disconnected!");
             serviceBound = false;
         }
     };

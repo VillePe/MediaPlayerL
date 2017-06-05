@@ -28,10 +28,16 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".ArtistsListActivity" />
         <activity
-            android:name=".PlaybackActivity"
-            android:label="@string/playback"
+        android:name=".PlaybackActivity"
+        android:label="@string/playback"
+        android:theme="@style/AppTheme.NoActionBar"
+        android:parentActivityName=".TracksListActivity" >
+        </activity>
+        <activity
+            android:name=".PlaylistActivity"
+            android:label="@string/playlist_string"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".TracksListActivity" >
+            android:parentActivityName=".ArtistsListActivity" >
         </activity>
 
         <service android:name=".MediaPlayerService" />

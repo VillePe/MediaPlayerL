@@ -1,22 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.vp.mplayerl.MainActivity">
+    tools:context="com.vp.mplayerl.ArtistsListActivity">
     <!--<item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />-->
     <item
-        android:id="@+id/action_playback"
+        android:id="@id/action_playback"
         android:orderInCategory="100"
         android:icon="@mipmap/note_black_250x250"
         android:title="@string/action_settings"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_playlist"
-        android:orderInCategory="99"
-        android:icon="@mipmap/ic_playlist_red_black"
-        android:title="@string/playlist_string"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/action_clear_playlist"
+        android:orderInCategory="100"
+        android:icon="@mipmap/note_black_250x250"
+        android:title="@string/clear_playlist"
+        app:showAsAction="never" />
 </menu>

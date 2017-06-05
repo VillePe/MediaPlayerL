@@ -20,4 +20,7 @@
     <string name="artists">Artists</string>
     <string name="main_label">MPLayer + L</string>
     <string name="playback_info">Info</string>
+    <string name="playlist_string">Soittoluettelo</string>
+    <string name="add_to_playlist">Lisää soittolistaan</string>
+    <string name="clear_playlist">Tyhjennä soittolista</string>
 </resources>
