@@ -72,7 +72,6 @@ public class RemoteViewPlaybackNotification extends RemoteViews {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("AAA", "TTTT");
                 if (mediaPlayerService.isMediaPlayerNull()) {
                     Log.d("RVPlaybackNotification", "Mediaplayer is NULL");
                 } else if (!mediaPlayerService.isMediaPrepared()) {

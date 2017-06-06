@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.vp.mplayerl.fileparsers.ParseController;
 import com.vp.mplayerl.misc.Logger;
-import com.vp.mplayerl.misc.OnTrackChangedListener;
+import com.vp.mplayerl.misc.OnMediaEventListener;
 import com.vp.mplayerl.misc.Track;
 
 import java.util.Objects;
@@ -28,7 +28,7 @@ import java.util.TimerTask;
  * Created by Ville on 9.10.2016.
  */
 
-public class PlaybackActivity extends AppCompatActivity implements OnTrackChangedListener{
+public class PlaybackActivity extends AppCompatActivity implements OnMediaEventListener {
 
     SeekBar seekBar;
     TextView currentTime;
@@ -42,6 +42,9 @@ public class PlaybackActivity extends AppCompatActivity implements OnTrackChange
     boolean serviceBound;
     private MediaPlayerService.LocalBinder binder;
     private Timer playerTimer;
+    private TimerListener timerListener;
+    private boolean timerCancelled;
+    private boolean timerScheduled;
 
 
     @Override
@@ -53,7 +56,6 @@ public class PlaybackActivity extends AppCompatActivity implements OnTrackChange
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        playerTimer = new Timer();
 
 
         binder = (MediaPlayerService.LocalBinder) getIntent()
@@ -69,6 +71,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnTrackChange
         bPrevious = (Button) this.findViewById(R.id.playback_b_previous);
         bNext = (Button) this.findViewById(R.id.playback_b_next);
         bStop = (Button) this.findViewById(R.id.playback_b_stop);
+        seekBar = (SeekBar) findViewById(R.id.playback_seekbar);
 
         this.track = getTrack();
         if (track == null) {
@@ -76,7 +79,6 @@ public class PlaybackActivity extends AppCompatActivity implements OnTrackChange
             Toast.makeText(this, "Parsing track data failed", Toast.LENGTH_LONG).show();
             finish();
         } else {
-            seekBar = (SeekBar) findViewById(R.id.playback_seekbar);
             seekBar.setMax(track.getLengthInSeconds());
             setListenersOnSeekbar(seekBar);
 
@@ -89,13 +91,17 @@ public class PlaybackActivity extends AppCompatActivity implements OnTrackChange
 
             initializeLyrics();
 
-            playerTimer.schedule(new TimerListener(seekBar, mediaPlayerService), 1000, 1000);
-
             //bindToMPService();
 
             Logger.log("Activity " + this.getLocalClassName() + " created");
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        startTimer();
+        super.onResume();
     }
 
     @Override
@@ -147,6 +153,13 @@ public class PlaybackActivity extends AppCompatActivity implements OnTrackChange
     public void onTrackChanged(Track nextTrack) {
         setTrack(nextTrack);
         Logger.log("Playback changing track to " + nextTrack.getTitle());
+    }
+
+    @Override
+    public void onPlayerAction(String action) {
+        if (action.equals(MediaPlayerService.ACTION_PLAY)) {
+            startTimer();
+        }
     }
 
     private void showTrackInfo(Track track) {
@@ -210,8 +223,32 @@ public class PlaybackActivity extends AppCompatActivity implements OnTrackChange
         ((TextView) this.findViewById(R.id.playback_artist)).setText(track.getArtist());
         ((TextView) this.findViewById(R.id.playback_title)).setText(track.getTitle());
         ((TextView) this.findViewById(R.id.playback_track_length)).setText(Utils.convertSecondsToMinutesString(track.getLengthInSeconds()));
-        seekBar.setMax(track.getLengthInSeconds());
+        if (seekBar != null) {
+            seekBar.setMax(track.getLengthInSeconds());
+        }
         currentTime.setText("0:00");
+        startTimer();
+    }
+
+    private void startTimer() {
+        playerTimer = new Timer();
+        if (timerListener == null || timerCancelled) {
+            timerListener = new TimerListener(seekBar, mediaPlayerService);
+            timerScheduled = false;
+        }
+        if (seekBar != null && !timerScheduled) {
+            playerTimer.schedule(timerListener, 1000, 1000);
+            timerScheduled = true;
+            timerCancelled = false;
+        }
+    }
+
+    private void stopTimer() {
+        Logger.log("Stopping timer");
+        timerCancelled = true;
+        timerScheduled = false;
+        playerTimer.cancel();
+        timerListener.cancel();
     }
 
     private void initializeLyrics() {
@@ -248,13 +285,10 @@ public class PlaybackActivity extends AppCompatActivity implements OnTrackChange
             @Override
             public void onClick(View v) {
                 Logger.log("Service bound: " + serviceBound);
+                startTimer();
                 if (serviceBound) {
-                    if (mediaPlayerService.isMediaPlayerNull()) {
-                        Logger.log("Mediaplayer is NULL");
-                        mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, track);
-                        bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
-                    } else if (!mediaPlayerService.isMediaPrepared()) {
-                        Logger.log("Mediaplayer is not prepared");
+                    if (mediaPlayerService.isMediaPlayerNull() || !mediaPlayerService.isMediaPrepared()) {
+                        Logger.log("Mediaplayer is NULL or it is not prepared");
                         mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, track);
                         bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
                     } else {
@@ -287,6 +321,10 @@ public class PlaybackActivity extends AppCompatActivity implements OnTrackChange
             public void onClick(View v) {
                 Logger.log("Service bound: " + serviceBound);
                 if (serviceBound) {
+                    if (mediaPlayerService.getPlaylist() == null || mediaPlayerService.getPlaylist().size() <= 1) {
+                        Toast.makeText(getApplicationContext(), R.string.no_more_tracks, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     if (b.equals(bNext)) {
                         mediaPlayerService.performAction(MediaPlayerService.ACTION_NEXT, track);
                     } else {
@@ -335,9 +373,13 @@ public class PlaybackActivity extends AppCompatActivity implements OnTrackChange
                     }
                 } else {
                     Logger.log("Mediaplayer or seekbar was null! Could not set seekbar value");
+                    Logger.log("Mediaplayer is null: " + (mPlayer == null));
+                    Logger.log("Seekbar is null: " + (seekBar == null));
+                    stopTimer();
                 }
             } else {
                 Logger.log("Mediaplayer is not playing or it isn't prepared! Could not set seekbar value");
+                stopTimer();
             }
 
         }

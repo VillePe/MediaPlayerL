@@ -23,4 +23,6 @@
     <string name="playlist_string">Soittoluettelo</string>
     <string name="add_to_playlist">Lisää soittolistaan</string>
     <string name="clear_playlist">Tyhjennä soittolista</string>
+    <string name="add_n_play">Toista</string>
+    <string name="no_more_tracks">Listalla ei ole enempää kappaleita</string>
 </resources>

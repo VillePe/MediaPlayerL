@@ -23,6 +23,7 @@ import android.widget.ListView;
 import com.vp.mplayerl.misc.Artist;
 import com.vp.mplayerl.misc.ArtistAdapter;
 import com.vp.mplayerl.misc.Logger;
+import com.vp.mplayerl.misc.Playlist;
 import com.vp.mplayerl.misc.Track;
 
 import java.io.File;
@@ -88,10 +89,31 @@ public class ArtistsListActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Artist pickedArtist = (Artist)artistAdapter.getItem(info.position);
-        for (Track t : pickedArtist.getTracks()) {
-            mediaPlayerService.getPlaylist().addTrack(t);
+        switch (item.getItemId()) {
+            case R.id.action_add_artist_to_playlist:
+                addArtistToPlaylist(pickedArtist, mediaPlayerService.getPlaylist());
+                break;
+            case R.id.action_add_artist_to_playlist_and_play:
+                startPlaybackWithArtist(pickedArtist);
+
         }
         return super.onContextItemSelected(item);
+    }
+
+    private void addArtistToPlaylist(Artist artist, Playlist playlist) {
+        for (Track t : artist.getTracks()) {
+            playlist.addTrack(t);
+        }
+    }
+
+    private void startPlaybackWithArtist(Artist artist) {
+        Playlist playlist = mediaPlayerService.getPlaylist();
+        playlist.clear();
+        addArtistToPlaylist(artist, playlist);
+        Intent intent = new Intent(this, PlaybackActivity.class);
+        intent.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(playlist.getTrack(0)));
+        intent.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
+        startActivity(intent);
     }
 
     @Override

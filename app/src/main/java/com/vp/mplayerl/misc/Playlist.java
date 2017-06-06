@@ -127,4 +127,8 @@ public class Playlist implements Parcelable{
             return new Playlist[size];
         }
     };
+
+    public void clear() {
+        this.trackList.clear();
+    }
 }
