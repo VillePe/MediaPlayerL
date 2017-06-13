@@ -1,6 +1,11 @@
 package com.vp.mplayerl.misc;
 
+import android.content.Intent;
 import android.media.Image;
+import android.os.Bundle;
+import android.util.Log;
+
+import com.vp.mplayerl.MediaPlayerService;
 
 import java.io.File;
 import java.io.Serializable;
@@ -117,6 +122,26 @@ public class Track implements Serializable, Comparable{
             return this.getTitle().compareTo(paramTrack.getArtist());
         } else {
             return this.getArtist().compareTo(paramTrack.getArtist());
+        }
+    }
+
+    public static Track getTrackFromIntent(Intent intent) {
+        if (intent.getExtras() != null) {
+            Bundle bundle = intent.getExtras().getBundle(MediaPlayerService.TRACK_BUNDLE_KEY);
+            Track t = null;
+            if (bundle != null) {
+                t = (Track) bundle.getSerializable(MediaPlayerService.TRACK_BUNDLE_KEY);
+            }
+            if (t != null) {
+                return t;
+            } else {
+                Logger.log("Could not deserialize track!");
+                return null;
+            }
+
+        } else {
+            Logger.log("Extras in intent was NULL");
+            return null;
         }
     }
 }

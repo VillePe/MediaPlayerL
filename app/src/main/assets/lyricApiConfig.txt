@@ -1,0 +1,83 @@
+// ChartLyrics
+//      - http://api.chartlyrics.com/apiv1.asmx/GetLyric?LyricId=XX&LyricCheckSum=XX
+//      - http://api.chartlyrics.com/apiv1.asmx/SearchLyric?Artist=XX&Song=XX
+//
+// LoloLyrics
+//      - http://api.lololyrics.com/0.5/getLyric?artist=XX&track=XX
+//
+
+// Template
+/*
+{
+    NAME=""
+    API_ADDRESS=""
+    API_KEY=""
+    NEEDS_TRACK_ID_SEARCH="false"
+    NEEDS_TRACK_ID_1="false"
+    NEEDS_TRACK_ID_2="false"
+    SEARCH_METHOD=""
+    GET_METHOD=""
+    URL_ARTIST_TAG=""
+    URL_TRACK_TAG=""
+    URL_LYRIC_ID_TAG=""
+    URL_LYRIC_ID_2_TAG=""
+    XML_ARTIST_TAG=""
+    XML_TRACK_TAG=""
+    XML_LYRIC_ID_TAG=""
+    XML_LYRIC_ID_2_TAG=""
+    XML_SEARCH_RESULT_OBJECT_HEADER=""
+    XML_LYRIC_TAG=""
+    XML_LYRIC_URL_TAG=""
+    XML_ERROR_TAG=""
+    XML_ERROR_MESSAGE_1=""
+    XML_ERROR_MESSAGE_2=""
+}
+*/
+{
+    NAME="ChartLyrics"
+    API_ADDRESS="http://api.chartlyrics.com/apiv1.asmx/"
+    API_KEY=""
+    NEEDS_TRACK_ID_SEARCH="true"
+    NEEDS_TRACK_ID_1="true"
+    NEEDS_TRACK_ID_2="true"
+    SEARCH_METHOD="SearchLyric"
+    GET_METHOD="GetLyric"
+    URL_ARTIST_TAG="Artist"
+    URL_TRACK_TAG="Song"
+    URL_LYRIC_ID_TAG="LyricID"
+    URL_LYRIC_ID_2_TAG="LyricCheckSum"
+    XML_ARTIST_TAG="Artist"
+    XML_TRACK_TAG="Song"
+    XML_LYRIC_ID_TAG="LyricID"
+    XML_LYRIC_ID_2_TAG="LyricCheckSum"
+    XML_SEARCH_RESULT_OBJECT_HEADER="SearchLyricResult"
+    XML_LYRIC_TAG="Lyric"
+    XML_LYRIC_URL_TAG="LyricUrl"
+    XML_ERROR_TAG=""
+    XML_ERROR_MESSAGE_1=""
+    XML_ERROR_MESSAGE_2=""
+}
+{
+    NAME="LoloLyrics"
+    API_ADDRESS="http://api.lololyrics.com/0.5/"
+    API_KEY=""
+    NEEDS_TRACK_ID_SEARCH="false"
+    NEEDS_TRACK_ID_1="false"
+    NEEDS_TRACK_ID_2="false"
+    SEARCH_METHOD=""
+    GET_METHOD="getLyric"
+    URL_ARTIST_TAG="artist"
+    URL_TRACK_TAG="track"
+    URL_LYRIC_ID_TAG="artist"
+    URL_LYRIC_ID_2_TAG="track"
+    XML_ARTIST_TAG=""
+    XML_TRACK_TAG=""
+    XML_LYRIC_ID_TAG=""
+    XML_LYRIC_ID_2_TAG=""
+    XML_SEARCH_RESULT_OBJECT_HEADER="result"
+    XML_LYRIC_TAG="response"
+    XML_LYRIC_URL_TAG="url"
+    XML_ERROR_TAG=""
+    XML_ERROR_MESSAGE_1=""
+    XML_ERROR_MESSAGE_2=""
+}

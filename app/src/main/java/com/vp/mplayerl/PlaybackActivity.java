@@ -1,7 +1,12 @@
 package com.vp.mplayerl;
 
+import android.Manifest;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
+import android.support.v4.util.LogWriter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,14 +20,23 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vp.mplayerl.async_task_handlers.AsyncLyricSearcher;
 import com.vp.mplayerl.fileparsers.ParseController;
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.OnMediaEventListener;
 import com.vp.mplayerl.misc.Track;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import vp.lyrics.LyricApi;
+import vp.lyrics.LyricHandler;
 
 /**
  * Created by Ville on 9.10.2016.
@@ -45,6 +59,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
     private TimerListener timerListener;
     private boolean timerCancelled;
     private boolean timerScheduled;
+    private LyricHandler lyricHandler;
 
 
     @Override
@@ -73,12 +88,13 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         bStop = (Button) this.findViewById(R.id.playback_b_stop);
         seekBar = (SeekBar) findViewById(R.id.playback_seekbar);
 
-        this.track = getTrack();
+        this.track = Track.getTrackFromIntent(getIntent());
         if (track == null) {
             Log.e("PlaybackActivity", "Track was null!");
             Toast.makeText(this, "Parsing track data failed", Toast.LENGTH_LONG).show();
             finish();
         } else {
+            setTrack(this.track);
             seekBar.setMax(track.getLengthInSeconds());
             setListenersOnSeekbar(seekBar);
 
@@ -145,8 +161,65 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
                     startActivity(PlaylistActivity.createPlaylistActivityIntent(this, mediaPlayerService));
                 }
                 break;
+            case R.id.action_search_lyrics:
+                searchLyrics();
+                break;
+            case R.id.action_search_lyrics_extended:
+                startActivity(ExtendedLyricSearching.createExtendedLyricSearchIntent(this, track));
+                break;
+            case R.id.action_lyric_search_debug:
+                openLyricHandlerDialog(this.lyricHandler);
+                break;
         }
         return true;
+    }
+
+    private void searchLyrics() {
+        int permissionInternet = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.INTERNET);
+        Log.d("VP", "PERMISSION READ: " + permissionInternet);
+        if (permissionInternet == PermissionChecker.PERMISSION_DENIED) {
+            Logger.log("Aksing permission!");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.INTERNET},
+                    MainActivity.PERMISSIONS_INTERNET);
+
+        }
+
+        this.lyricHandler = new LyricHandler();
+        try {
+            InputStream iStream = getAssets().open("lyricApiConfig.txt");
+            AsyncLyricSearcher searcher = new AsyncLyricSearcher(getApplicationContext(), this.lyricHandler, iStream, track, lyrics);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            searcher.registerOutputStream(new PrintStream(baos), baos);
+            searcher.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openLyricHandlerDialog(LyricHandler handler) {
+        if (handler == null) return;
+        StringBuilder sb = new StringBuilder();
+        sb.append("LyriApis: ").append("\n");
+        ArrayList<LyricApi> lyricApis = handler.getLyricApis();
+        for (int i = 0; i < handler.getLyricApis().size(); i++) {
+            try {
+                sb.append("    - ").append(lyricApis.get(i).getApiName()).append("\n");
+            } catch (LyricApi.ApiException ignored) { }
+        }
+        sb.append("Search queries: ").append("\n");
+        for (int i = 0; i < handler.getLyricSearchQueries().size(); i++) {
+            sb.append(handler.getLyricSearchQueries().get(i)).append("\n");
+        }
+        sb.append("Get queries: ").append("\n");
+        for (int i = 0; i < handler.getLyricSearchQueries().size(); i++) {
+            sb.append(handler.getLyricGetQueries().get(i)).append("\n");
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(PlaybackActivity.this)
+                .setTitle("Etsinnän tiedot")
+                .setMessage(sb.toString());
+        builder.show();
     }
 
     @Override
@@ -197,24 +270,6 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
 
         } else {
             Logger.log("No service bound");
-        }
-    }
-
-    private Track getTrack() {
-        if (this.getIntent().getExtras() != null) {
-            Bundle bundle = this.getIntent().getExtras().getBundle(MediaPlayerService.TRACK_BUNDLE_KEY);
-            Track t = (Track) bundle.getSerializable(MediaPlayerService.TRACK_BUNDLE_KEY);
-            if (t != null) {
-                setTrack(t);
-                return t;
-            } else {
-                Log.i("PlaybackActivity", "Could not deserialize track!");
-                return null;
-            }
-
-        } else {
-            Log.w("PlaybackActivity", "Extras in intent was NULL");
-            return null;
         }
     }
 

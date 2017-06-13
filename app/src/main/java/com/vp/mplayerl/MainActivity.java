@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int PERMISSIONS_READ_EXT_STORAGE = 1;
     private final static int PERMISSIONS_WRITE_EXT_STORAGE = 2;
+    public final static int PERMISSIONS_INTERNET = 3;
 
     ListView listView;
     TrackAdapter trackAdapter;

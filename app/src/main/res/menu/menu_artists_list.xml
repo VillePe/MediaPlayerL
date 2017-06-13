@@ -19,4 +19,10 @@
         android:icon="@mipmap/ic_playlist_red_black"
         android:title="@string/playlist_string"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_play_all"
+        android:orderInCategory="101"
+        android:icon="@mipmap/shuffle"
+        android:title="@string/play_all"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.vp.mplayerl.misc.Artist;
 import com.vp.mplayerl.misc.ArtistAdapter;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 public class ArtistsListActivity extends AppCompatActivity {
 
     ListView listView;
+    private View playbackPopup;
     ArtistAdapter artistAdapter;
     private MediaPlayerService mediaPlayerService;
     private boolean serviceBound;
@@ -49,7 +51,9 @@ public class ArtistsListActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.main_listview);
         listView.setAdapter(artistAdapter);
-        setOnClickListener(listView);
+        playbackPopup = findViewById(R.id.playback_popup_layout);
+        setOnItemClickListener(listView);
+        setOnPopupClickListener(playbackPopup);
         registerForContextMenu(listView);
 
         if (getIntent().getBundleExtra(MediaPlayerService.SERVICE_BINDER_KEY) == null) {
@@ -100,6 +104,12 @@ public class ArtistsListActivity extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        togglePlaybackPopup();
+    }
+
     private void addArtistToPlaylist(Artist artist, Playlist playlist) {
         for (Track t : artist.getTracks()) {
             playlist.addTrack(t);
@@ -132,17 +142,7 @@ public class ArtistsListActivity extends AppCompatActivity {
 
         switch (id) {
             case R.id.action_playback:
-                if (mediaPlayerService != null) {
-                    final Intent intentOpenPlaybackActivity = new Intent(this, PlaybackActivity.class);
-                    intentOpenPlaybackActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
-                    Track currentTrack = mediaPlayerService.getCurrentTrack();
-                    if (currentTrack != null) {
-                        intentOpenPlaybackActivity.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(mediaPlayerService.getCurrentTrack()));
-
-                        startActivity(intentOpenPlaybackActivity);
-                        return true;
-                    }
-                }
+                openPlaybackActivity();
                 break;
             case R.id.action_playlist:
                 if (mediaPlayerService != null) {
@@ -151,9 +151,43 @@ public class ArtistsListActivity extends AppCompatActivity {
                     startActivity(intentOpenPlaylistActivity);
                 }
                 break;
+            case R.id.action_play_all:
+                playAll();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean openPlaybackActivity() {
+        if (mediaPlayerService != null) {
+            final Intent intentOpenPlaybackActivity = new Intent(this, PlaybackActivity.class);
+            intentOpenPlaybackActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
+            Track currentTrack = mediaPlayerService.getCurrentTrack();
+            if (currentTrack != null) {
+                intentOpenPlaybackActivity.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(mediaPlayerService.getCurrentTrack()));
+
+                startActivity(intentOpenPlaybackActivity);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void playAll() {
+        if (mediaPlayerService != null && artistAdapter != null && artistAdapter.getCount() > 0) {
+            Playlist playlist = mediaPlayerService.getPlaylist();
+            if (playlist != null) {
+                playlist.clear();
+                for (int i = 0; i < artistAdapter.getCount(); i++) {
+                    Artist a = (Artist) artistAdapter.getItem(i);
+                    addArtistToPlaylist((Artist) artistAdapter.getItem(i), playlist);
+                }
+                playlist.setSuffle(true);
+                mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, playlist.getRandomTrack());
+                openPlaybackActivity();
+            }
+        }
     }
 
     public void setMediaPlayerService(MediaPlayerService service) {
@@ -166,7 +200,7 @@ public class ArtistsListActivity extends AppCompatActivity {
         Logger.log("Binded to service: " + bindingSuccessful);
     }
 
-    private void setOnClickListener(ListView lView) {
+    private void setOnItemClickListener(ListView lView) {
         lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -182,6 +216,37 @@ public class ArtistsListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void setOnPopupClickListener(View view) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openPlaybackActivity();
+            }
+        });
+    }
+
+    private void togglePlaybackPopup( ) {
+        View layout = findViewById(R.id.playback_popup_layout);
+        if (mediaPlayerService != null && mediaPlayerService.isMediaPlaying()) {
+            Track currentTrack = mediaPlayerService.getCurrentTrack();
+            TextView artistText = (TextView) findViewById(R.id.playback_popup__artist);
+            TextView titleText = (TextView) findViewById(R.id.playback_popup__title);
+            if (!currentTrack.getArtist().equals("<unknown>")) {
+                artistText.setText(currentTrack.getArtist());
+            } else {
+                artistText.setText("");
+            }
+            titleText.setText(currentTrack.getTitle());
+
+            layout.setVisibility(View.VISIBLE);
+            Logger.log("Showing popup!");
+        } else {
+            layout.setVisibility(View.GONE);
+            Logger.log("Hiding popup!");
+        }
+
     }
 
     private void InitializeTracksFromStorage() {

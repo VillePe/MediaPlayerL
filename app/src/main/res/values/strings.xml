@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">MPlayer + L</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Asetukset</string>
     <string name="lorem">
         Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.
@@ -25,4 +25,9 @@
     <string name="clear_playlist">Tyhjennä soittolista</string>
     <string name="add_n_play">Toista</string>
     <string name="no_more_tracks">Listalla ei ole enempää kappaleita</string>
+    <string name="play_all">Toista kaikki</string>
+    <string name="search_lyrics">Etsi lyriikoita</string>
+    <string name="could_not_find_lyrics">Lyriikoita ei löytynyt</string>
+    <string name="search_lyrics_extended">Etsi lyriikoita...</string>
+    <string name="title_activity_extended_lyric_searching">ExtendedLyricSearching</string>
 </resources>

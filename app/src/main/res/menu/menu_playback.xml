@@ -16,5 +16,22 @@
         android:icon="@mipmap/ic_playlist_red_black"
         android:title="@string/playlist_string"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_search_lyrics"
+        android:orderInCategory="101"
+        android:title="@string/search_lyrics"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_search_lyrics_extended"
+        android:orderInCategory="102"
+        android:title="@string/search_lyrics_extended"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_lyric_search_debug"
+        android:orderInCategory="103"
+        android:title="Lyriikkaetsinnän loki"
+        app:showAsAction="never" />
 
 </menu>

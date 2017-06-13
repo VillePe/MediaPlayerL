@@ -5,8 +5,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.TaskStackBuilder;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -15,6 +17,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.OnMediaEventListener;
@@ -42,6 +45,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
 
     private MediaPlayer mediaPlayer;
+    private HeadPhonePLuggingReceiver broadcastReceiver;
     private final IBinder binder = new LocalBinder();
     private Intent intent;
     private boolean startAndPlayOnPrepared;
@@ -51,6 +55,15 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     private Playlist playlist;
     NotificationManager notificationManager;
     private OnMediaEventListener trackChangedListener;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        broadcastReceiver = new HeadPhonePLuggingReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_HEADSET_PLUG);
+        registerReceiver(broadcastReceiver, intentFilter);
+    }
 
     @Nullable
     @Override
@@ -319,6 +332,28 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
             performAction(MediaPlayerService.ACTION_NEXT, null);
+        }
+    }
+
+    public class HeadPhonePLuggingReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (currentTrack == null || isMediaPlayerNull() || isStopped) {
+                Logger.log("Headphones were plugged in or out, but no action was performed");
+                return;
+            }
+            if (intent.getAction().compareTo(Intent.ACTION_HEADSET_PLUG) == 0) {
+                switch (intent.getIntExtra("state", -1)) {
+                    case 0:
+                        performAction(ACTION_PAUSE, currentTrack);
+                        Logger.log("Headphones plugged out");
+                        break;
+                    case 1:
+                        Logger.log("Headphones plugged in");
+                        performAction(ACTION_PLAY_ON_PREPARED, currentTrack);
+                }
+            }
         }
     }
 }

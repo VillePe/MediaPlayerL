@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.vp.mplayerl">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -25,27 +27,41 @@
         <activity
             android:name=".TracksListActivity"
             android:label="@string/tracks"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".ArtistsListActivity" />
+            android:parentActivityName=".ArtistsListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-        android:name=".PlaybackActivity"
-        android:label="@string/playback"
-        android:theme="@style/AppTheme.NoActionBar"
-        android:parentActivityName=".TracksListActivity" >
-        </activity>
+            android:name=".PlaybackActivity"
+            android:label="@string/playback"
+            android:parentActivityName=".TracksListActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".PlaylistActivity"
             android:label="@string/playlist_string"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".ArtistsListActivity" >
-        </activity>
+            android:parentActivityName=".ArtistsListActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
-        <service android:name=".MediaPlayerService" />
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <service android:name=".MediaPlayerService">
+            <intent-filter>
+                <action android:name="android.intent.action.HEADSET_PLUG" />
+            </intent-filter>
+        </service>
+        <!--
+     ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".ExtendedLyricSearching"
+            android:label="@string/title_activity_extended_lyric_searching"
+            android:parentActivityName=".PlaybackActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.vp.mplayerl.PlaybackActivity" />
+        </activity>
     </application>
 
 </manifest>

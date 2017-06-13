@@ -9,7 +9,7 @@ import android.util.Log;
 public class Logger {
 
     public static void log(String s) {
-        Log.d("VPsadasd", s);
+        Log.d("VP", s);
     }
 
     public static void log(Throwable t) {
