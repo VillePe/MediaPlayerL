@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by vp on 6.6.2017.
+ * Created by Ville on 6.6.2017.
  *
  * Parses files that are constructed as key value pairs.
  * An object must start with a opening bracket on a line and end with one on a line.

@@ -1,7 +1,7 @@
 package vp.lyrics;
 
 /**
- * Created by vp on 7.6.2017.
+ * Created by Ville on 7.6.2017.
  */
 public class Lyric {
 
