@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
-import android.support.v4.util.LogWriter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +19,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.vp.mplayerl.async_task_handlers.AsyncLyricSearcher;
+import com.vp.mplayerl.async_task_handlers.AsyncLyricGetter;
 import com.vp.mplayerl.fileparsers.ParseController;
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.OnMediaEventListener;
@@ -189,7 +188,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         this.lyricHandler = new LyricHandler();
         try {
             InputStream iStream = getAssets().open("lyricApiConfig.txt");
-            AsyncLyricSearcher searcher = new AsyncLyricSearcher(getApplicationContext(), this.lyricHandler, iStream, track, lyrics);
+            AsyncLyricGetter searcher = new AsyncLyricGetter(getApplicationContext(), this.lyricHandler, iStream, track, lyrics);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             searcher.registerOutputStream(new PrintStream(baos), baos);
             searcher.execute();

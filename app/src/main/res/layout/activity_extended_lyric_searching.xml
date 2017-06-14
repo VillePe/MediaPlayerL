@@ -22,6 +22,8 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:paddingTop="80dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -47,22 +49,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:text="@string/search_results"
+            android:paddingTop="10dp"
+            android:textSize="20sp"
+            android:textColor="#110000"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/select_by_pressing"
+            android:textSize="15sp"
+            android:textColor="#110000"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <ScrollView
             android:id="@+id/extended_lyric_search_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/extended_lyric_search_result_layout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
 
         </ScrollView>
 
     </LinearLayout>
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/search_lyrics_fab"-->
-        <!--android:src="@drawable/ic_search_black_24dp"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--app:srcCompat="@android:drawable/ic_dialog_email" />-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/search_lyrics_fab"
+        android:src="@drawable/ic_search_black_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin" />
 
 </android.support.design.widget.CoordinatorLayout>

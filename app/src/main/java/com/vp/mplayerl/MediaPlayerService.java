@@ -56,6 +56,10 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     NotificationManager notificationManager;
     private OnMediaEventListener trackChangedListener;
 
+    public MediaPlayerService() {
+        this.playlist = new Playlist();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -97,7 +101,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
                 Logger.log("ACTION_PLAY_ON_PREPARED");
                 startAndPlayOnPrepared = true;
                 initializeMediaPlayer();
-                handleActionStart(track.getTrackFile());
+                handleActionStart(track);
                 break;
             case ACTION_PLAY:
                 Logger.log("ACTION_PLAY");
@@ -187,7 +191,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
             Logger.log("Changing track to: " + track.getTitle());
             startAndPlayOnPrepared = true;
             isMediaPrepared = false;
-            handleActionStart(track.getTrackFile());
+            handleActionStart(track);
         }
         if (trackChangedListener != null) {
             trackChangedListener.onTrackChanged(track);
@@ -235,15 +239,24 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
         return bundle;
     }
 
-    private void handleActionStart(File file) {
+    private void handleActionStart(Track track) {
         try {
             Logger.log("Preparing media player");
             if (isMediaPlayerNull()) {
                 initializeMediaPlayer();
             }
             mediaPlayer.reset();
-            mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(file.getAbsolutePath()));
+            mediaPlayer.setDataSource(getApplicationContext(), Uri.parse(track.getTrackFile().getAbsolutePath()));
             mediaPlayer.prepareAsync();
+
+            if (playlist.size() < 1) {
+                playlist.addTrack(track);
+            }
+
+            if (playlist.getTrackList().contains(track)) {
+                int trackIndex = playlist.getTrackList().indexOf(track);
+                playlist.setCurrentTrackNumber(trackIndex);
+            }
 
             if (currentTrack != null) {
                 initializeNotification();

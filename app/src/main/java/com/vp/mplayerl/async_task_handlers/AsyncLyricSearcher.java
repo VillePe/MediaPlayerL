@@ -1,20 +1,13 @@
 package com.vp.mplayerl.async_task_handlers;
 
-
 import android.content.Context;
 import android.os.AsyncTask;
-import android.renderscript.ScriptGroup;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.View;
 
 import com.vp.mplayerl.misc.Logger;
-import com.vp.mplayerl.misc.Track;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 
 import vp.lyrics.Lyric;
@@ -22,46 +15,47 @@ import vp.lyrics.LyricApi;
 import vp.lyrics.LyricHandler;
 
 /**
- * Created by Ville on 9.6.2017.
+ * Created by Ville on 14.6.2017.
  */
 
-public class AsyncLyricSearcher extends AsyncTask<String, Integer, Boolean> {
+public class AsyncLyricSearcher extends AsyncTask<String, String, ArrayList<Lyric>> {
 
-    /**
-     * Created by Ville on 20.4.2017.
-     */
+    private Context ctx;
+    private LyricHandler lyricHandler;
+    private String artist;
+    private String title;
+    private InputStream inputStream;
+    private View scrollView;
+    private OnLyricSearchEndListener lyricSearchEndListener;
 
-    LyricHandler lyricHandler;
-    Track track;
-    InputStream inputStream;
-    Context ctx;
-    TextView textView;
-    private ArrayList<Lyric> foundLyrics = new ArrayList<>();
-    private PrintStream outputStream;
-    private ByteArrayOutputStream bArrayOutputStream;
 
-    public AsyncLyricSearcher(Context ctx, LyricHandler lyricHandler, InputStream inputStream, Track track, TextView textView) {
-        this.lyricHandler = lyricHandler;
-        this.track = track;
-        this.inputStream = inputStream;
-        this.textView = textView;
+    public AsyncLyricSearcher(Context ctx, LyricHandler lyricHandler, InputStream inputStream, String artist, String title, View scrollView) {
         this.ctx = ctx;
+        this.lyricHandler = lyricHandler;
+        this.artist = artist;
+        this.title = title;
+        this.inputStream = inputStream;
+        this.scrollView = scrollView;
     }
 
-    public void registerOutputStream(PrintStream stream, ByteArrayOutputStream baos) {
-        this.outputStream = stream;
-        bArrayOutputStream = baos;
+    public void registerOnLyricSearchEndListner(OnLyricSearchEndListener listener) {
+        this.lyricSearchEndListener = listener;
     }
 
     @Override
-    protected Boolean doInBackground(String... params) {
+    protected ArrayList<Lyric> doInBackground(String... strings) {
         Logger.log("Searching lyrics...");
+        ArrayList<Lyric> foundLyrics = new ArrayList<>();
+        if (strings.length == 2) {
+            this.artist = strings[0];
+            this.title = strings[1];
+        }
         try {
-            foundLyrics = lyricHandler.getLyricsWithLyricApiConfigFile(inputStream, track.getArtist(), track.getTitle());
+            foundLyrics = lyricHandler.searchLyricsWithLyricApiConfigFile(inputStream, artist, title);
         } catch (IOException | LyricApi.ApiException e) {
             Logger.log(e);
         }
-        return true;
+        return foundLyrics;
     }
 
     @Override
@@ -70,34 +64,16 @@ public class AsyncLyricSearcher extends AsyncTask<String, Integer, Boolean> {
     }
 
     @Override
-    protected void onCancelled(Boolean aBoolean) {
-        Toast.makeText(ctx, "Etsintä peruutettu", Toast.LENGTH_SHORT).show();
-        onPostExecute(aBoolean);
+    protected void onPostExecute(ArrayList<Lyric> lyrics) {
+        Logger.log("Lyric search ended!");
+        Logger.log(lyrics.size() + " lyrics found!");
+        if (lyricSearchEndListener != null) {
+            lyricSearchEndListener.searchFinished(lyrics);
+        }
     }
 
     @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        try {
-            Logger.log(bArrayOutputStream.toString());
-        } catch (Exception e) {
-            Logger.log(e);
-        }
-        if (foundLyrics.size() > 0) {
-            textView.setText(foundLyrics.get(0).getLyrics());
-            Toast.makeText(ctx, "Lyriikat löydetty!", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(ctx, "Lyriikoiden etsiminen epäonnistui!", Toast.LENGTH_SHORT).show();
-        }
-        super.onPostExecute(aBoolean);
-    }
-
-    @Override
-    protected void onProgressUpdate(Integer... values) {
+    protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
-    }
-
-    @Override
-    protected void onCancelled() {
-        super.onCancelled();
     }
 }

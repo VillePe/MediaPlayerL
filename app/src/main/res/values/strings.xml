@@ -30,4 +30,7 @@
     <string name="could_not_find_lyrics">Lyriikoita ei löytynyt</string>
     <string name="search_lyrics_extended">Etsi lyriikoita...</string>
     <string name="title_activity_extended_lyric_searching">ExtendedLyricSearching</string>
+    <string name="asset_lyric_api_config">lyricApiConfig.txt</string>
+    <string name="search_results">Etsinnän tulokset</string>
+    <string name="select_by_pressing">Valitse klikkaamalla</string>
 </resources>

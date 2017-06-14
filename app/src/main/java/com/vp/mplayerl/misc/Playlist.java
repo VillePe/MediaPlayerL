@@ -131,4 +131,16 @@ public class Playlist implements Parcelable{
     public void clear() {
         this.trackList.clear();
     }
+
+    public int getCurrentTrackNumber() {
+        return currentTrackNumber;
+    }
+
+    public void setCurrentTrackNumber(int currentTrackNumber) {
+        if (currentTrackNumber > trackList.size()) {
+            getNextTrack();
+        } else {
+            this.currentTrackNumber = currentTrackNumber;
+        }
+    }
 }
