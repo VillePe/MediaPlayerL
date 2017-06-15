@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ArtifactsWorkspaceSettings">
-    <artifacts-to-build>
-      <artifact name="LyricSearchEngine:jar" />
-    </artifacts-to-build>
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="c411d79d-ea72-42fb-9613-5afbba4021df" name="Default" comment="" />
-    <ignored path="$PROJECT_DIR$/out/" />
+    <list default="true" id="dbca1ac0-ddb1-4d8b-835b-e56b06772103" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,32 +9,84 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DatabaseView">
-    <option name="SHOW_INTERMEDIATE" value="true" />
-    <option name="GROUP_SCHEMA" value="true" />
-    <option name="GROUP_CONTENTS" value="false" />
-    <option name="SORT_POSITIONED" value="false" />
-    <option name="SHOW_TABLE_DETAILS" value="true" />
-    <option name="SHOW_EMPTY_GROUPS" value="false" />
-    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
-  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
-  <component name="FavoritesManager">
-    <favorites_list name="LyricSearchEngine" />
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="LyricSearchEngine.iml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/LyricSearchEngine.iml">
+      <file leaf-file-name="FlacParser.java" pinned="false" current-in-tab="true">
+        <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/parsers/flac/FlacParser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="34" lean-forward="false" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+            <state relative-caret-position="257">
+              <caret line="209" column="59" lean-forward="true" selection-start-line="209" selection-start-column="59" selection-end-line="209" selection-end-column="59" />
+              <folding>
+                <element signature="e#579#580#0" expanded="true" />
+                <element signature="e#606#607#0" expanded="true" />
+                <element signature="e#5892#5893#0" expanded="true" />
+                <element signature="e#5955#5956#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Utils.java" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/Utils.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="308">
+              <caret line="87" column="0" lean-forward="false" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FlacWriter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/parsers/flac/FlacWriter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="410">
+              <caret line="27" column="8" lean-forward="false" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Context.java" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/Context.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="410">
+              <caret line="29" column="62" lean-forward="false" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="62" />
+              <folding>
+                <element signature="e#0#679#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>SnapShooter</find>
+    </findStrings>
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -50,14 +96,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/vp/lyrics/ChartLyricXmlHandler.java" />
-        <option value="$PROJECT_DIR$/src/vp/lyrics/DictionaryParser.java" />
-        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
-        <option value="$PROJECT_DIR$/src/vp/lyrics/lyricAPI.config" />
-        <option value="$PROJECT_DIR$/src/vp/lyrics/LyricApi.java" />
-        <option value="$PROJECT_DIR$/src/vp/lyrics/LyricApiXmlHandler.java" />
-        <option value="$PROJECT_DIR$/src/vp/lyrics/LyricHandler.java" />
-        <option value="$PROJECT_DIR$/src/vp/lyrics/Main.java" />
+        <option value="$PROJECT_DIR$/src/mediafileparsers/Main.java" />
+        <option value="$PROJECT_DIR$/src/parsers/flac/FlacWriter.java" />
+        <option value="$PROJECT_DIR$/src/mediafileparsers/Utils.java" />
+        <option value="$PROJECT_DIR$/src/parsers/flac/FlacParser.java" />
       </list>
     </option>
   </component>
@@ -88,26 +130,28 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="LyricSearchEngine" />
+              <option name="myItemId" value="MediaFileParsers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="LyricSearchEngine" />
+              <option name="myItemId" value="MediaFileParsers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="LyricSearchEngine" />
+              <option name="myItemId" value="MediaFileParsers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="LyricSearchEngine" />
+              <option name="myItemId" value="MediaFileParsers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -115,65 +159,70 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="lyrics" />
+              <option name="myItemId" value="parsers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mp3" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="LyricSearchEngine" />
+              <option name="myItemId" value="MediaFileParsers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="LyricSearchEngine" />
+              <option name="myItemId" value="MediaFileParsers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="parsers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="flac" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
-              <option name="myItemId" value="LyricSearchEngine" />
+              <option name="myItemId" value="MediaFileParsers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="LyricSearchEngine" />
+              <option name="myItemId" value="MediaFileParsers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="artifacts" />
+              <option name="myItemId" value="mediafileparsers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.folding" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.19851851" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Documents/8_Muu ohjelmointi/Java/MediaFileParsers" />
-    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
-    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
-    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
-    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="lyricsearchengine" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\libraries" />
-      <recent name="C:\Users\Ville\AndroidStudioProjects\LyricSearchEngine\src\vp\lyrics" />
+      <recent name="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\libraries\" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -188,7 +237,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Unnamed">
+  <component name="RunManager" selected="Application.Default">
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
@@ -496,7 +545,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="LyricSearchEngine" />
+      <module name="MediaFileParsers" />
       <envs />
       <method />
     </configuration>
@@ -576,9 +625,9 @@
     <configuration default="true" type="osgi.bnd.run" factoryName="Test Launcher (JUnit)">
       <method />
     </configuration>
-    <configuration default="false" name="Unnamed" type="Application" factoryName="Application">
+    <configuration default="false" name="Default" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" value="vp.lyrics.Main" />
+      <option name="MAIN_CLASS_NAME" value="mediafileparsers.Main" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
@@ -587,12 +636,12 @@
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="LyricSearchEngine" />
+      <module name="MediaFileParsers" />
       <envs />
       <method />
     </configuration>
     <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="Application.Unnamed" />
+      <item index="0" class="java.lang.String" itemvalue="Application.Default" />
     </list>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
@@ -600,31 +649,18 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c411d79d-ea72-42fb-9613-5afbba4021df" name="Default" comment="" />
-      <created>1497018867630</created>
+      <changelist id="dbca1ac0-ddb1-4d8b-835b-e56b06772103" name="Default" comment="" />
+      <created>1497537909192</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1497018867630</updated>
-      <workItem from="1497018872058" duration="3907000" />
-      <workItem from="1497277973644" duration="1831000" />
-      <workItem from="1497366608296" duration="5643000" />
-      <workItem from="1497456293660" duration="56000" />
-      <workItem from="1497456401115" duration="2987000" />
-      <workItem from="1497536208538" duration="649000" />
+      <updated>1497537909192</updated>
+      <workItem from="1497537910352" duration="2014000" />
+      <workItem from="1497539939416" duration="4743000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15073000" />
-  </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
+    <option name="totallyTimeSpent" value="6757000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -633,19 +669,21 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -656,9 +694,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -676,57 +712,118 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/Main.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/Lyric.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/lyricAPI.config" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricApi.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/ChartLyricXmlHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricApiXmlHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/HttpHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/DictionaryParser.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/Main.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/Lyric.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/lyricAPI.config" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricApi.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/ChartLyricXmlHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricApiXmlHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/HttpHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/DictionaryParser.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/Main.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/lyricAPI.config" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/ChartLyricXmlHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricApiXmlHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/HttpHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/DictionaryParser.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/Main.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/lyricAPI.config" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/ChartLyricXmlHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/HttpHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/DictionaryParser.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricApiXmlHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/DictionaryHolder.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/.idea/workspace.xml" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/.idea/modules.xml" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/.idea/misc.xml" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/.idea/artifacts/LyricSearchEngine_jar.xml" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/DictionaryParser.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/Lyric.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricApiXmlHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/HttpHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricHandler.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/Main.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/lyricAPI.config" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/LyricApi.java" />
-    <entry file="file://$PROJECT_DIR$/../MPlayer+L/libraries/LyricSearchEngine/src/vp/lyrics/ChartLyricXmlHandler.java" />
-    <entry file="file://$PROJECT_DIR$/LyricSearchEngine.iml">
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/parsers/flac/FlacParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="34" lean-forward="false" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+        <state relative-caret-position="272">
+          <caret line="24" column="5" lean-forward="false" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
+          <folding>
+            <element signature="e#579#580#0" expanded="true" />
+            <element signature="e#606#607#0" expanded="true" />
+            <element signature="e#5892#5893#0" expanded="true" />
+            <element signature="e#5955#5956#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/TestWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="232" column="9" lean-forward="false" selection-start-line="232" selection-start-column="9" selection-end-line="232" selection-end-column="9" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/Context.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#679#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/parsers/flac/FlacWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="26" lean-forward="true" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/TestWindow.form">
+      <provider selected="true" editor-type-id="ui-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/Context.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/TestWindow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="232" column="9" lean-forward="false" selection-start-line="232" selection-start-column="9" selection-end-line="232" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="410">
+          <caret line="29" column="62" lean-forward="false" selection-start-line="29" selection-start-column="62" selection-end-line="29" selection-end-column="62" />
+          <folding>
+            <element signature="e#0#679#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/parsers/flac/FlacWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="410">
+          <caret line="27" column="8" lean-forward="false" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/mediafileparsers/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="87" column="0" lean-forward="false" selection-start-line="87" selection-start-column="0" selection-end-line="87" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudioProjects/MPlayer+L/libraries/MediaFileParsers/src/parsers/flac/FlacParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="209" column="59" lean-forward="true" selection-start-line="209" selection-start-column="59" selection-end-line="209" selection-end-column="59" />
+          <folding>
+            <element signature="e#579#580#0" expanded="true" />
+            <element signature="e#606#607#0" expanded="true" />
+            <element signature="e#5892#5893#0" expanded="true" />
+            <element signature="e#5955#5956#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -736,12 +833,10 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>LyricSearchEngine:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.19851851" />
-                <option value="0.5" />
+                <option value="0.2" />
               </list>
             </option>
           </splitter-proportions>
@@ -784,12 +879,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>LyricSearchEngine</last-edited>
+          <last-edited>MediaFileParsers</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.19851851" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
