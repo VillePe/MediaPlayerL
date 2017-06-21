@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import mediafileparsers.Context;
@@ -67,7 +68,9 @@ public class FlacParser {
 
         String lyrics = "";
 
-        String vorbisComments = getVorbisComments();
+        MetadataBlockCollection collection = new MetadataBlockCollection(getMetadataBlocks());
+
+        String vorbisComments = collection.getVorbisCommentsBlock().getDataAsString();
 
         lyrics = parseLyricsFromVorbisCommentString(vorbisComments);
 
@@ -103,20 +106,22 @@ public class FlacParser {
         } else {
             return true;
         }
-
     }
 
-    public String getVorbisComments() {
-
-        if (bInput == null) {
-            Log.w("STREAM", "Stream is NULL");
-            return "No lyrics";
+    public ArrayList<MetadataBlock> getMetadataBlocks() {
+        ArrayList<MetadataBlock> result = new ArrayList<>();
+        try {
+            reset();
+            fileIsFlacFile(bInput);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return result;
         }
 
-        String vorbisComments = "";
-
         try {
-            long integer = 0, toBeSkipped = 0;
+            long integer = 0, blockLength = 0;
+            boolean isLastBlock = false;
+            int blockType, i = 0;
 
             int[] byteArray = new int[BLOCK_SIZE];
 
@@ -125,31 +130,33 @@ public class FlacParser {
                 // Read the second 32 bits in the file (METADATA_BLOCK_HEADER)
                 integer = read32BitInteger(byteArray);
 
-                // Parse the last 24 bits from previously read 32 bit byte array into an integer which controls
-                // how many bytes is needed to be skipped afterwards
-                toBeSkipped = (byteArray[1] << 16) + (byteArray[2] << 8) + (byteArray[3]);
-
-                // If the first byte is 0x04 (BLOCK_TYPE 4: VORBIS_COMMENT) we have found the vorbis comments from file
-                // See https://xiph.org/flac/format.html
-                if (byteArray[0] == 4) {
-
-                    // First parse the vorbis comments fully
-                    vorbisComments = parseVorbisComments(toBeSkipped);
-
-                    return vorbisComments;
+                if ((byteArray[0] & 0x80) == 0x80) {
+                    isLastBlock = true;
+                    // Convert the first 1 to 0 so block type is easier to get
+                    System.out.println(byteArray[0]);
+                    byteArray[0] = byteArray[0] & 0x7F;
                 }
+                // Parse the last 24 bits from previously read 32 bit byte array into an integer which is
+                // the blocks length in bytes excluding header
+                blockLength = (byteArray[1] << 16) + (byteArray[2] << 8) + (byteArray[3]);
+                blockType = byteArray[0];
                 if (integer != -1) {
-
                     // Skip the bytes calculated from the last 24 bits gotten from the metadata block header
-                    bInput.skip(toBeSkipped);
+                    MetadataBlock block = new MetadataBlock(isLastBlock, blockType, blockLength, i);
+                    result.add(block);
+                    for (int j = 0; j < blockLength; j++) {
+                        block.addData((byte)bInput.read());
+                    }
+                    i++;
                 }
-            } while (integer != -1);
+            } while (integer != -1 && !isLastBlock);
         } catch (FileNotFoundException fnfEx) {
             Log.w("FileNotFound", "" + fnfEx.getMessage());
         } catch (IOException ioEx) {
             Log.w("IOException", "" + ioEx.getMessage());
         }
-        return vorbisComments;
+
+        return result;
     }
 
     // Reads a 32 bit integer from the file
@@ -211,12 +218,12 @@ public class FlacParser {
         String plainComments = vorbisComments.substring(8 + (int)vendorVectorLength);
         for (int i = 0; i < vorbisCommentCount; i++) {
             long commentLength = Utils.read32BitIntegerBE(plainComments);
-            System.out.println("Comment length: " + commentLength);
             String key = plainComments.substring(4, plainComments.indexOf('='));
             String value = plainComments.substring(plainComments.indexOf('=') + 1, 4 + (int)commentLength);
-            System.out.println("Key: " + key);
-            System.out.println("Value: " + value);
             plainComments = plainComments.substring(4 + (int)commentLength);
+            if (!result.containsKey(key)) {
+                result.put(key, value);
+            }
         }
 
         return result;

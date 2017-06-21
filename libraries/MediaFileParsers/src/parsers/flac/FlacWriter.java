@@ -22,7 +22,8 @@ public class FlacWriter {
 
     public boolean writeLyricsToFile(String lyrics) {
         tempFile = file;
-        String vorbisComments = flacParser.getVorbisComments();
+        MetadataBlockCollection collection = new MetadataBlockCollection(flacParser);
+        String vorbisComments = collection.getVorbisCommentsBlock().getDataAsString();
         System.out.println(vorbisComments);
         System.out.println(flacParser.getVorbisCommentListLength(vorbisComments));
         flacParser.getVorbisCommentsListed(vorbisComments);
