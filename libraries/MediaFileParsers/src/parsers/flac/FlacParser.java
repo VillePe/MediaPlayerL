@@ -16,6 +16,8 @@ import mediafileparsers.Utils;
  */
 public class FlacParser {
 
+    // For flac format documentation see https://xiph.org/flac/format.html
+
     private final int BLOCK_SIZE = 4;
     private File file;
     private Context context;
@@ -161,7 +163,7 @@ public class FlacParser {
 
     // Reads a 32 bit integer from the file
     private long read32BitInteger(int[] byteArray) throws IOException {
-        return Utils.read32BitIntegerLE(bInput, byteArray);
+        return Utils.read32BitIntegerBE(bInput, byteArray);
     }
 
     // Parses the vorbis comments from file. The File cursor needs to be pointing at the beginning of the vorbis comments
@@ -199,34 +201,6 @@ public class FlacParser {
         }
         //Log.d("LYRICS", lyrics.toString());
         return lyrics.toString();
-    }
-
-    public long getVorbisCommentVendorLength(String vorbisComments) {
-        return Utils.read32BitIntegerBE(vorbisComments);
-    }
-
-    public long getVorbisCommentListLength(String vorbisComments) {
-        long vendorLength = getVorbisCommentVendorLength(vorbisComments);
-        return Utils.read32BitIntegerBE(vorbisComments.substring(4 + (int)vendorLength));
-    }
-
-    public HashMap<String, String> getVorbisCommentsListed(String vorbisComments) {
-        System.out.println("Length: " + vorbisComments.length());
-        HashMap<String, String> result = new HashMap<>();
-        long vendorVectorLength = getVorbisCommentVendorLength(vorbisComments);
-        long vorbisCommentCount = getVorbisCommentListLength(vorbisComments);
-        String plainComments = vorbisComments.substring(8 + (int)vendorVectorLength);
-        for (int i = 0; i < vorbisCommentCount; i++) {
-            long commentLength = Utils.read32BitIntegerBE(plainComments);
-            String key = plainComments.substring(4, plainComments.indexOf('='));
-            String value = plainComments.substring(plainComments.indexOf('=') + 1, 4 + (int)commentLength);
-            plainComments = plainComments.substring(4 + (int)commentLength);
-            if (!result.containsKey(key)) {
-                result.put(key, value);
-            }
-        }
-
-        return result;
     }
 
     private boolean fileIsFlacFile(BufferedInputStream bIS) throws IOException {

@@ -23,6 +23,13 @@ public class MetadataBlock {
         this.index = index;
     }
 
+    public MetadataBlock(boolean lastBlock, int blockType, ArrayList<Byte> data) {
+        this.lastBlock = lastBlock;
+        this.blockType = blockType;
+        this.data = data;
+        this.length = data.size();
+    }
+
     public void addData(Byte b) {
         this.data.add(b);
     }
@@ -58,6 +65,7 @@ public class MetadataBlock {
 
     public void setData(ArrayList<Byte> data) {
         this.data = data;
+        this.length = data.size();
     }
 
     public boolean isLastBlock() {

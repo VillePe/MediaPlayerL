@@ -5,12 +5,15 @@
  */
 package mediafileparsers;
 
+import parsers.Misc.VorbisComments;
 import parsers.flac.FlacParser;
 import parsers.flac.FlacWriter;
 import parsers.flac.MetadataBlock;
 import parsers.flac.MetadataBlockCollection;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -22,14 +25,52 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
 //        SwingUtilities.invokeLater(new Runnable() {
 //            public void run() {
 //                new TestWindow().setVisible(true);
 //            }
 //        });
-        File testFile = new File("C:\\temp\\01-Big Red Gun.flac");
+//        File testFile = new File("C:/temp/MacCunn  - Part 2.flac");
+        File testFile = new File("C:/temp/02 Rusted From The Rain.flac");
         FlacWriter flacWriter = new FlacWriter(null, testFile);
+
+        HashMap<String, ArrayList<String>> testiMap = new HashMap<>();
+        testiMap.put("TESTI", new ArrayList<String>(){{add("YKSI");}});
+        testiMap.put("TESTI2", new ArrayList<String>(){{add("KAKSI");}});
+        testiMap.put("TESTI3", new ArrayList<String>(){{add("KOLME");}});
+        testiMap.put("TESTI4", new ArrayList<String>(){{add("NELJÄ");}});
+
+        FlacParser parser1 = new FlacParser(null, testFile);
+
+        VorbisComments testi = new VorbisComments(new FlacParser(null, testFile));
+
+        byte[] array = testi.getAsByteArray();
+        BufferedOutputStream bout = null;
+        try {
+            OutputStream out = new FileOutputStream("C:/temp/bittitesti.bin");
+            bout = new BufferedOutputStream(out);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+        if (bout == null) return;
+        for (int i = 0; i < array.length; i++) {
+            try {
+                bout.write(array[i]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            bout.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (true)
+            return;
+
         flacWriter.writeLyricsToFile("LYRIIKAT DÄDÄDÄDÄDÄDÄ");
         FlacParser parser = new FlacParser(null, testFile);
         MetadataBlockCollection blocks = new MetadataBlockCollection(parser);
@@ -44,12 +85,6 @@ public class Main {
             System.out.println("Index: " + block.getIndex());
             System.out.println("Length: " + block.getLength());
             System.out.println("Is last: " + block.isLastBlock());
-//            if (block.getLength() < 5000) {
-//                System.out.println("Data: ");
-//                System.out.println(block.getDataAsString());;
-//            } else {
-//                System.out.println("Block length over 1000, skipping data...");
-//            }
             System.out.println();
         }
         try {
@@ -94,5 +129,5 @@ public class Main {
         System.out.println("File size: " + f.length());
         System.out.println("Clone created!");
     }
-    
+
 }
