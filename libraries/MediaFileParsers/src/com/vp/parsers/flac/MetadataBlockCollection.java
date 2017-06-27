@@ -1,5 +1,6 @@
-package parsers.flac;
+package com.vp.parsers.flac;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,7 +19,14 @@ public class MetadataBlockCollection implements Iterable<MetadataBlock> {
     }
 
     public MetadataBlockCollection(FlacParser parser) {
-        this(parser.getMetadataBlocks());
+        ArrayList<MetadataBlock> blocks = new ArrayList<>();
+        try {
+            blocks = parser.getMetadataBlocks();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Could not get metadata blocks!");
+        }
+        this.blocks = blocks;
     }
 
     public int size() {
@@ -27,6 +35,19 @@ public class MetadataBlockCollection implements Iterable<MetadataBlock> {
 
     public void add(MetadataBlock block) {
         blocks.add(block);
+    }
+
+    public void add(int i, MetadataBlock block) {
+        blocks.add(i, block);
+    }
+
+    public boolean replace(int i, MetadataBlock freshBlock) {
+        if (i < blocks.size()) {
+            blocks.remove(i);
+            blocks.add(i, freshBlock);
+            return true;
+        }
+        return false;
     }
 
     public MetadataBlock get(int i) {
@@ -41,6 +62,27 @@ public class MetadataBlockCollection implements Iterable<MetadataBlock> {
             totalSize += blocks.get(i).getLength();
         }
         return totalSize;
+    }
+
+    public int indexOf(MetadataBlock block) {
+        return blocks.indexOf(block);
+    }
+
+    public int indexOf(int blockNumber) {
+        for (int i = 0; i < blocks.size(); i++) {
+            if (blocks.get(i).getBlockType() == blockNumber) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void remove(MetadataBlock block) {
+        blocks.remove(block);
+    }
+
+    public void remove(int i) {
+        blocks.remove(i);
     }
 
     public ArrayList<MetadataBlock> getBlocks() {

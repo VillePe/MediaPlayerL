@@ -4,17 +4,13 @@
  * 
  */
 
-package com.vp.mplayerl.fileparsers.mp3;
-
-import android.util.Log;
+package com.vp.parsers.mp3;
 
 import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import android.content.Context;
 
 /**
  * Created by Ville on 24.10.2016.
@@ -25,7 +21,6 @@ public class Mp3Parser {
     private File file;
     private Id3V2Header header;
     private ArrayList<Id3V2Frame> frames;
-    private Context context;
     private FileInputStream fInput;
     private BufferedInputStream bInput;
 
@@ -36,19 +31,10 @@ public class Mp3Parser {
     public void setFile(File file) {
         this.file = file;
     }
+    
 
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-
-    public Mp3Parser(Context context, File file) throws IllegalArgumentException{
+    public Mp3Parser(File file) throws IllegalArgumentException {
         this.file = file;
-        this.context = context;
         frames = new ArrayList<>();
         try {
             fInput = new FileInputStream(file);
@@ -63,7 +49,7 @@ public class Mp3Parser {
             throw new IllegalArgumentException("File format is not valid!");
         }
     }
-
+    
     public String getUnSyncedLyrics() {
         StringBuilder sb = new StringBuilder();
         if (frames.size() > 0) {
@@ -107,7 +93,7 @@ public class Mp3Parser {
         return noExceptionThrown;
 
     }
-
+    
     private boolean getMetadataHeader() {
         header = new Id3V2Header();
         int[] bytes = new int[10];
@@ -122,12 +108,12 @@ public class Mp3Parser {
         if (bInput == null) {
             Log.w("STREAM", "Stream is NULL");
         }
-
+        
         // If header doesn't have Extended_Header included, go straight to parsing
         // frames
         if (header.getFlags()[Id3V2Header.Flags.EXT_HEADER.getIndex()] == false) {
             Id3V2Frame frame = null;
-            do {
+            do {                
                 frame = Id3V2Frame.FrameBuilder.createFrame(bInput);
                 if (frame != null) {
 ////                    System.out.println(frame.getFrameID());
@@ -136,7 +122,7 @@ public class Mp3Parser {
             } while (frame != null);
         }
     }
-
+    
     private int readOneByte() {
         try {
             return bInput.read();
@@ -176,6 +162,28 @@ public class Mp3Parser {
         // Add the last byte into the result integer
         integer += byteArray[byteArray.length - 1];
         return integer;
+    }
+    
+    private static class Log {
+
+        public Log() {
+        }
+
+        public static void i(String s1, String s2) {
+
+        }
+
+        public static void w(String s1, String s2) {
+
+        }
+
+        public static void e(String s1, String s2) {
+
+        }
+
+        public static void d(String s1, String s2) {
+
+        }
     }
 }
 

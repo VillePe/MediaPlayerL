@@ -3,13 +3,10 @@
  * 
  * 
  */
-
-package com.vp.mplayerl.fileparsers.mp3;
+package com.vp.parsers.mp3;
 
 import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.IOException;
-import android.content.Context;
 
 public class Id3V2Frame {
 
@@ -87,24 +84,18 @@ public class Id3V2Frame {
         byte[] bytes2 = new byte[size + 1000];
 
         if (frameID.equals("APIC")) {
-            System.out.println("READING APIC");
             for (int i = 0; i < size; i++) {
                 bytes[i] = bInput.read();
             }
-
-            //bInput.read(bytes2);
-            System.out.println("FINISHED APIC");
-            //for (int i = 0; i < bytes2.length; i++) {
-            //    System.out.println((char) bytes[i]);
-            //}
-        }
-        for (int i = 0; i < size; i++) {
-            if (!frameID.equals("APIC")) {
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (!frameID.equals("APIC")) {
 //                System.out.println("READING APIC");
 //                bInput.read(bytes2);
 //                System.out.println("FINISHED APIC");
 //            } else {
-                bytes[i] = this.bInput.read();
+                    bytes[i] = this.bInput.read();
+                }
             }
         }
     }
@@ -160,8 +151,6 @@ public class Id3V2Frame {
     public void setdInput(BufferedInputStream dInput) {
         this.bInput = dInput;
     }
-
-
 
     public static class FrameBuilder {
 

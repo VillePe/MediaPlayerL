@@ -1,4 +1,4 @@
-package parsers.flac;
+package com.vp.parsers.flac;
 
 import java.util.ArrayList;
 import java.util.HashMap;

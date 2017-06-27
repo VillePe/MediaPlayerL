@@ -178,7 +178,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
     public Track getCurrentTrack() {return currentTrack;}
 
-    public MediaPlayer getMediaPlayer() {return mediaPlayer;};
+    public MediaPlayer getMediaPlayer() {return mediaPlayer;}
 
     public void onDestroy() {
         super.onDestroy();

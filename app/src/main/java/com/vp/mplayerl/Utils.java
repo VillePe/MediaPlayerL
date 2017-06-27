@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.vp.mplayerl.fileparsers.mp3.Mp3Parser;
+import com.vp.parsers.mp3.Mp3Parser;
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.Track;
 
@@ -26,11 +26,7 @@ public class Utils {
 
     public static boolean isExtStorageReadable() {
         String state = Environment.getExternalStorageState();
-        if (state.equals(Environment.MEDIA_MOUNTED) || state.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
-            return true;
-        } else {
-            return false;
-        }
+        return state.equals(Environment.MEDIA_MOUNTED) || state.equals(Environment.MEDIA_MOUNTED_READ_ONLY);
     }
 
     public static String convertSecondsToMinutesString(int seconds) {
@@ -99,7 +95,7 @@ public class Utils {
 
         private String type;
 
-        private AudioFileTypes(String s) {
+        AudioFileTypes(String s) {
             type = s;
         }
 
@@ -123,10 +119,7 @@ public class Utils {
         String suffix = s.substring(s.lastIndexOf(".") + 1);
         suffix = suffix.toLowerCase();
         Log.i("VP", "File suffix: " + suffix);
-        if (suffix.equals("jpg") || suffix.equals("png") || suffix.equals("bmp")) {
-            return true;
-        }
-        return false;
+        return suffix.equals("jpg") || suffix.equals("png") || suffix.equals("bmp");
     }
 
     public static boolean isImageFile(File f) {
@@ -134,10 +127,7 @@ public class Utils {
         String suffix = s.substring(s.lastIndexOf(".") + 1);
         suffix = suffix.toLowerCase();
         Log.i("VP", "File suffix: " + suffix);
-        if (suffix.equals("jpg") || suffix.equals("png") || suffix.equals("bmp")) {
-            return true;
-        }
-        return false;
+        return suffix.equals("jpg") || suffix.equals("png") || suffix.equals("bmp");
     }
 
     public static String getDataFilesAbsolutePath(Context ctx) {

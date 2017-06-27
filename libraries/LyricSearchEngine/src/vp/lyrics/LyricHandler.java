@@ -145,9 +145,6 @@ public class LyricHandler {
         for (int i = 0; i < lyricApiXmlHandler.getLyricId_1().size(); i++) {
             LyricIDTuple tuple = new LyricIDTuple();
             String lyricId_1 = lyricApiXmlHandler.getLyricId_1().get(i);
-
-            // If lyric Id equals 0, there are no lyrics with that id
-            if (lyricId_1.equals("0")) continue;
             String lyricId_2 = lyricApiXmlHandler.getLyricId_2().get(i);
             if (api.needsTrackId_2()) {
                 if (!lyricId_1.isEmpty() && !lyricId_2.isEmpty()) {

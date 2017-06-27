@@ -132,7 +132,9 @@ public class LyricApiXmlHandler extends DefaultHandler {
     }
 
     private void addLyricId_1(String lyricId_1) {
-        this.lyricId_1.add(lyricId_1);
+        if (!lyricId_1.equals("0")) {
+            this.lyricId_1.add(lyricId_1);
+        }
     }
 
     private void addLyricId_2(String lyricId_2) {

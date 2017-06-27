@@ -4,7 +4,7 @@
  * 
  */
 
-package parsers.mp3;
+package com.vp.parsers.mp3;
 
 public class Id3V2Header {
         private String fileIdentifier;
@@ -135,7 +135,7 @@ public class Id3V2Header {
             UNSYNCHRO (0), EXT_HEADER (1), EXPERIMENTAL (2);
             private final int index;
             
-            private Flags(int index) {
+            Flags(int index) {
                 this.index = index;
             }
             public int getIndex() {

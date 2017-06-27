@@ -1,4 +1,4 @@
-package mediafileparsers;
+package com.vp.mediafileparsers;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -56,20 +56,6 @@ public class Utils {
     public static long read32BitIntegerBE(String s) {
         byte[] array = s.getBytes(Charset.forName("ASCII"));
         return read32BitIntegerBE(array);
-//        long integer = 0;
-//
-//        // Combine the bytes into a single 32 bit integer
-//        for (int i = 0; i < 4 - 1; i++) {
-//            integer += s.charAt(i) << 24 - (i * 8);
-////            System.out.println("Char = " + (int)s.charAt(i));
-////            System.out.println("Integer = " + integer);
-//        }
-//
-//        // Add the last byte into the result integer
-//        integer += s.charAt(4 - 1);
-////        System.out.println("Char = " + (int)s.charAt(4 - 1));
-////        System.out.println("Integer = " + integer);
-//        return integer;
     }
 
     /**

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/popup_layout"
+    android:orientation="vertical"
+    android:background="#40444444"
+    android:padding="25dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <ScrollView
+            android:id="@+id/popup_lyric_search_lyrics_scroll_view"
+            android:background="#444444"
+            android:paddingTop="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:id="@+id/popup_lyric_search_lyrics_text"
+                android:inputType="textMultiLine"
+                android:textColor="#FFFFFF"
+                android:text="@string/lorem"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </ScrollView>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_height="65dp">
+            <Button
+                android:id="@+id/popup_lyric_search_lyrics_cancel"
+                android:text="@string/cancel"
+                android:background="#FFFFFF"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <Button
+                android:id="@+id/popup_write_lyrics_to_file"
+                android:text="@string/write_to_file"
+                android:background="#FFFFFF"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+</LinearLayout>

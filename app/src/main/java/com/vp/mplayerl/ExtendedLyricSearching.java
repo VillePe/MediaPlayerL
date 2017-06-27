@@ -1,6 +1,7 @@
 package com.vp.mplayerl;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,10 +11,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.vp.mplayerl.async_task_handlers.AsyncLyricSearcher;
@@ -110,18 +116,42 @@ public class ExtendedLyricSearching extends AppCompatActivity implements OnLyric
     }
 
     private void lyricItemClicked(View view) {
-        Snackbar.make(view, "Item clicked!", Snackbar.LENGTH_SHORT).show();
         if (foundLyrics != null && foundLyrics.size() > 0) {
             if (view.getTag() instanceof Integer) {
                 int index = (Integer) view.getTag();
                 if (index < foundLyrics.size()) {
-                    Utils.createAlertDialog(this, "Lyrics", foundLyrics.get(index).getLyrics());
+                    showLyricPopup(view, foundLyrics, index);
+//                    Utils.createAlertDialog(this, "Lyrics", foundLyrics.get(index).getLyrics());
                 }
             } else {
                 Logger.log("View didn't have a tag");
             }
         } else {
             Logger.log("Found lyrics list was empty!");
+        }
+    }
+
+    private void showLyricPopup(View view, ArrayList<Lyric> pFoundLyrics, int lyricIndex) {
+        try {
+            LayoutInflater inflater = this.getLayoutInflater();
+            View layout = inflater.inflate(R.layout.popup_extended_lyric_search, (ViewGroup) findViewById(R.id.popup_layout));
+            final PopupWindow window = new PopupWindow(layout, LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT, true);
+            window.setContentView(layout);
+            Button bWrite = (Button) layout.findViewById(R.id.popup_write_lyrics_to_file);
+            Button bCancel = (Button) layout.findViewById(R.id.popup_lyric_search_lyrics_cancel);
+            EditText text = (EditText) layout.findViewById(R.id.popup_lyric_search_lyrics_text);
+            bWrite.setOnClickListener(new OnPopupWriteLyricsClickListener(window, text));
+            text.setText(pFoundLyrics.get(lyricIndex).getLyrics());
+            window.showAtLocation(view, Gravity.NO_GRAVITY, 0, 0);
+            bCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    window.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            Logger.log(e);
         }
     }
 
@@ -147,5 +177,45 @@ public class ExtendedLyricSearching extends AppCompatActivity implements OnLyric
     public void searchFinished(ArrayList<Lyric> lyricsList) {
         this.foundLyrics = lyricsList;
         createLyricSearchResults(lyricsList);
+    }
+
+    private class OnPopupWriteLyricsClickListener implements View.OnClickListener {
+
+        private EditText lyrics;
+        private PopupWindow window;
+
+        public OnPopupWriteLyricsClickListener(PopupWindow window, EditText lyrics) {
+            this.lyrics = lyrics;
+            this.window = window;
+        }
+
+        @Override
+        public void onClick(View view) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ExtendedLyricSearching.this);
+            builder.setTitle("Varoitus");
+            builder.setMessage("Ohjelma kirjoittaa tiedoston uudelleen lyriikoiden kanssa, ja on mahdollista, että kirjoituksen aikana aiheutuu virhe. Tämä voi " +
+                    "aiheuttaa sen, että tiedosto ei sen jälkeen enää toimi oikein. Haluatko jatkaa?");
+            builder.setPositiveButton("Kyllä", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    writeLyrics();
+                }
+            });
+            builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {}});
+            builder.show();
+        }
+
+        private void dismissWindow() {
+            if (window != null && window.isShowing()) {
+                window.dismiss();
+            }
+        }
+
+        private void writeLyrics() {
+            Utils.createAlertDialog(ExtendedLyricSearching.this, "", "Toimintoa ei ole vielä toteutettu. Tiedosto on pysynyt ennallaan.");
+            dismissWindow();
+        }
     }
 }

@@ -6,6 +6,6 @@ package com.vp.mplayerl.misc;
 
 public interface OnMediaEventListener {
 
-    public void onTrackChanged(Track NextTrack);
-    public void onPlayerAction(String action);
+    void onTrackChanged(Track NextTrack);
+    void onPlayerAction(String action);
 }

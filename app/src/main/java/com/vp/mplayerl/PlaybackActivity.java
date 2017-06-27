@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vp.mplayerl.async_task_handlers.AsyncLyricGetter;
-import com.vp.mplayerl.fileparsers.ParseController;
+import com.vp.mediafileparsers.ParseController;
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.OnMediaEventListener;
 import com.vp.mplayerl.misc.Track;
@@ -306,7 +306,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
     }
 
     private void initializeLyrics() {
-        track.setLyrics(ParseController.getLyricsFromFile(getApplicationContext(), track.getTrackFile()));
+        track.setLyrics(ParseController.getLyricsFromFile(track.getTrackFile()));
         lyrics.setText(track.getLyrics());
     }
 
