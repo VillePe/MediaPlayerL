@@ -17,6 +17,7 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.PlaybackBroadcastReceiver;
 import com.vp.mplayerl.misc.Track;
 
@@ -36,7 +37,7 @@ public class RemoteViewPlaybackNotification extends RemoteViews {
     public RemoteViewPlaybackNotification(Context context, String packageName, int layoutId) {
         super(packageName, layoutId);
         this.context = context;
-        Log.d("RVPlaybackNotification", "Notification initialized!");
+        Logger.log("RVPlaybackNotification: Notification initialized!");
     }
 
     public void onReceive(Context context, Intent intent) {
@@ -92,5 +93,13 @@ public class RemoteViewPlaybackNotification extends RemoteViews {
                 }
             }
         });
+    }
+
+    public class PlaybackNotificationReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Logger.log("Notification received intent!");
+        }
     }
 }

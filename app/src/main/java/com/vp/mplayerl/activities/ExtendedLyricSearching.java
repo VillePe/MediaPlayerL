@@ -1,4 +1,4 @@
-package com.vp.mplayerl;
+package com.vp.mplayerl.activities;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.vp.mplayerl.MediaPlayerService;
+import com.vp.mplayerl.R;
+import com.vp.mplayerl.Utils;
 import com.vp.mplayerl.async_task_handlers.AsyncLyricSearcher;
 import com.vp.mplayerl.async_task_handlers.OnLyricSearchEndListener;
 import com.vp.mplayerl.misc.Logger;

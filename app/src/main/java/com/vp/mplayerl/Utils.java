@@ -9,6 +9,8 @@ import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.vp.mplayerl.misc.Artist;
+import com.vp.mplayerl.misc.TrackAdapter;
 import com.vp.parsers.mp3.Mp3Parser;
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.Track;
@@ -17,6 +19,8 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by Ville on 19.10.2016.
@@ -198,6 +202,42 @@ public class Utils {
                 .setTitle(title)
                 .setMessage(message);
         builder.show();
+    }
+
+    public static ArrayList<Track> getTracksFromArtistsList(ArrayList<Artist> artists) {
+        ArrayList<Track> tracks = new ArrayList<>();
+        for (Artist a : artists) {
+            for (Track t : a.getTracks()) {
+                tracks.add(t);
+            }
+        }
+        return tracks;
+    }
+
+    public static class ArtistComparator implements Comparator<Artist> {
+
+        @Override
+        public int compare(Artist artist, Artist t1) {
+            if (artist.getName() == null) {
+                return 1;
+            } else if (t1.getName() == null) {
+                return -1;
+            }
+            return artist.getName().compareTo(t1.getName());
+        }
+    }
+
+    public static class TrackComparator implements Comparator<Track> {
+
+        @Override
+        public int compare(Track track, Track t1) {
+            if (track.getTitle() == null) {
+                return 1;
+            } else if (t1.getTitle() == null) {
+                return -1;
+            }
+            return track.getTitle().compareTo(t1.getTitle());
+        }
     }
 
 }

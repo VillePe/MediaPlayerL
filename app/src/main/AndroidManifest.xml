@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".ArtistsListActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/main_label"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,26 +25,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TracksListActivity"
+            android:name=".activities.TracksListActivity"
             android:label="@string/tracks"
-            android:parentActivityName=".ArtistsListActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".PlaybackActivity"
+            android:name=".activities.PlaybackActivity"
             android:label="@string/playback"
-            android:parentActivityName=".TracksListActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:parentActivityName=".activities.TracksListActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".PlaylistActivity"
+            android:name=".activities.PlaylistActivity"
             android:label="@string/playlist_string"
-            android:parentActivityName=".ArtistsListActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <service android:name=".MediaPlayerService">
             <intent-filter>
                 <action android:name="android.intent.action.HEADSET_PLUG" />
             </intent-filter>
         </service>
+        <receiver android:name=".RemoteViewPlaybackNotification$PlaybackNotificationReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="com.vp.mplayerl.PLAY_PAUSE" />
+                <action android:name="com.vp.mplayerl.PAUSE" />
+                <action android:name="com.vp.mplayerl.NEXT" />
+                <action android:name="com.vp.mplayerl.PREVIOUS" />
+            </intent-filter>
+        </receiver>
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -54,13 +62,13 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".ExtendedLyricSearching"
+            android:name=".activities.ExtendedLyricSearching"
             android:label="@string/title_activity_extended_lyric_searching"
-            android:parentActivityName=".PlaybackActivity"
+            android:parentActivityName=".activities.PlaybackActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.vp.mplayerl.PlaybackActivity" />
+                android:value="com.vp.mplayerl.activities.PlaybackActivity" />
         </activity>
     </application>
 

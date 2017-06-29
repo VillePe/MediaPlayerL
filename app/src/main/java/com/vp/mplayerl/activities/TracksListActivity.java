@@ -1,4 +1,4 @@
-package com.vp.mplayerl;
+package com.vp.mplayerl.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +12,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.vp.mplayerl.MediaPlayerService;
+import com.vp.mplayerl.R;
+import com.vp.mplayerl.Utils;
 import com.vp.mplayerl.misc.Artist;
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.Track;
 import com.vp.mplayerl.misc.TrackAdapter;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Ville on 27.10.2016.
@@ -42,7 +50,12 @@ public class TracksListActivity extends AppCompatActivity {
         if (mediaPlayerService == null) {
             binder = (MediaPlayerService.LocalBinder) getIntent().getBundleExtra(MediaPlayerService.SERVICE_BINDER_KEY)
                     .getBinder(MediaPlayerService.SERVICE_BINDER_KEY);
-            mediaPlayerService = binder.getService();
+            if (binder != null) {
+                mediaPlayerService = binder.getService();
+            } else {
+                Toast.makeText(this, "Could not bind to media player", Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
 
         trackAdapter = new TrackAdapter(this, getLayoutInflater());
@@ -159,8 +172,10 @@ public class TracksListActivity extends AppCompatActivity {
     }
 
     private void fillListWithArtist(Artist a ) {
-        if (a.getTracks() != null && a.getTracks().size() > 0) {
-            for (Track t : a.getTracks()) {
+        ArrayList<Track> tracksSorted = a.getTracks();
+        Collections.sort(tracksSorted, new Utils.TrackComparator());
+        if (tracksSorted.size() > 0) {
+            for (Track t : tracksSorted) {
                 trackAdapter.addTrack(t);
             }
         } else {

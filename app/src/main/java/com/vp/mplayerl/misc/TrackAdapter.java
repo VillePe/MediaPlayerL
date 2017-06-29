@@ -9,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vp.mplayerl.R;
+import com.vp.mplayerl.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Ville on 9.10.2016.
@@ -82,6 +84,19 @@ public class TrackAdapter extends BaseAdapter {
         holder.textView_artist.setText(CutLongStrings(track.getArtist(), 25));
         holder.textView_title.setText(CutLongStrings(track.getTitle(), 25));
         return convertView;
+    }
+
+    public void fillWithArtistsList(ArrayList<Artist> artists) {
+        ArrayList<Track> tracksSorted = new ArrayList<>();
+        for (Artist a : artists) {
+            for (Track t : a.getTracks()) {
+                tracksSorted.add(t);
+            }
+        }
+        Collections.sort(tracksSorted, new Utils.TrackComparator());
+        for (Track t : tracksSorted) {
+            addTrack(t);
+        }
     }
 
     private String CutLongStrings(String string, int length) {

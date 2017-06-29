@@ -1,4 +1,4 @@
-package com.vp.mplayerl;
+package com.vp.mplayerl.activities;
 
 import android.Manifest;
 import android.media.MediaPlayer;
@@ -19,6 +19,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vp.mplayerl.MediaPlayerService;
+import com.vp.mplayerl.R;
+import com.vp.mplayerl.Utils;
 import com.vp.mplayerl.async_task_handlers.AsyncLyricGetter;
 import com.vp.mediafileparsers.ParseController;
 import com.vp.mplayerl.misc.Logger;
@@ -75,7 +78,14 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         binder = (MediaPlayerService.LocalBinder) getIntent()
                 .getBundleExtra(MediaPlayerService.SERVICE_BINDER_KEY)
                 .getBinder(MediaPlayerService.SERVICE_BINDER_KEY);
-        mediaPlayerService = binder.getService();
+        if (binder != null) {
+            mediaPlayerService = binder.getService();
+            Logger.log("Media player service gotten from binder in intent extras");
+        } else {
+            Toast.makeText(this, "Could not get service with binder!", Toast.LENGTH_SHORT).show();
+            Logger.log("Could not get service with binder");
+            finish();
+        }
         mediaPlayerService.setOnTrackChangedListener(this);
         serviceBound = true;
 
@@ -87,9 +97,13 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         bStop = (Button) this.findViewById(R.id.playback_b_stop);
         seekBar = (SeekBar) findViewById(R.id.playback_seekbar);
 
-        this.track = Track.getTrackFromIntent(getIntent());
+        if (mediaPlayerService.isMediaPlaying()) {
+            this.track = mediaPlayerService.getCurrentTrack();
+        } else {
+            this.track = Track.getTrackFromIntent(getIntent());
+        }
         if (track == null) {
-            Log.e("PlaybackActivity", "Track was null!");
+            Logger.log("Track was null!");
             Toast.makeText(this, "Parsing track data failed", Toast.LENGTH_LONG).show();
             finish();
         } else {
@@ -106,8 +120,6 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
 
             initializeLyrics();
 
-            //bindToMPService();
-
             Logger.log("Activity " + this.getLocalClassName() + " created");
 
         }
@@ -116,19 +128,27 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
     @Override
     protected void onResume() {
         startTimer();
+        Logger.log("Playback activity resumed");
         super.onResume();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Logger.log("Activity started");
+        Logger.log("Playback activity started");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Logger.log("Playback activity paused");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Logger.log("Activity stopped");
+        stopTimer();
+        Logger.log("Playback activity stopped");
     }
 
     public void setMediaPlayerService(MediaPlayerService service) {
@@ -339,7 +359,6 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
             @Override
             public void onClick(View v) {
                 Logger.log("Service bound: " + serviceBound);
-                startTimer();
                 if (serviceBound) {
                     if (mediaPlayerService.isMediaPlayerNull() || !mediaPlayerService.isMediaPrepared()) {
                         Logger.log("Mediaplayer is NULL or it is not prepared");
@@ -361,6 +380,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
                             bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
                         }
                     }
+                    startTimer();
 
                 } else {
                     Logger.log("No service bound");

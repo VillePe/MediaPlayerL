@@ -1,4 +1,4 @@
-package com.vp.mplayerl;
+package com.vp.mplayerl.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.vp.mplayerl.MediaPlayerService;
+import com.vp.mplayerl.R;
 import com.vp.mplayerl.misc.Artist;
 import com.vp.mplayerl.misc.Playlist;
 import com.vp.mplayerl.misc.Track;

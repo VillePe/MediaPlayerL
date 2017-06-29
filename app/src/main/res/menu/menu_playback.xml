@@ -2,7 +2,7 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context="com.vp.mplayerl.PlaybackActivity">
+    tools:context="com.vp.mplayerl.activities.PlaybackActivity">
 
     <item
         android:id="@+id/playback_track_info"

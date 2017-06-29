@@ -17,14 +17,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
-import android.widget.Toast;
 
+import com.vp.mplayerl.activities.MainActivity;
+import com.vp.mplayerl.activities.PlaybackActivity;
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.OnMediaEventListener;
 import com.vp.mplayerl.misc.Playlist;
 import com.vp.mplayerl.misc.Track;
 
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -39,7 +39,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     public static final String ACTION_STOP = "com.vp.mplayerl.STOP";
     public static final String ACTION_NEXT = "com.vp.mplayerl.NEXT";
     public static final String ACTION_PREVIOUS = "com.vp.mplayerl.PREVIOUS";
-    public static final String SERVICE_BINDER_KEY = "media_player_binder";
+    public static final String SERVICE_BINDER_KEY = "com.vp.media_player_binder";
     public static final String TRACK_BUNDLE_KEY = "com.vp.track";
     private final int notificationID = this.getClass().hashCode()+20;
 
@@ -55,6 +55,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     private Playlist playlist;
     NotificationManager notificationManager;
     private OnMediaEventListener trackChangedListener;
+    private Context mainActivityContext;
 
     public MediaPlayerService() {
         this.playlist = new Playlist();
@@ -183,7 +184,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     public void onDestroy() {
         super.onDestroy();
         releaseMediaPlayer();
-        Logger.log("Service destroyed");
+        Logger.log("Media player service destroyed");
     }
 
     public void changeTrack(Track track) {
@@ -206,7 +207,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
         this.trackChangedListener = listener;
     }
 
-
     private void initializeMediaPlayer() {
         releaseMediaPlayer();
         Logger.log("Initializing media player");
@@ -223,7 +223,11 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
             mediaPlayer.release();
             mediaPlayer = null;
             notificationManager.cancel(notificationID);
+            stopForeground(true);
             isMediaPrepared = false;
+            Logger.log("Media player released!");
+        } else {
+            Logger.log("Could not release media player - it was null!");
         }
     }
 
@@ -277,7 +281,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        Intent artistListIntent = new Intent(getApplicationContext(), ArtistsListActivity.class);
+        Intent artistListIntent = new Intent(getApplicationContext(), MainActivity.class);
         artistListIntent.putExtra(SERVICE_BINDER_KEY, createBinderBundle(getBinder()));
 
         RemoteViewPlaybackNotification remoteView = new RemoteViewPlaybackNotification(getApplicationContext(), getPackageName(), R.layout.remote_view_playback_notification);

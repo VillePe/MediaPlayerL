@@ -9,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vp.mplayerl.R;
+import com.vp.mplayerl.Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Ville on 9.10.2016.
@@ -41,6 +43,11 @@ public class ArtistAdapter extends BaseAdapter {
     public void removeTrack(int position) {
         artists.remove(position);
         notifyDataSetChanged();
+    }
+
+    public void setArtists(ArrayList<Artist> artists) {
+        Collections.sort(artists, new Utils.ArtistComparator());
+        this.artists = artists;
     }
 
     @Override
