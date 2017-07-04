@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vp.mplayerl.ArtistListMethods;
 import com.vp.mplayerl.MediaPlayerService;
@@ -35,13 +36,14 @@ import com.vp.mplayerl.R;
 import com.vp.mplayerl.misc.Artist;
 import com.vp.mplayerl.misc.ArtistAdapter;
 import com.vp.mplayerl.misc.Logger;
+import com.vp.mplayerl.misc.OnMediaEventListener;
 import com.vp.mplayerl.misc.Playlist;
 import com.vp.mplayerl.misc.Track;
 import com.vp.mplayerl.misc.TrackAdapter;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMediaEventListener {
 
     public final static int PERMISSIONS_READ_EXT_STORAGE = 1;
     public final static int PERMISSIONS_WRITE_EXT_STORAGE = 2;
@@ -175,13 +177,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void onMediaPlayerServiceInitialization(MediaPlayerService mediaPlayerService) {
+        this.mediaPlayerService = mediaPlayerService;
+        this.mediaPlayerService.addOnTrackChangedListener(this);
+        togglePlaybackPopup();
+    }
+
     public ServiceConnection connection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             Logger.log("Service is connected!");
             MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder) service;
-            mediaPlayerService = binder.getService();
+            onMediaPlayerServiceInitialization(binder.getService());
             serviceBound = true;
         }
 
@@ -213,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 playAll();
-                togglePlaybackPopup();
             }
         });
     }
@@ -231,6 +238,9 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, playlist.getRandomTrack());
 //                openPlaybackActivity();
             }
+        } else {
+            Toast.makeText(this, "Tiedostojen toistaminen ei onnistunut, koita hetken päästä uudelleen", Toast.LENGTH_LONG).show();
+            Logger.log("Could not play all files. Mediaplayer was null or track list had no items!");
         }
     }
 
@@ -284,9 +294,37 @@ public class MainActivity extends AppCompatActivity {
             Logger.log("Showing popup!");
         } else {
             playbackPopup.setVisibility(View.GONE);
+            Logger.log("Mediaplayer service is null: " + (mediaPlayerService == null));
+            if (mediaPlayerService != null) {
+                Logger.log("Mediaplayer is playing: " + mediaPlayerService.isMediaPlaying());
+            }
             Logger.log("Hiding popup!");
         }
     }
+
+    private void showPlaybackPopup(Track track) {
+
+    }
+
+    private void setPlaybackPopupValues() {
+
+    }
+
+    @Override
+    public void onTrackChanged(Track NextTrack) {
+        togglePlaybackPopup();
+    }
+
+    @Override
+    public void onPlayerAction(String action) {
+        togglePlaybackPopup();
+    }
+
+    @Override
+    public void onPlayerStart() {
+        togglePlaybackPopup();
+    }
+
 
     private class TabFragmentAdapter extends FragmentPagerAdapter {
 

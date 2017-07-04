@@ -8,4 +8,5 @@ public interface OnMediaEventListener {
 
     void onTrackChanged(Track NextTrack);
     void onPlayerAction(String action);
+    void onPlayerStart();
 }

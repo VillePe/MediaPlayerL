@@ -12,8 +12,14 @@ public class Main {
     public static void main(String[] args) {
         try {
             LyricHandler handler = new LyricHandler();
-//            ArrayList<Lyric> lyrics = handler.getLyricsWithLyricApiConfigFile(new File("src/vp/lyrics/lyricAPI.config"), "AC/DC", "Rock & Roll Ain't Noise Pollution");
-            ArrayList<Lyric> lyrics = handler.searchLyricsWithLyricApiConfigFile(new File("src/vp/lyrics/lyricAPI.config"), "AC/DC", "Rock & Roll Ain't Noise Pollution");
+            ArrayList<Lyric> lyrics = handler.getLyricsWithLyricApiConfigFile(
+                    new File("src/vp/lyrics/lyricAPI.config"),
+                    "Popeda",
+                    "Ukkometso",
+//                    "Let there be rock",
+                    true);
+//            ArrayList<Lyric> lyrics = handler.searchLyricsWithLyricApiConfigFile(new File("src/vp/lyrics/lyricAPI.config"), "AC/DC", "Rock & Roll Ain't Noise Pollution");
+            System.out.println(lyrics.size());
             for (Lyric l : lyrics) {
                 System.out.println("");
                 System.out.println("ARTIST: ");

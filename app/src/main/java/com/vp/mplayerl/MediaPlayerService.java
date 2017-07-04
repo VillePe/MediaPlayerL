@@ -17,15 +17,18 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 
 import com.vp.mplayerl.activities.MainActivity;
 import com.vp.mplayerl.activities.PlaybackActivity;
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.OnMediaEventListener;
+import com.vp.mplayerl.misc.PlaybackBroadcastReceiver;
 import com.vp.mplayerl.misc.Playlist;
 import com.vp.mplayerl.misc.Track;
 
 import java.io.IOException;
+import java.util.Stack;
 
 /**
  * Created by Ville on 28.10.2016.
@@ -41,6 +44,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     public static final String ACTION_PREVIOUS = "com.vp.mplayerl.PREVIOUS";
     public static final String SERVICE_BINDER_KEY = "com.vp.media_player_binder";
     public static final String TRACK_BUNDLE_KEY = "com.vp.track";
+
+    public static final int DELETE_NOTIFICATION_ID = 103;
+
     private final int notificationID = this.getClass().hashCode()+20;
 
 
@@ -53,8 +59,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     private boolean isStopped;
     private Track currentTrack;
     private Playlist playlist;
+
     NotificationManager notificationManager;
-    private OnMediaEventListener trackChangedListener;
+    private Stack<OnMediaEventListener> onMediaEventListeners = new Stack<>();
     private Context mainActivityContext;
 
     public MediaPlayerService() {
@@ -87,6 +94,82 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     }
 
     public void performAction(String action, Track track) {
+        if (currentTrack == null) {
+            currentTrack = track;
+        }
+        if (action.equals(ACTION_PLAY_PAUSE)) {
+            action = isMediaPlaying() ? ACTION_PAUSE : ACTION_PLAY;
+        }
+        switch(action) {
+            case ACTION_PLAY_ON_PREPARED:
+                Logger.log("ACTION_PLAY_ON_PREPARED");
+                startAndPlayOnPrepared = true;
+                initializeMediaPlayer();
+                handleActionStart(track);
+                break;
+            case ACTION_PLAY:
+                playMedia(track);
+                break;
+            case ACTION_PAUSE:
+                pauseMedia();
+                break;
+            case ACTION_STOP:
+                Logger.log("ACTION_STOP");
+                releaseMediaPlayer();
+                isStopped = true;
+                break;
+            case ACTION_NEXT:
+                nextMedia();
+                break;
+            case ACTION_PREVIOUS:
+                previousMedia();
+                break;
+            default:
+                Logger.log("Unknown action!");
+        }
+
+        if (onMediaEventListeners.size() > 0) {
+            Logger.log("Media event listeners size: " + onMediaEventListeners.size());
+            for (OnMediaEventListener listener : this.onMediaEventListeners) {
+                listener.onPlayerAction(action);
+            }
+        }
+    }
+
+    private void previousMedia() {
+        Logger.log("ACTION_PREVIOUS");
+        Track newTrack = null;
+        if (playlist != null) {
+            if (playlist.getSuffle()) {
+                newTrack = playlist.getRandomTrack();
+            } else {
+                newTrack = playlist.getPreviousTrack();
+            }
+            setCurrentTrack(newTrack);
+            changeTrack(newTrack);
+        } else {
+            Logger.log("Playlist was empty or null!");
+        }
+    }
+
+    private void nextMedia() {
+        Logger.log("ACTION_NEXT");
+        Track newTrack = null;
+        if (playlist != null) {
+            if (playlist.getSuffle()) {
+                newTrack = playlist.getRandomTrack();
+            } else {
+                newTrack = playlist.getNextTrack();
+            }
+            setCurrentTrack(newTrack);
+            changeTrack(newTrack);
+        } else {
+            Logger.log("Playlist was empty or null!");
+        }
+    }
+
+    private void playMedia(Track track) {
+        Logger.log("ACTION_PLAY");
         boolean trackChanged = false;
         if (currentTrack == null) {
             currentTrack = track;
@@ -97,66 +180,23 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
                 initializeMediaPlayer();
             }
         }
-        switch(action) {
-            case ACTION_PLAY_ON_PREPARED:
-                Logger.log("ACTION_PLAY_ON_PREPARED");
-                startAndPlayOnPrepared = true;
-                initializeMediaPlayer();
-                handleActionStart(track);
-                break;
-            case ACTION_PLAY:
-                Logger.log("ACTION_PLAY");
-                if (trackChangedListener != null) {
-                    trackChangedListener.onPlayerAction(ACTION_PLAY);
-                }
-                if (trackChanged) {
-                    changeTrack(track);
-                } else {
-                    mediaPlayer.start();
-                }
-                break;
-            case ACTION_PAUSE:
-                Logger.log("ACTION_PAUSE");
-                mediaPlayer.pause();
-                break;
-            case ACTION_STOP:
-                Logger.log("ACTION_STOP");
-                releaseMediaPlayer();
-                isStopped = true;
-                break;
-            case ACTION_NEXT:
-                Logger.log("ACTION_NEXT");
-                Track newTrack = null;
-                if (playlist != null) {
-                    if (playlist.getSuffle()) {
-                        newTrack = playlist.getRandomTrack();
-                    } else {
-                        newTrack = playlist.getNextTrack();
-                    }
-                    setCurrentTrack(newTrack);
-                    changeTrack(newTrack);
-                } else {
-                    Logger.log("Playlist was empty or null!");
-                }
 
-                break;
-            case ACTION_PREVIOUS:
-                Logger.log("ACTION_PREVIOUS");
-                if (playlist != null) {
-                    if (playlist.getSuffle()) {
-                        newTrack = playlist.getRandomTrack();
-                    } else {
-                        newTrack = playlist.getPreviousTrack();
-                    }
-                    setCurrentTrack(newTrack);
-                    changeTrack(newTrack);
-                } else {
-                    Logger.log("Playlist was empty or null!");
-                }
-                break;
-            default:
-                Logger.log("Unknown action!");
+        if (currentTrack == null && track == null) return;
+        startForeground(notificationID, createNotification());
+        if (trackChanged) {
+            changeTrack(track);
+        } else {
+            mediaPlayer.start();
         }
+    }
+
+    private void pauseMedia() {
+        Logger.log("ACTION_PAUSE");
+        if (currentTrack != null) {
+            notificationManager.notify(notificationID, createNotification());
+            mediaPlayer.pause();
+        }
+        stopForeground(false);
     }
 
     public boolean isMediaPlayerNull() {
@@ -188,14 +228,17 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     }
 
     public void changeTrack(Track track) {
-        if (!isStopped) {
+        if (!isStopped && track != null) {
             Logger.log("Changing track to: " + track.getTitle());
+            currentTrack = track;
             startAndPlayOnPrepared = true;
             isMediaPrepared = false;
             handleActionStart(track);
         }
-        if (trackChangedListener != null) {
-            trackChangedListener.onTrackChanged(track);
+        if (onMediaEventListeners.size() > 0) {
+            for (OnMediaEventListener listener : onMediaEventListeners) {
+                listener.onPlayerAction(ACTION_PLAY);
+            }
         }
     }
 
@@ -203,8 +246,16 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
         this.currentTrack = track;
     }
 
-    public void setOnTrackChangedListener(OnMediaEventListener listener) {
-        this.trackChangedListener = listener;
+    public void addOnTrackChangedListener(OnMediaEventListener listener) {
+        if (!this.onMediaEventListeners.contains(listener)) {
+            this.onMediaEventListeners.add(listener);
+        }
+    }
+
+    public void removeOnTrackChangedListener(OnMediaEventListener listener) {
+        if (this.onMediaEventListeners.contains(listener)) {
+            this.onMediaEventListeners.remove(listener);
+        }
     }
 
     private void initializeMediaPlayer() {
@@ -244,6 +295,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     }
 
     private void handleActionStart(Track track) {
+        if (track == null) return;
         try {
             Logger.log("Preparing media player");
             if (isMediaPlayerNull()) {
@@ -274,6 +326,14 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     }
 
     private void initializeNotification() {
+        Notification notification = createNotification();
+        startForeground(this.getClass().hashCode()+20, notification);
+        notificationManager.notify(notificationID, notification);
+        Logger.log(currentTrack.getTitle() + " " + currentTrack.getArtist());
+        Logger.log("Notification initialized");
+    }
+
+    public Notification createNotification() {
         Intent intent = new Intent(getApplicationContext(), PlaybackActivity.class);
 
         intent.putExtra(TRACK_BUNDLE_KEY, createTrackBundle(currentTrack));
@@ -284,9 +344,15 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
         Intent artistListIntent = new Intent(getApplicationContext(), MainActivity.class);
         artistListIntent.putExtra(SERVICE_BINDER_KEY, createBinderBundle(getBinder()));
 
+        PendingIntent deleteNotificationIntent = PendingIntent.getBroadcast(this, DELETE_NOTIFICATION_ID,
+                RemoteViewPlaybackNotification.createBroadcastIntent(this, this, ACTION_STOP), PendingIntent.FLAG_UPDATE_CURRENT);
+
         RemoteViewPlaybackNotification remoteView = new RemoteViewPlaybackNotification(getApplicationContext(), getPackageName(), R.layout.remote_view_playback_notification);
-        remoteView.attachMediaPlayerService(this);
-//        remoteView.
+        int playButtonResId = R.drawable.button_selector_play;
+        if (!isMediaPlaying()) {
+            playButtonResId = R.drawable.button_selector_pause;
+        }
+        remoteView.attachMediaPlayerService(this, playButtonResId);
 
         PendingIntent pi = TaskStackBuilder.create(getApplicationContext())
                 .addNextIntent(artistListIntent)
@@ -296,14 +362,14 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
                 .setContentTitle(currentTrack.getTitle())
                 .setContentText(currentTrack.getArtist())
                 .setSmallIcon(R.mipmap.note_black_250x250)
+                .setPriority(Notification.PRIORITY_HIGH)
                 .setContentIntent(pi)
                 .setContent(remoteView)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .build();
-        startForeground(this.getClass().hashCode()+20, notification);
-        notificationManager.notify(notificationID, notification);
-        Logger.log(currentTrack.getTitle() + " " + currentTrack.getArtist());
-        Logger.log("Notification initialized");
+        notification.bigContentView = remoteView;
+        notification.deleteIntent = deleteNotificationIntent;
+        return notification;
     }
 
     @Override
@@ -313,6 +379,11 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
             startAndPlayOnPrepared = false;
             isMediaPrepared = true;
             isStopped = false;
+            if (onMediaEventListeners.size() > 0) {
+                for (OnMediaEventListener listener : this.onMediaEventListeners) {
+                    listener.onPlayerStart();
+                }
+            }
         }
     }
 
@@ -325,6 +396,14 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
 
     public void setPlaylist(Playlist playlist) {
         this.playlist = playlist;
+    }
+
+    public NotificationManager getNotificationManager() {
+        return notificationManager;
+    }
+
+    public int getNotificationID() {
+        return notificationID;
     }
 
     public class LocalBinder extends Binder {
@@ -358,17 +437,20 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
         public void onReceive(Context context, Intent intent) {
             if (currentTrack == null || isMediaPlayerNull() || isStopped) {
                 Logger.log("Headphones were plugged in or out, but no action was performed");
-                return;
             }
             if (intent.getAction().compareTo(Intent.ACTION_HEADSET_PLUG) == 0) {
                 switch (intent.getIntExtra("state", -1)) {
                     case 0:
-                        performAction(ACTION_PAUSE, currentTrack);
                         Logger.log("Headphones plugged out");
+                        if (!isMediaPlayerNull()) {
+                            performAction(ACTION_PAUSE, currentTrack);
+                        }
                         break;
                     case 1:
                         Logger.log("Headphones plugged in");
-                        performAction(ACTION_PLAY_ON_PREPARED, currentTrack);
+                        if (!isMediaPlayerNull()) {
+                            performAction(ACTION_PLAY, currentTrack);
+                        }
                 }
             }
         }

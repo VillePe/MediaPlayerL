@@ -45,7 +45,7 @@
                 <action android:name="android.intent.action.HEADSET_PLUG" />
             </intent-filter>
         </service>
-        <receiver android:name=".RemoteViewPlaybackNotification$PlaybackNotificationReceiver" android:exported="false">
+        <receiver android:name=".misc.PlaybackBroadcastReceiver">
             <intent-filter>
                 <action android:name="com.vp.mplayerl.PLAY_PAUSE" />
                 <action android:name="com.vp.mplayerl.PAUSE" />

@@ -1,22 +1,24 @@
 package com.vp.mplayerl.misc;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
 import com.vp.mplayerl.MediaPlayerService;
+import com.vp.mplayerl.R;
 
 /**
  * Created by Ville on 14.11.2016.
  */
 
 public class PlaybackBroadcastReceiver extends BroadcastReceiver {
-
-
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -27,14 +29,18 @@ public class PlaybackBroadcastReceiver extends BroadcastReceiver {
 
             String action = intent.getAction();
             Track currentTrack = mediaPlayerService.getCurrentTrack();
+            Notification notification = mediaPlayerService.createNotification();
+//            notification.notify();
+            mediaPlayerService.getNotificationManager().notify(mediaPlayerService.getNotificationID(), notification);
+
             if (action != null && currentTrack != null) {
                 mediaPlayerService.performAction(action, currentTrack);
-                Log.d("PlaybackBroadReceiver", "Action performed! " + action);
+                Logger.log("Action performed! " + action);
             } else {
-                Log.w("PlaybackBroadReceiver", "Intent had no action or there was no track initialized");
+                Logger.log("Intent had no action or there was no track initialized");
             }
         } else {
-            Log.w("PlaybackBroadReceiver", "Bundle was null");
+            Logger.log("Bundle was null");
         }
     }
 }

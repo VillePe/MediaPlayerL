@@ -40,33 +40,34 @@ public class RemoteViewPlaybackNotification extends RemoteViews {
         Logger.log("RVPlaybackNotification: Notification initialized!");
     }
 
+
+
     public void onReceive(Context context, Intent intent) {
 
     }
 
-    public void attachMediaPlayerService(MediaPlayerService mediaPlayerService) {
+    public void attachMediaPlayerService(MediaPlayerService mediaPlayerService, int playButtonResId) {
         this.mediaPlayerService = mediaPlayerService;
         setTextViewText(R.id.remote_view_title, mediaPlayerService.getCurrentTrack().getTitle());
         setTextViewText(R.id.remote_view_artist, mediaPlayerService.getCurrentTrack().getArtist());
+        setImageViewResource(R.id.remote_view_play_button, playButtonResId);
 
-        Intent intent = new Intent(context, PlaybackBroadcastReceiver.class);
-        intent.setAction(MediaPlayerService.ACTION_PLAY_PAUSE);
-        intent.putExtras(MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 100, createBroadcastIntent(context, mediaPlayerService, MediaPlayerService.ACTION_PLAY_PAUSE), PendingIntent.FLAG_UPDATE_CURRENT);
         setOnClickPendingIntent(R.id.remote_view_play_button, pendingIntent);
 
-        intent = new Intent(context, PlaybackBroadcastReceiver.class);
-        intent.setAction(MediaPlayerService.ACTION_PREVIOUS);
-        intent.putExtras(MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
-        pendingIntent = PendingIntent.getBroadcast(context, 101, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(context, 101, createBroadcastIntent(context, mediaPlayerService, MediaPlayerService.ACTION_PREVIOUS), PendingIntent.FLAG_UPDATE_CURRENT);
         setOnClickPendingIntent(R.id.remote_view_previous_button, pendingIntent);
 
-        intent = new Intent(context, PlaybackBroadcastReceiver.class);
-        intent.setAction(MediaPlayerService.ACTION_NEXT);
-        intent.putExtras(MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
-        pendingIntent = PendingIntent.getBroadcast(context, 102, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(context, 102, createBroadcastIntent(context, mediaPlayerService, MediaPlayerService.ACTION_NEXT), PendingIntent.FLAG_UPDATE_CURRENT);
         setOnClickPendingIntent(R.id.remote_view_next_button, pendingIntent);
 
+    }
+
+    public static Intent createBroadcastIntent(Context ctx, MediaPlayerService service, String action) {
+        Intent intent = new Intent(ctx, PlaybackBroadcastReceiver.class);
+        intent.setAction(action);
+        intent.putExtras(MediaPlayerService.createBinderBundle(service.getBinder()));
+        return intent;
     }
 
     private void setListenersOnPlayButton(Button b) {

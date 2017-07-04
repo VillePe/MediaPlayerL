@@ -50,6 +50,12 @@ public class LyricHandler {
         return handleParsedApi(parsedConfig, artist, track, true);
     }
 
+    public ArrayList<Lyric> getLyricsWithLyricApiConfigFile(File file, String artist, String track, boolean searchCorrectTrack) throws IOException, LyricApi.ApiException {
+        DictionaryParser parser = new DictionaryParser();
+        ArrayList<HashMap<String, String>> parsedConfig = parser.parseFile(file);
+        return handleParsedApi(parsedConfig, artist, track, searchCorrectTrack);
+    }
+
     public ArrayList<Lyric> getLyricsWithLyricApiConfigFile(InputStream inputStream, String artist, String track) throws IOException, LyricApi.ApiException {
         DictionaryParser parser = new DictionaryParser();
         ArrayList<HashMap<String, String>> parsedConfig = parser.parseFile(inputStream);
@@ -63,8 +69,13 @@ public class LyricHandler {
         for (LyricApi api : lyricApis) {
             this.lyricApis.add(api);
             System.out.println("API FOUND: " + api.getApiName());
-            result = handler.getLyricObjects(api, artist, track, searchCorrectTrack);
-            return result;
+            ArrayList<Lyric> parsedLyricObjects = handler.getLyricObjects(api, artist, track, searchCorrectTrack);
+            if (parsedLyricObjects.size() > 0) {
+                System.out.println("Lyrics found with " + api.getApiName());
+                result.addAll(parsedLyricObjects);
+            } else {
+                System.out.println("Could not find lyrics with " + api.getApiName());
+            }
         }
         return result;
     }
@@ -86,6 +97,7 @@ public class LyricHandler {
     public ArrayList<Lyric> getLyricObjects(LyricApi api, String artist, String track, boolean searchCorrectTrack) throws IOException {
 
         ArrayList<Lyric> lyric = new ArrayList<>();
+        Lyric tempLyric = null;
 
         if (api.needsTrackIdSearch()) {
             System.out.println("Needs lyric id, searching...");
@@ -96,29 +108,34 @@ public class LyricHandler {
                     return lyric;
                 }
                 LyricIDTuple tuple = tuples.get(0);
-                if (!tuple.lyricId_1.equalsIgnoreCase("-1") && !tuple.lyricId_2.equalsIgnoreCase("-1")) {
-                    System.out.println("Lyric id found! Getting lyrics...");
-                    lyric.add(createLyricObject(api, tuple.lyricId_1, tuple.lyricId_2));
-                } else {
-                    System.out.println("Could not find lyric IDs!");
-                }
+                addLyricIDTupleToList(api, tuple, lyric);
             } else {
                 ArrayList<LyricIDTuple> tuples = searchLyrics(api, artist, track, false);
                 for (LyricIDTuple t : tuples) {
-                    if (!t.lyricId_1.equalsIgnoreCase("-1") && !t.lyricId_2.equalsIgnoreCase("-1")) {
-                        System.out.println("Lyric id found! Getting lyrics...");
-                        lyric.add(createLyricObject(api, t.lyricId_1, t.lyricId_2));
-                    } else {
-                        System.out.println("Could not find lyric IDs!");
-                    }
+                    addLyricIDTupleToList(api, t, lyric);
                 }
             }
 
         } else {
-            lyric.add(createLyricObject(api, artist, track));
+            tempLyric = createLyricObject(api, artist, track, searchCorrectTrack);
+            if (tempLyric != null) {
+                lyric.add(tempLyric);
+            }
         }
 
         return lyric;
+    }
+
+    private void addLyricIDTupleToList(LyricApi api, LyricIDTuple tuple, ArrayList<Lyric> list) throws IOException {
+        if (!tuple.lyricId_1.equalsIgnoreCase("-1") && !tuple.lyricId_2.equalsIgnoreCase("-1")) {
+            System.out.println("Lyric id found! Getting lyrics...");
+            Lyric tempLyric = createLyricObject(api, tuple.lyricId_1, tuple.lyricId_2, false);
+            if (tempLyric != null) {
+                list.add(tempLyric);
+            }
+        } else {
+            System.out.println("Could not find lyric IDs!");
+        }
     }
 
     private ArrayList<LyricIDTuple> searchLyrics(LyricApi api, String artist, String track, boolean searchCorrectArtist) throws IOException {
@@ -137,7 +154,7 @@ public class LyricHandler {
         URL searchLyricsUrl = new URL(lyricQuery);
         String lyricSearchRawData = fetchRawServerData(searchLyricsUrl);
         LyricApiXmlHandler lyricApiXmlHandler = new LyricApiXmlHandler(api);
-        lyricApiXmlHandler.setSearchCorrectArtist(searchCorrectArtist);
+        lyricApiXmlHandler.setSearchCorrect(searchCorrectArtist);
         lyricApiXmlHandler.setArtist(artist);
         lyricApiXmlHandler.setTrack(track);
         lyricApiXmlHandler.parse(lyricSearchRawData);
@@ -163,7 +180,7 @@ public class LyricHandler {
         return result;
     }
 
-    private Lyric createLyricObject(LyricApi api, String id_1, String id_2) throws IOException {
+    private Lyric createLyricObject(LyricApi api, String id_1, String id_2, boolean searchCorrectArtist) throws IOException {
         Lyric lyric = new Lyric();
         LyricApiXmlHandler lyricApiXmlHandler = new LyricApiXmlHandler(api);
 
@@ -190,8 +207,22 @@ public class LyricHandler {
         System.out.println("Get lyrics query: " + lyricQuery);
         this.lyricGetQueries.add(lyricQuery);
         URL getLyricsUrl = new URL(lyricQuery);
-        String getLyricsRawData = HttpHandler.fetchRawServerData(getLyricsUrl);
+        String getLyricsRawData = "";
+        try {
+            getLyricsRawData = HttpHandler.fetchRawServerData(getLyricsUrl);
+        } catch (FileNotFoundException ex) {
+            return null;
+        }
+        lyricApiXmlHandler.setArtist(id_1);
+        lyricApiXmlHandler.setTrack(id_2);
+        lyricApiXmlHandler.setSearchCorrect(searchCorrectArtist);
         lyricApiXmlHandler.parse(getLyricsRawData);
+
+        if (searchCorrectArtist) {
+            if (!lyricApiXmlHandler.wasSearchSuccesful()) {
+                return null;
+            }
+        }
 
         if (api.needsTrackId_1()) {
             lyric.setLyricId(lyricApiXmlHandler.getLyricId_1().get(0));
@@ -201,7 +232,9 @@ public class LyricHandler {
         }
         lyric.setArtist(lyricApiXmlHandler.getArtist());
         lyric.setTrack(lyricApiXmlHandler.getTrack());
-        lyric.setLyrics(lyricApiXmlHandler.getLyrics().get(0));
+        if (lyricApiXmlHandler.getLyrics().size() > 0) {
+            lyric.setLyrics(lyricApiXmlHandler.getLyrics().get(0));
+        }
         lyric.setLyricUrl(lyricApiXmlHandler.getLyricUrl());
 
         return lyric;

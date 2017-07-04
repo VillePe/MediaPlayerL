@@ -86,7 +86,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
             Logger.log("Could not get service with binder");
             finish();
         }
-        mediaPlayerService.setOnTrackChangedListener(this);
+        mediaPlayerService.addOnTrackChangedListener(this);
         serviceBound = true;
 
         currentTime = ((TextView) this.findViewById(R.id.playback_current_time));
@@ -97,15 +97,15 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         bStop = (Button) this.findViewById(R.id.playback_b_stop);
         seekBar = (SeekBar) findViewById(R.id.playback_seekbar);
 
-        if (mediaPlayerService.isMediaPlaying()) {
-            this.track = mediaPlayerService.getCurrentTrack();
-        } else {
-            this.track = Track.getTrackFromIntent(getIntent());
-        }
+        this.track = Track.getTrackFromIntent(getIntent());
         if (track == null) {
             Logger.log("Track was null!");
             Toast.makeText(this, "Parsing track data failed", Toast.LENGTH_LONG).show();
-            finish();
+            if (mediaPlayerService.isMediaPlaying()) {
+                track = mediaPlayerService.getCurrentTrack();
+            } else {
+                finish();
+            }
         } else {
             setTrack(this.track);
             seekBar.setMax(track.getLengthInSeconds());
@@ -254,6 +254,11 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         }
     }
 
+    @Override
+    public void onPlayerStart() {
+
+    }
+
     private void showTrackInfo(Track track) {
         StringBuilder sb = new StringBuilder();
         boolean lyricsFound = true;
@@ -311,7 +316,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
             timerScheduled = false;
         }
         if (seekBar != null && !timerScheduled) {
-            playerTimer.schedule(timerListener, 1000, 1000);
+            playerTimer.schedule(timerListener, 50, 1000);
             timerScheduled = true;
             timerCancelled = false;
         }

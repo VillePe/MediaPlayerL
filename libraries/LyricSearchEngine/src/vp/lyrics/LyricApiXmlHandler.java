@@ -29,7 +29,7 @@ public class LyricApiXmlHandler extends DefaultHandler {
     private StringBuilder lyricsStringBuilder = new StringBuilder();
     private String lyricUrl;
     private LyricApi api;
-    private boolean searchCorrectArtist = true;
+    private boolean searchCorrect = true;
 
     public LyricApiXmlHandler(LyricApi api) {
         this.api = api;
@@ -76,8 +76,8 @@ public class LyricApiXmlHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         if (qName.equalsIgnoreCase(api.getConfigItem(LyricApi.XML_SEARCH_RESULT_OBJECT_HEADER))) {
-            if (searchCorrectArtist) {
-                if ((bCorrectArtist && bCorrectTrack) || !api.needsTrackIdSearch()) {
+            if (searchCorrect) {
+                if (bCorrectArtist && bCorrectTrack) {
                     throw new CorrectFileFoundSAXException();
                 } else {
                     clear();
@@ -107,9 +107,27 @@ public class LyricApiXmlHandler extends DefaultHandler {
         } else if (currentElement.equalsIgnoreCase(api.getConfigItem(LyricApi.XML_LYRIC_URL_TAG))) {
             setLyricUrl(new String(ch, start, length));
         } else if (currentElement.equalsIgnoreCase(api.getConfigItem(LyricApi.XML_GET_ARTIST_TAG))) {
-            artist = new String(ch, start, length);
+            if (searchCorrect) {
+                if (artist.equalsIgnoreCase(new String(ch, start, length))) {
+                    bCorrectArtist = true;
+                    System.out.println("CORRECT ARTIST");
+                    artist = new String(ch, start, length);
+                }
+            } else {
+                artist = new String(ch, start, length);
+            }
+
         } else if (currentElement.equalsIgnoreCase(api.getConfigItem(LyricApi.XML_GET_TRACK_TAG))) {
-            track = new String(ch, start, length);
+            if (searchCorrect) {
+                if (track.equalsIgnoreCase(new String(ch, start, length))) {
+                    bCorrectTrack = true;
+                    System.out.println("CORRECT TRACK");
+                    track = new String(ch, start, length);
+                }
+            } else {
+                track = new String(ch, start, length);
+            }
+
         } else if (currentElement.equalsIgnoreCase(api.getConfigItem(LyricApi.XML_SEARCH_ARTIST_TAG))) {
             if (artist.equalsIgnoreCase(new String(ch, start, length))) {
                 bCorrectArtist = true;
@@ -175,11 +193,15 @@ public class LyricApiXmlHandler extends DefaultHandler {
         return lyricUrl;
     }
 
-    public boolean isSearchCorrectArtist() {
-        return searchCorrectArtist;
+    public boolean isSearchCorrect() {
+        return searchCorrect;
     }
 
-    public void setSearchCorrectArtist(boolean searchCorrectArtist) {
-        this.searchCorrectArtist = searchCorrectArtist;
+    public boolean wasSearchSuccesful() {
+        return bCorrectArtist && bCorrectTrack;
+    }
+
+    public void setSearchCorrect(boolean searchCorrect) {
+        this.searchCorrect = searchCorrect;
     }
 }
