@@ -146,7 +146,6 @@ public class TracksListActivity extends AppCompatActivity {
                 intentOpenPlaybackActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, serviceBundle);
                 intentOpenPlaybackActivity.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(t));
                 startActivity(intentOpenPlaybackActivity);
-
             }
         });
         lView.setOnLongClickListener(new View.OnLongClickListener() {

@@ -12,11 +12,13 @@ public class Id3V2Frame {
 
     private String frameID = "";
     private int size;
-    private int[] bytes;
+    private int[] data;
     private boolean[] flags = new boolean[16];
     private BufferedInputStream bInput;
     private int textEncoding;
     private String language;
+
+    private int maxDataSize = 20 * 1024 * 1024;
 
     public Id3V2Frame(BufferedInputStream bInput) {
         this.bInput = bInput;
@@ -46,7 +48,9 @@ public class Id3V2Frame {
             parseFlags();
             fillBytes();
         } catch (Exception e) {
-
+            if (e.getMessage() != null) System.err.println(e.getMessage());
+            e.printStackTrace(System.err);
+            return false;
         }
 
         return true;
@@ -80,21 +84,19 @@ public class Id3V2Frame {
     }
 
     private void fillBytes() throws IOException {
-        bytes = new int[size];
-        byte[] bytes2 = new byte[size + 1000];
+        if (size > maxDataSize) {
+            throw new DataSizeException();
+        }
+        data = new int[size];
 
         if (frameID.equals("APIC")) {
             for (int i = 0; i < size; i++) {
-                bytes[i] = bInput.read();
+                data[i] = bInput.read();
             }
         } else {
             for (int i = 0; i < size; i++) {
                 if (!frameID.equals("APIC")) {
-//                System.out.println("READING APIC");
-//                bInput.read(bytes2);
-//                System.out.println("FINISHED APIC");
-//            } else {
-                    bytes[i] = this.bInput.read();
+                    data[i] = this.bInput.read();
                 }
             }
         }
@@ -128,12 +130,20 @@ public class Id3V2Frame {
         return size;
     }
 
-    public int[] getBytes() {
-        return bytes;
+    public int[] getData() {
+        return data;
     }
 
-    public void setBytes(int[] bytes) {
-        this.bytes = bytes;
+    public byte[] getDataAsBytes() {
+        byte[] result = new byte[data.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = (byte)data[i];
+        }
+        return result;
+    }
+
+    public void setData(int[] data) {
+        this.data = data;
     }
 
     public boolean[] getFlags() {
@@ -161,6 +171,13 @@ public class Id3V2Frame {
             } else {
                 return null;
             }
+        }
+    }
+
+    public class DataSizeException extends IOException {
+
+        public DataSizeException() {
+            super("Could not load data. Size was too big!");
         }
     }
 }

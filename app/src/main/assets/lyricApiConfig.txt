@@ -3,7 +3,7 @@
 //      - http://api.chartlyrics.com/apiv1.asmx/SearchLyric?Artist=XX&Song=XX
 //
 // LoloLyrics
-//      - http://api.lololyrics.com/0.5/getLyric?artist=XX&track=XX
+//      - http://api.lololyrics.com/0.5/getLyric?artist=XX&mTrack=XX
 //
 
 // Template
@@ -97,9 +97,9 @@
     SEARCH_METHOD=""
     GET_METHOD="getLyric"
     URL_ARTIST_TAG="artist"
-    URL_TRACK_TAG="track"
+    URL_TRACK_TAG="mTrack"
     URL_LYRIC_ID_TAG="artist"
-    URL_LYRIC_ID_2_TAG="track"
+    URL_LYRIC_ID_2_TAG="mTrack"
     XML_SEARCH_ARTIST_TAG=""
     XML_GET_ARTIST_TAG=""
     XML_SEARCH_TRACK_TAG=""

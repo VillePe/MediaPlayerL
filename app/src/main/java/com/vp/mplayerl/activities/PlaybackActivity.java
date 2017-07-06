@@ -1,6 +1,7 @@
 package com.vp.mplayerl.activities;
 
 import android.Manifest;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,22 +48,22 @@ import vp.lyrics.LyricHandler;
 
 public class PlaybackActivity extends AppCompatActivity implements OnMediaEventListener {
 
-    SeekBar seekBar;
-    TextView currentTime;
-    TextView lyrics;
+    SeekBar mSeekBar;
+    TextView mCurrentTime;
+    TextView mLyrics;
+    ImageView mTrackImage;
     Button bPlay;
     Button bPrevious;
     Button bNext;
     Button bStop;
-    Track track;
-    MediaPlayerService mediaPlayerService;
-    boolean serviceBound;
-    private MediaPlayerService.LocalBinder binder;
-    private Timer playerTimer;
+    Track mTrack;
+    MediaPlayerService mMediaPlayerService;
+    boolean mServiceBound;
+    private Timer mPlayerTimer;
     private TimerListener timerListener;
-    private boolean timerCancelled;
-    private boolean timerScheduled;
-    private LyricHandler lyricHandler;
+    private boolean mTimerCancelled;
+    private boolean mTimerScheduled;
+    private LyricHandler mLyricHandler;
 
 
     @Override
@@ -75,50 +77,52 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         ab.setDisplayHomeAsUpEnabled(true);
 
 
-        binder = (MediaPlayerService.LocalBinder) getIntent()
+        MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder) getIntent()
                 .getBundleExtra(MediaPlayerService.SERVICE_BINDER_KEY)
                 .getBinder(MediaPlayerService.SERVICE_BINDER_KEY);
         if (binder != null) {
-            mediaPlayerService = binder.getService();
+            mMediaPlayerService = binder.getService();
             Logger.log("Media player service gotten from binder in intent extras");
         } else {
             Toast.makeText(this, "Could not get service with binder!", Toast.LENGTH_SHORT).show();
             Logger.log("Could not get service with binder");
             finish();
         }
-        mediaPlayerService.addOnTrackChangedListener(this);
-        serviceBound = true;
+        mMediaPlayerService.addOnTrackChangedListener(this);
+        mServiceBound = true;
 
-        currentTime = ((TextView) this.findViewById(R.id.playback_current_time));
-        lyrics = (TextView) this.findViewById(R.id.playback_lyrics);
+        mCurrentTime = ((TextView) this.findViewById(R.id.playback_current_time));
+        mLyrics = (TextView) this.findViewById(R.id.playback_lyrics);
+        mTrackImage = (ImageView) this.findViewById(R.id.playback_album_image);
         bPlay = (Button) this.findViewById(R.id.playback_b_play);
         bPrevious = (Button) this.findViewById(R.id.playback_b_previous);
         bNext = (Button) this.findViewById(R.id.playback_b_next);
         bStop = (Button) this.findViewById(R.id.playback_b_stop);
-        seekBar = (SeekBar) findViewById(R.id.playback_seekbar);
+        mSeekBar = (SeekBar) findViewById(R.id.playback_seekbar);
 
-        this.track = Track.getTrackFromIntent(getIntent());
-        if (track == null) {
+        this.mTrack = Track.getTrackFromIntent(getIntent());
+        if (mTrack == null) {
             Logger.log("Track was null!");
-            Toast.makeText(this, "Parsing track data failed", Toast.LENGTH_LONG).show();
-            if (mediaPlayerService.isMediaPlaying()) {
-                track = mediaPlayerService.getCurrentTrack();
+            Toast.makeText(this, "Parsing mTrack data failed", Toast.LENGTH_LONG).show();
+            if (mMediaPlayerService.isMediaPlaying()) {
+                mTrack = mMediaPlayerService.getCurrentTrack();
             } else {
                 finish();
             }
         } else {
-            setTrack(this.track);
-            seekBar.setMax(track.getLengthInSeconds());
-            setListenersOnSeekbar(seekBar);
+            setTrack(this.mTrack);
+            mSeekBar.setMax(mTrack.getLengthInSeconds());
+            setListenersOnSeekbar(mSeekBar);
 
             setListenersOnPlayButton(bPlay);
-            setListenersOnTrackSwitchButton(bPrevious, "previous");
-            setListenersOnTrackSwitchButton(bNext, "next");
+            setListenersOnTrackSwitchButton(bPrevious);
+            setListenersOnTrackSwitchButton(bNext);
             setListenersOnStopButton(bStop);
 
             setPlayButtonState();
 
-            initializeLyrics();
+            initializeLyrics(mTrack);
+            initializePicture(mTrack);
 
             Logger.log("Activity " + this.getLocalClassName() + " created");
 
@@ -151,8 +155,8 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         Logger.log("Playback activity stopped");
     }
 
-    public void setMediaPlayerService(MediaPlayerService service) {
-        this.mediaPlayerService = service;
+    public void setmMediaPlayerService(MediaPlayerService service) {
+        this.mMediaPlayerService = service;
     }
 
     @Override
@@ -173,21 +177,21 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
                 onBackPressed();
                 break;
             case R.id.playback_track_info:
-                showTrackInfo(this.track);
+                showTrackInfo(this.mTrack);
                 break;
             case R.id.action_playlist:
-                if (mediaPlayerService != null) {
-                    startActivity(PlaylistActivity.createPlaylistActivityIntent(this, mediaPlayerService));
+                if (mMediaPlayerService != null) {
+                    startActivity(PlaylistActivity.createPlaylistActivityIntent(this, mMediaPlayerService));
                 }
                 break;
             case R.id.action_search_lyrics:
                 searchLyrics();
                 break;
             case R.id.action_search_lyrics_extended:
-                startActivity(ExtendedLyricSearching.createExtendedLyricSearchIntent(this, track));
+                startActivity(ExtendedLyricSearching.createExtendedLyricSearchIntent(this, mTrack));
                 break;
             case R.id.action_lyric_search_debug:
-                openLyricHandlerDialog(this.lyricHandler);
+                openLyricHandlerDialog(this.mLyricHandler);
                 break;
         }
         return true;
@@ -205,10 +209,10 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
 
         }
 
-        this.lyricHandler = new LyricHandler();
+        this.mLyricHandler = new LyricHandler();
         try {
             InputStream iStream = getAssets().open("lyricApiConfig.txt");
-            AsyncLyricGetter searcher = new AsyncLyricGetter(getApplicationContext(), this.lyricHandler, iStream, track, lyrics);
+            AsyncLyricGetter searcher = new AsyncLyricGetter(getApplicationContext(), this.mLyricHandler, iStream, mTrack, mLyrics);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             searcher.registerOutputStream(new PrintStream(baos), baos);
             searcher.execute();
@@ -244,13 +248,19 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
     @Override
     public void onTrackChanged(Track nextTrack) {
         setTrack(nextTrack);
-        Logger.log("Playback changing track to " + nextTrack.getTitle());
+        Logger.log("Playback changing mTrack to " + nextTrack.getTitle());
     }
 
     @Override
     public void onPlayerAction(String action) {
         if (action.equals(MediaPlayerService.ACTION_PLAY)) {
             startTimer();
+        } else if (action.equals(MediaPlayerService.ACTION_NEXT) || action.equals(MediaPlayerService.ACTION_PREVIOUS)) {
+            Track newTrack = mMediaPlayerService.getCurrentTrack();
+            Logger.log("PlaybackActivity: Action next or previous performed!");
+            if (newTrack != null) {
+                setTrack(newTrack);
+            }
         }
     }
 
@@ -278,11 +288,11 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
     }
 
     private void setPlayButtonState() {
-        if (serviceBound) {
-            if (mediaPlayerService.isMediaPlayerNull()) {
+        if (mServiceBound) {
+            if (mMediaPlayerService.isMediaPlayerNull()) {
             } else {
-                if (mediaPlayerService.isMediaPlaying()) {
-                    if (mediaPlayerService.getCurrentTrack().equals(track)) {
+                if (mMediaPlayerService.isMediaPlaying()) {
+                    if (mMediaPlayerService.getCurrentTrack().equals(mTrack)) {
                         bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
                     } else {
                         bPlay.setBackground(getDrawable(R.drawable.button_selector_play));
@@ -298,49 +308,69 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
     }
 
     private void setTrack(Track track) {
-        this.track = track;
+        this.mTrack = track;
         ((TextView) this.findViewById(R.id.playback_artist)).setText(track.getArtist());
         ((TextView) this.findViewById(R.id.playback_title)).setText(track.getTitle());
         ((TextView) this.findViewById(R.id.playback_track_length)).setText(Utils.convertSecondsToMinutesString(track.getLengthInSeconds()));
-        if (seekBar != null) {
-            seekBar.setMax(track.getLengthInSeconds());
+        if (mSeekBar != null) {
+            mSeekBar.setMax(track.getLengthInSeconds());
         }
-        currentTime.setText("0:00");
+        initializeLyrics(track);
+        mCurrentTime.setText("0:00");
         startTimer();
     }
 
     private void startTimer() {
-        playerTimer = new Timer();
-        if (timerListener == null || timerCancelled) {
-            timerListener = new TimerListener(seekBar, mediaPlayerService);
-            timerScheduled = false;
+        mPlayerTimer = new Timer();
+        if (timerListener == null || mTimerCancelled) {
+            timerListener = new TimerListener(mSeekBar, mMediaPlayerService);
+            mTimerScheduled = false;
         }
-        if (seekBar != null && !timerScheduled) {
-            playerTimer.schedule(timerListener, 50, 1000);
-            timerScheduled = true;
-            timerCancelled = false;
+        if (mSeekBar != null && !mTimerScheduled) {
+            mPlayerTimer.schedule(timerListener, 50, 1000);
+            Logger.log("Timer started");
+            mTimerScheduled = true;
+            mTimerCancelled = false;
+        } else {
+            Logger.log("Timer starting cancelled");
+            Logger.log("Seekbar is null: " + (mSeekBar == null));
+            Logger.log("Timer is scheduled: " + mTimerScheduled);
+
         }
     }
 
     private void stopTimer() {
         Logger.log("Stopping timer");
-        timerCancelled = true;
-        timerScheduled = false;
-        playerTimer.cancel();
+        mTimerCancelled = true;
+        mTimerScheduled = false;
+        mPlayerTimer.cancel();
         timerListener.cancel();
     }
 
-    private void initializeLyrics() {
-        track.setLyrics(ParseController.getLyricsFromFile(track.getTrackFile()));
-        lyrics.setText(track.getLyrics());
+    private void initializeLyrics(Track track) {
+        if (track.getLyrics() == null || track.getLyrics().isEmpty() || track.getLyrics().toLowerCase().equals("no lyrics")) {
+            Logger.log("Parsing lyrics from file " + track.getTitle() + "...");
+            String lyrics = ParseController.getLyricsFromFile(track.getTrackFile());
+            track.setLyrics(lyrics);
+        }
+        mLyrics.setText(track.getLyrics());
+    }
+
+    private void initializePicture(Track track) {
+        Bitmap trackMap = track.getSmallBitmap();
+        if (trackMap != null) {
+            mTrackImage.setImageBitmap(trackMap);
+        } else {
+            Logger.log("Could not initialize picture. Bitmap was null");
+        }
     }
 
     private void setListenersOnSeekbar(SeekBar seekBar) {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                currentTime.setText(Utils.convertSecondsToMinutesString(progress));
-                MediaPlayer mPlayer = mediaPlayerService.getMediaPlayer();
+                mCurrentTime.setText(Utils.convertSecondsToMinutesString(progress));
+                MediaPlayer mPlayer = mMediaPlayerService.getMediaPlayer();
                 if (mPlayer != null && fromUser) {
                     mPlayer.seekTo(progress*1000);
                     Logger.log("FROM USER!");
@@ -363,25 +393,25 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.log("Service bound: " + serviceBound);
-                if (serviceBound) {
-                    if (mediaPlayerService.isMediaPlayerNull() || !mediaPlayerService.isMediaPrepared()) {
+                Logger.log("Service bound: " + mServiceBound);
+                if (mServiceBound) {
+                    if (mMediaPlayerService.isMediaPlayerNull() || !mMediaPlayerService.isMediaPrepared()) {
                         Logger.log("Mediaplayer is NULL or it is not prepared");
-                        mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, track);
+                        mMediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, mTrack);
                         bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
                     } else {
-                        Logger.log("Media is playing: " + mediaPlayerService.isMediaPlaying());
-                        if (mediaPlayerService.isMediaPlaying()) {
-                            if (mediaPlayerService.getCurrentTrack().equals(track)) {
-                                mediaPlayerService.performAction(MediaPlayerService.ACTION_PAUSE, track);
+                        Logger.log("Media is playing: " + mMediaPlayerService.isMediaPlaying());
+                        if (mMediaPlayerService.isMediaPlaying()) {
+                            if (mMediaPlayerService.getCurrentTrack().equals(mTrack)) {
+                                mMediaPlayerService.performAction(MediaPlayerService.ACTION_PAUSE, mTrack);
                                 bPlay.setBackground(getDrawable(R.drawable.button_selector_play));
                             } else {
-                                Logger.log("Playback track is different than media player track");
-                                mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, track);
+                                Logger.log("Playback mTrack is different than media player mTrack");
+                                mMediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, mTrack);
                                 bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
                             }
                         } else {
-                            mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY, track);
+                            mMediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY, mTrack);
                             bPlay.setBackground(getDrawable(R.drawable.button_selector_pause));
                         }
                     }
@@ -394,20 +424,20 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         });
     }
 
-    private void setListenersOnTrackSwitchButton(final Button b, String direction) {
+    private void setListenersOnTrackSwitchButton(final Button b) {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.log("Service bound: " + serviceBound);
-                if (serviceBound) {
-                    if (mediaPlayerService.getPlaylist() == null || mediaPlayerService.getPlaylist().size() <= 1) {
+                Logger.log("Service bound: " + mServiceBound);
+                if (mServiceBound) {
+                    if (mMediaPlayerService.getPlaylist() == null || mMediaPlayerService.getPlaylist().size() <= 1) {
                         Toast.makeText(getApplicationContext(), R.string.no_more_tracks, Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (b.equals(bNext)) {
-                        mediaPlayerService.performAction(MediaPlayerService.ACTION_NEXT, track);
+                        mMediaPlayerService.performAction(MediaPlayerService.ACTION_NEXT, mTrack);
                     } else {
-                        mediaPlayerService.performAction(MediaPlayerService.ACTION_PREVIOUS, track);
+                        mMediaPlayerService.performAction(MediaPlayerService.ACTION_PREVIOUS, mTrack);
                     }
                 }
             }
@@ -418,35 +448,32 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.log("Service bound: " + serviceBound);
-                if (serviceBound) {
-                    mediaPlayerService.performAction(MediaPlayerService.ACTION_STOP, track);
+                Logger.log("Service bound: " + mServiceBound);
+                if (mServiceBound) {
+                    mMediaPlayerService.performAction(MediaPlayerService.ACTION_STOP, mTrack);
                     bPlay.setBackground(getDrawable(R.drawable.button_selector_play));
                 }
             }
         });
     }
 
-
     public class TimerListener extends TimerTask {
 
         private SeekBar seekBar;
         private MediaPlayerService mediaPlayerService;
-        private MediaPlayer mediaPlayer;
 
-        public TimerListener(SeekBar seekbar, MediaPlayerService mediaPlayerService) {
+        TimerListener(SeekBar seekbar, MediaPlayerService mediaPlayerService) {
             this.seekBar = seekbar;
             this.mediaPlayerService = mediaPlayerService;
-            this.mediaPlayer = mediaPlayerService.getMediaPlayer();
         }
 
         @Override
         public void run() {
-            int currentTimeInSeconds = 0;
+            int currentTimeInSeconds;
             if (mediaPlayerService.isMediaPlaying() && mediaPlayerService.isMediaPrepared()) {
                 MediaPlayer mPlayer = mediaPlayerService.getMediaPlayer();
                 if (mPlayer != null && seekBar != null ) {
-                    if (track.equals(mediaPlayerService.getCurrentTrack())) {
+                    if (mTrack.equals(mediaPlayerService.getCurrentTrack())) {
                         currentTimeInSeconds = mPlayer.getCurrentPosition() / 1000;
                         seekBar.setProgress(currentTimeInSeconds);
                     }

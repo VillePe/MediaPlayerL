@@ -4,19 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    tools:context=".RemoteViewPlaybackNotification"
-    android:layout_height="128dp">
+    android:layout_height="128dp"
+    tools:context=".RemoteViewPlaybackNotification">
     <ImageView
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
         android:src="@mipmap/noimagefound"
         android:id="@+id/remote_view_image"
-        android:padding="3dp"
-        android:layout_height="match_parent">
+        android:padding="6dp"
+        android:layout_height="@dimen/remote_view_image_size"
+        android:layout_width="@dimen/remote_view_image_size">
 
     </ImageView>
     <LinearLayout
-        android:layout_weight="1"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -53,6 +51,7 @@
                 />
             <ImageButton
                 android:layout_width="55dp"
+                android:layout_height="45dp"
                 android:src="@drawable/button_selector_play"
                 android:layout_gravity="center"
                 android:layout_margin="3dp"
@@ -60,10 +59,11 @@
                 android:scaleType="fitXY"
                 android:id="@+id/remote_view_play_button"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_height="45dp" />
+                 />
 
             <ImageButton
                 android:layout_width="55dp"
+                android:layout_height="45dp"
                 android:layout_gravity="center"
                 android:src="@drawable/button_selector_next"
                 android:layout_margin="3dp"
@@ -71,7 +71,7 @@
                 android:scaleType="fitXY"
                 android:id="@+id/remote_view_next_button"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_height="45dp" />
+                 />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

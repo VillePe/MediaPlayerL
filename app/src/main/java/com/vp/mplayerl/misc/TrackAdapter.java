@@ -1,6 +1,7 @@
 package com.vp.mplayerl.misc;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.vp.mplayerl.R;
 import com.vp.mplayerl.Utils;
+import com.vp.mplayerl.async_task_handlers.AsyncImageSetter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,11 +82,14 @@ public class TrackAdapter extends BaseAdapter {
 
         Track track = (Track) getItem(position);
 
-        holder.imageView.setImageResource(R.mipmap.noimagefound);
+        AsyncImageSetter imageSetter = new AsyncImageSetter(holder.imageView, context, track);
+        imageSetter.execute();
         holder.textView_artist.setText(CutLongStrings(track.getArtist(), 25));
         holder.textView_title.setText(CutLongStrings(track.getTitle(), 25));
         return convertView;
     }
+
+
 
     public void fillWithArtistsList(ArrayList<Artist> artists) {
         ArrayList<Track> tracksSorted = new ArrayList<>();

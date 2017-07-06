@@ -314,12 +314,8 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
                 playlist.setCurrentTrackNumber(trackIndex);
             }
 
-            if (currentTrack != null) {
-                initializeNotification();
-            } else {
-                Logger.log("Current track was NULL");
-            }
-
+            setCurrentTrack(track);
+            initializeNotification();
         } catch (IOException ex) {
             Logger.log(ex);
         }

@@ -3,6 +3,7 @@ package com.vp.mediafileparsers;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 
 /**
  * Created by Ville on 15.6.2017.
@@ -10,7 +11,7 @@ import java.nio.charset.Charset;
 public class Utils {
 
     /**
-     * Reads one 32 bit long integer encoded in little-endian from given buffered input stream and saves each byte into given byte array.
+     * Reads one 32 bit long integer encoded in big-endian from given buffered input stream and saves each byte into given byte array.
      *
      * @param bInput    input stream to read the bytes from
      * @param byteArray array to store read bytes for later use
@@ -48,13 +49,26 @@ public class Utils {
     }
 
     /**
-     * Reads one 32 bit long integer encoded in little-endian from given string
+     * Reads one 32 bit long integer encoded in big-endian from given string
      *
      * @param s
      * @return
      */
     public static long read32BitIntegerBE(String s) {
         byte[] array = s.getBytes(Charset.forName("ASCII"));
+        return read32BitIntegerBE(array);
+    }
+
+    public static long read32BitIntegerBE(ArrayList<Byte> byteArrayList) {
+        return read32BitIntegerBE(byteArrayList, 0);
+    }
+
+    public static long read32BitIntegerBE(ArrayList<Byte> byteArrayList, int offset) {
+        if (byteArrayList.size() < 4) return -1;
+        byte[] array = new byte[4];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = byteArrayList.get(i + offset);
+        }
         return read32BitIntegerBE(array);
     }
 
@@ -78,7 +92,7 @@ public class Utils {
     }
 
     /**
-     * Reads one 32 bit long integer encoded in big-endian from given string
+     * Reads one 32 bit long integer encoded in little-endian from given string
      *
      * @param s
      * @return
@@ -89,7 +103,7 @@ public class Utils {
     }
 
     /**
-     * Reads one 32 bit long integer encoded in big-endian from given byte array
+     * Reads one 32 bit long integer encoded in little-endian from given byte array
      *
      * @param byteArray
      * @return
@@ -134,6 +148,19 @@ public class Utils {
             result[i] = (byte) (value >> 24 - ((3-i) * 8));
         }
 
+        return result;
+    }
+
+    public static byte[] arrayListToByteArray(ArrayList<Byte>  data) {
+        return arrayListToByteArray(data, 0, data.size());
+    }
+
+    public static byte[] arrayListToByteArray(ArrayList<Byte>  data, int offset, int length) {
+        if (offset + length > data.size() || length < 0 || offset < 0) return null;
+        byte[] result = new byte[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = data.get(i + offset);
+        }
         return result;
     }
 }

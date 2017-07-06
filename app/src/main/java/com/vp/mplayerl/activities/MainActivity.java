@@ -17,7 +17,6 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,13 +48,13 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
     public final static int PERMISSIONS_WRITE_EXT_STORAGE = 2;
     public final static int PERMISSIONS_INTERNET = 3;
 
-    private View playbackPopup;
-    ArrayList<Artist> artists;
-    private MediaPlayerService mediaPlayerService;
-    private boolean serviceBound;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private ViewPager.OnPageChangeListener onPageChangeListener;
+    private View mPlaybackPopup;
+    ArrayList<Artist> mArtists;
+    private MediaPlayerService mMediaPlayerService;
+    private boolean mServiceBound;
+    private ViewPager mViewPager;
+    private TabLayout mTabLayout;
+    private ViewPager.OnPageChangeListener mOnPageChangeListener;
     private Intent mpServiceIntent;
 
     @Override
@@ -63,18 +62,18 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        artists = ArtistListMethods.initializeTracksFromStorage(getContentResolver());
-        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        viewPager = (ViewPager) findViewById(R.id.main_pager);
-        tabLayout.addTab(tabLayout.newTab().setText("Artistit"));
-        tabLayout.addTab(tabLayout.newTab().setText("Kappaleet"));
-        onPageChangeListener = new TabLayout.TabLayoutOnPageChangeListener(tabLayout);
-        MainActivityTabHandlingListeners listeners = new MainActivityTabHandlingListeners(tabLayout, viewPager);
-        tabLayout.setOnTabSelectedListener(listeners);
-        viewPager.addOnPageChangeListener(onPageChangeListener);
+        mArtists = ArtistListMethods.initializeTracksFromStorage(getContentResolver());
+        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        mViewPager = (ViewPager) findViewById(R.id.main_pager);
+        mTabLayout.addTab(mTabLayout.newTab().setText("Artistit"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("Kappaleet"));
+        mOnPageChangeListener = new TabLayout.TabLayoutOnPageChangeListener(mTabLayout);
+        MainActivityTabHandlingListeners listeners = new MainActivityTabHandlingListeners(mTabLayout, mViewPager);
+        mTabLayout.setOnTabSelectedListener(listeners);
+        mViewPager.addOnPageChangeListener(mOnPageChangeListener);
 
-        playbackPopup = findViewById(R.id.playback_popup_layout);
-        setOnPopupClickListener(playbackPopup);
+        mPlaybackPopup = findViewById(R.id.playback_popup_layout);
+        setOnPopupClickListener(mPlaybackPopup);
 
         if (getIntent().getBundleExtra(MediaPlayerService.SERVICE_BINDER_KEY) == null) {
             Logger.log("Could not find binder from intent extra, binding to service...");
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
             Logger.log("Service binder found from intent extras. Binding to service...");
             MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder)getIntent().getBundleExtra(MediaPlayerService.SERVICE_BINDER_KEY).getBinder(MediaPlayerService.SERVICE_BINDER_KEY);
             if (binder != null) {
-                mediaPlayerService = binder.getService();
+                mMediaPlayerService = binder.getService();
             } else {
                 Logger.log("MainActivity: Binder was null!");
                 finish();
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        viewPager.setAdapter(new TabFragmentAdapter(getSupportFragmentManager()));
+        mViewPager.setAdapter(new TabFragmentAdapter(getSupportFragmentManager()));
         setFabClickListener();
     }
 
@@ -143,9 +142,9 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
                 openPlaybackActivity();
                 break;
             case R.id.action_playlist:
-                if (mediaPlayerService != null) {
+                if (mMediaPlayerService != null) {
                     final Intent intentOpenPlaylistActivity = new Intent(this, PlaylistActivity.class);
-                    intentOpenPlaylistActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
+                    intentOpenPlaylistActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mMediaPlayerService.getBinder()));
                     startActivity(intentOpenPlaylistActivity);
                 }
                 break;
@@ -158,18 +157,18 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
     }
 
     private void unBindService() {
-        Logger.log("MainActivity: Service is bound: " + serviceBound);
+        Logger.log("MainActivity: Service is bound: " + mServiceBound);
         Logger.log("Unbinding service...");
-        if (serviceBound) {
+        if (mServiceBound) {
             unbindService(connection);
-            serviceBound = false;
+            mServiceBound = false;
             Logger.log("Service unbound");
         } else {
             Logger.log("Service already unbound");
         }
 
         Logger.log("Stopping service...");
-        if (mediaPlayerService != null && !mediaPlayerService.isMediaPlaying()) {
+        if (mMediaPlayerService != null && !mMediaPlayerService.isMediaPlaying()) {
             stopService(mpServiceIntent);
             Logger.log("Service stopped");
         } else {
@@ -178,8 +177,8 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
     }
 
     private void onMediaPlayerServiceInitialization(MediaPlayerService mediaPlayerService) {
-        this.mediaPlayerService = mediaPlayerService;
-        this.mediaPlayerService.addOnTrackChangedListener(this);
+        this.mMediaPlayerService = mediaPlayerService;
+        this.mMediaPlayerService.addOnTrackChangedListener(this);
         togglePlaybackPopup();
     }
 
@@ -190,23 +189,23 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
             Logger.log("Service is connected!");
             MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder) service;
             onMediaPlayerServiceInitialization(binder.getService());
-            serviceBound = true;
+            mServiceBound = true;
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Logger.log("Service is disconnected!");
-            serviceBound = false;
+            mServiceBound = false;
         }
     };
 
     private boolean openPlaybackActivity() {
-        if (mediaPlayerService != null) {
+        if (mMediaPlayerService != null) {
             final Intent intentOpenPlaybackActivity = new Intent(this, PlaybackActivity.class);
-            intentOpenPlaybackActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
-            Track currentTrack = mediaPlayerService.getCurrentTrack();
+            intentOpenPlaybackActivity.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mMediaPlayerService.getBinder()));
+            Track currentTrack = mMediaPlayerService.getCurrentTrack();
             if (currentTrack != null) {
-                intentOpenPlaybackActivity.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(mediaPlayerService.getCurrentTrack()));
+                intentOpenPlaybackActivity.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(mMediaPlayerService.getCurrentTrack()));
 
                 startActivity(intentOpenPlaybackActivity);
                 return true;
@@ -226,26 +225,26 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
     }
 
     private void playAll() {
-        if (mediaPlayerService != null && artists != null && artists.size() > 0) {
-            Playlist playlist = mediaPlayerService.getPlaylist();
+        if (mMediaPlayerService != null && mArtists != null && mArtists.size() > 0) {
+            Playlist playlist = mMediaPlayerService.getPlaylist();
             if (playlist != null) {
                 playlist.clear();
-                for (int i = 0; i < artists.size(); i++) {
-                    Artist a = artists.get(i);
+                for (int i = 0; i < mArtists.size(); i++) {
+                    Artist a = mArtists.get(i);
                     addArtistToPlaylist(a, playlist);
                 }
                 playlist.setSuffle(true);
-                mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, playlist.getRandomTrack());
+                mMediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, playlist.getRandomTrack());
 //                openPlaybackActivity();
             }
         } else {
             Toast.makeText(this, "Tiedostojen toistaminen ei onnistunut, koita hetken päästä uudelleen", Toast.LENGTH_LONG).show();
-            Logger.log("Could not play all files. Mediaplayer was null or track list had no items!");
+            Logger.log("Could not play all files. Mediaplayer was null or mTrack list had no items!");
         }
     }
 
     public void setMediaPlayerService(MediaPlayerService service) {
-        this.mediaPlayerService = service;
+        this.mMediaPlayerService = service;
     }
 
     private void bindToMPService(Intent serviceIntent, ServiceConnection sConnection) {
@@ -260,12 +259,12 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
     }
 
     private void startPlaybackWithArtist(Artist artist) {
-        Playlist playlist = mediaPlayerService.getPlaylist();
+        Playlist playlist = mMediaPlayerService.getPlaylist();
         playlist.clear();
         addArtistToPlaylist(artist, playlist);
         Intent intent = new Intent(this, PlaybackActivity.class);
         intent.putExtra(MediaPlayerService.TRACK_BUNDLE_KEY, MediaPlayerService.createTrackBundle(playlist.getTrack(0)));
-        intent.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mediaPlayerService.getBinder()));
+        intent.putExtra(MediaPlayerService.SERVICE_BINDER_KEY, MediaPlayerService.createBinderBundle(mMediaPlayerService.getBinder()));
         startActivity(intent);
     }
 
@@ -279,8 +278,8 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
     }
 
     private void togglePlaybackPopup( ) {
-        if (mediaPlayerService != null && mediaPlayerService.isMediaPlaying()) {
-            Track currentTrack = mediaPlayerService.getCurrentTrack();
+        if (mMediaPlayerService != null && mMediaPlayerService.isMediaPlaying()) {
+            Track currentTrack = mMediaPlayerService.getCurrentTrack();
             TextView artistText = (TextView) findViewById(R.id.playback_popup__artist);
             TextView titleText = (TextView) findViewById(R.id.playback_popup__title);
             if (!currentTrack.getArtist().equals("<unknown>")) {
@@ -290,13 +289,13 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
             }
             titleText.setText(currentTrack.getTitle());
 
-            playbackPopup.setVisibility(View.VISIBLE);
+            mPlaybackPopup.setVisibility(View.VISIBLE);
             Logger.log("Showing popup!");
         } else {
-            playbackPopup.setVisibility(View.GONE);
-            Logger.log("Mediaplayer service is null: " + (mediaPlayerService == null));
-            if (mediaPlayerService != null) {
-                Logger.log("Mediaplayer is playing: " + mediaPlayerService.isMediaPlaying());
+            mPlaybackPopup.setVisibility(View.GONE);
+            Logger.log("Mediaplayer service is null: " + (mMediaPlayerService == null));
+            if (mMediaPlayerService != null) {
+                Logger.log("Mediaplayer is playing: " + mMediaPlayerService.isMediaPlaying());
             }
             Logger.log("Hiding popup!");
         }
@@ -356,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
         @Override
         public ListAdapter getListAdapter() {
             ArtistAdapter adapter = new ArtistAdapter(getContext(), getLayoutInflater(null));
-            adapter.setArtists(artists);
+            adapter.setArtists(mArtists);
             Logger.log("RETURNING ADAPTER");
             return adapter;
         }
@@ -372,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
             Artist pickedArtist = (Artist)getListAdapter().getItem(info.position);
             switch (item.getItemId()) {
                 case R.id.action_add_artist_to_playlist:
-                    addArtistToPlaylist(pickedArtist, mediaPlayerService.getPlaylist());
+                    addArtistToPlaylist(pickedArtist, mMediaPlayerService.getPlaylist());
                     break;
                 case R.id.action_add_artist_to_playlist_and_play:
                     startPlaybackWithArtist(pickedArtist);
@@ -395,7 +394,7 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
             Bundle serviceBundle = new Bundle();
             Artist a = (Artist) l.getAdapter().getItem(position);
             artistBundle.putSerializable("artist", a);
-            serviceBundle.putBinder(MediaPlayerService.SERVICE_BINDER_KEY, mediaPlayerService.getBinder());
+            serviceBundle.putBinder(MediaPlayerService.SERVICE_BINDER_KEY, mMediaPlayerService.getBinder());
 
             Intent intent = new Intent(getApplicationContext(), TracksListActivity.class);
             intent.putExtra("artist", artistBundle);
@@ -409,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
         @Override
         public ListAdapter getListAdapter() {
             TrackAdapter adapter = new TrackAdapter(getContext(), getLayoutInflater(null));
-            adapter.fillWithArtistsList(artists);
+            adapter.fillWithArtistsList(mArtists);
             Logger.log("RETURNING ADAPTER");
             return adapter;
         }
@@ -433,7 +432,7 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
 
             Track t = (Track) getListAdapter().getItem(position);
 
-            serviceBundle.putBinder(MediaPlayerService.SERVICE_BINDER_KEY, mediaPlayerService.getBinder());
+            serviceBundle.putBinder(MediaPlayerService.SERVICE_BINDER_KEY, mMediaPlayerService.getBinder());
 
             Logger.log("Opening new activity");
 

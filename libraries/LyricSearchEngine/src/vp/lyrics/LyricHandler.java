@@ -118,7 +118,7 @@ public class LyricHandler {
 
         } else {
             tempLyric = createLyricObject(api, artist, track, searchCorrectTrack);
-            if (tempLyric != null) {
+            if (tempLyric != null && !tempLyric.getLyrics().isEmpty()) {
                 lyric.add(tempLyric);
             }
         }

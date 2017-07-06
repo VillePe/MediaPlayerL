@@ -84,9 +84,10 @@ public class AsyncLyricGetter extends AsyncTask<String, Integer, Boolean> {
         }
         if (foundLyrics.size() > 0) {
             textView.setText(foundLyrics.get(0).getLyrics());
+            track.setLyrics(foundLyrics.get(0).getLyrics());
             Toast.makeText(ctx, "Lyriikat löydetty!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(ctx, "Lyriikoiden etsiminen epäonnistui!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx, "Lyriikoiden ei löytynyt tai etsiminen epäonnistui!", Toast.LENGTH_SHORT).show();
         }
         super.onPostExecute(aBoolean);
     }

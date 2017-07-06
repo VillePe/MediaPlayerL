@@ -1,10 +1,12 @@
 package com.vp.parsers.flac;
 
 import com.vp.mediafileparsers.Utils;
-import sun.rmi.runtime.Log;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Ville on 24.10.2016.
@@ -27,7 +29,7 @@ public class FlacParser {
         this.file = file;
     }
 
-    public FlacParser(File file){
+    public FlacParser(File file) {
         this.file = file;
     }
 
@@ -37,7 +39,7 @@ public class FlacParser {
     }
 
     public String getLyricsFromFile() throws IOException {
-
+        reset();
         if (bInput == null) {
             return "No lyrics";
         }
@@ -125,6 +127,48 @@ public class FlacParser {
         return result;
     }
 
+    public ByteArrayInputStream getTrackPicture(MetadataBlock block) {
+        int offset = 0;
+        long pictureType = Utils.read32BitIntegerBE(block.getData());
+        offset += 4;
+        long mimeLength = Utils.read32BitIntegerBE(block.getData(), offset);
+        offset += 4;
+
+        System.out.printf("MIME (%d):%n", mimeLength);
+        for (int i = 0; i < mimeLength; i++) {
+        }
+
+        offset += mimeLength;
+        long descriptionLength = Utils.read32BitIntegerBE(block.getData(), offset);
+        offset += 4;
+
+        for (int i = 0; i < descriptionLength; i++) {
+        }
+        offset += descriptionLength;
+
+        long imageWidth = Utils.read32BitIntegerBE(block.getData(), offset);
+        offset += 4;
+
+        long imageHeight = Utils.read32BitIntegerBE(block.getData(), offset);
+        offset += 4;
+
+        long imageColorDepth = Utils.read32BitIntegerBE(block.getData(), offset);
+        offset += 4;
+
+        long imageColorsUsed = Utils.read32BitIntegerBE(block.getData(), offset);
+        offset += 4;
+
+        long imageDataLength = Utils.read32BitIntegerBE(block.getData(), offset);
+        offset += 4;
+
+        byte[] byteArray = Utils.arrayListToByteArray(block.getData(), offset, (int)imageDataLength);
+        if (byteArray != null) {
+            return new ByteArrayInputStream(byteArray);
+        } else {
+            return null;
+        }
+    }
+
     // Reads a 32 bit integer from the file
     private long read32BitInteger(int[] byteArray) throws IOException {
         return Utils.read32BitIntegerBE(bInput, byteArray);
@@ -132,7 +176,6 @@ public class FlacParser {
 
     // Parses the lyrics from vorbis comment string
     private String parseLyricsFromVorbisCommentString(String vorbisComments) {
-        //Log.d("ParseLyrics", vorbisComments);
         StringBuilder lyrics = new StringBuilder();
 
         // Find the key "LYRICS" from the string
@@ -145,7 +188,6 @@ public class FlacParser {
         for (int i = lyricsStart + "LYRICS=".length(); i < vorbisComments.length() && vorbisComments.charAt(i) != '\0'; i++) {
             lyrics.append(vorbisComments.charAt(i));
         }
-        //Log.d("LYRICS", lyrics.toString());
         return lyrics.toString();
     }
 

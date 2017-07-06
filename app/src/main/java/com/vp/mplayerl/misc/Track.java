@@ -1,12 +1,19 @@
 package com.vp.mplayerl.misc;
 
 import android.content.Intent;
-import android.media.Image;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
+import com.vp.mediafileparsers.ParseController;
 import com.vp.mplayerl.MediaPlayerService;
+import com.vp.parsers.flac.FlacParser;
+import com.vp.parsers.flac.MetadataBlock;
+import com.vp.parsers.flac.MetadataBlockCollection;
+import com.vp.parsers.mp3.Mp3Parser;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.Serializable;
 
@@ -15,86 +22,105 @@ import java.io.Serializable;
  */
 
 public class Track implements Serializable, Comparable{
-    private String artist;
-    private String title;
-    private int lengthInSeconds;
-    private String album;
-    private File trackFile;
-    private String lyrics;
+    private String mArtist;
+    private String mTitle;
+    private int mLengthInSeconds;
+    private String mAlbum;
+    private File mTrackFile;
+    private String mLyrics;
 
     public Track() {
-        this.artist = "Unknown";
-        this.title = "Unknown";
-        this.lengthInSeconds = 0;
-        this.album = "Unknown";
-        this.trackFile = null;
-        this.lyrics = "No lyrics";
+        this.mArtist = "Unknown";
+        this.mTitle = "Unknown";
+        this.mLengthInSeconds = 0;
+        this.mAlbum = "Unknown";
+        this.mTrackFile = null;
+        this.mLyrics = "No lyrics";
     }
 
     public Track(File trackFile, String artist, String title, int lengthInSeconds) {
-        this.trackFile = trackFile;
-        this.artist = artist;
-        this.title = title;
-        this.album = "Unknown";
-        this.lengthInSeconds = lengthInSeconds;
-        this.lyrics = "No lyrics";
+        this.mTrackFile = trackFile;
+        this.mArtist = artist;
+        this.mTitle = title;
+        this.mAlbum = "Unknown";
+        this.mLengthInSeconds = lengthInSeconds;
+        this.mLyrics = "No lyrics";
     }
 
     public Track(File trackFile, String artist, String title, int lengthInSeconds, String album) {
-        this.trackFile = trackFile;
-        this.artist = artist;
-        this.title = title;
-        this.lengthInSeconds = lengthInSeconds;
-        this.album = album;
-        this.lyrics = "No lyrics";
+        this.mTrackFile = trackFile;
+        this.mArtist = artist;
+        this.mTitle = title;
+        this.mLengthInSeconds = lengthInSeconds;
+        this.mAlbum = album;
+        this.mLyrics = "No lyrics";
     }
 
     public String getArtist() {
-        return artist;
+        return mArtist;
     }
 
     public void setArtist(String artist) {
-        this.artist = artist;
+        this.mArtist = artist;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.mTitle = title;
     }
 
     public int getLengthInSeconds() {
-        return lengthInSeconds;
+        return mLengthInSeconds;
     }
 
     public void setLengthInSeconds(int lengthInSeconds) {
-        this.lengthInSeconds = lengthInSeconds;
+        this.mLengthInSeconds = lengthInSeconds;
     }
 
     public String getAlbum() {
-        return album;
+        return mAlbum;
     }
 
     public void setAlbum(String album) {
-        this.album = album;
+        this.mAlbum = album;
     }
 
     public String getLyrics() {
-        return lyrics;
+        return mLyrics;
     }
 
     public void setLyrics(String lyrics) {
-        this.lyrics = lyrics;
+        this.mLyrics = lyrics;
+    }
+
+    public Bitmap getLargeBitmap() {
+        Bitmap bMap = null;
+        ByteArrayInputStream inputStream = ParseController.getPictureFromFile(getTrackFile());
+        bMap = BitmapFactory.decodeStream(inputStream);
+        return bMap;
+    }
+
+    public Bitmap getScaledBitmap(int width, int height) {
+        Bitmap largeBitmap = getLargeBitmap();
+        if (largeBitmap != null) {
+            return Bitmap.createScaledBitmap(largeBitmap, width, height, false);
+        }
+        return null;
+    }
+
+    public Bitmap getSmallBitmap() {
+        return getScaledBitmap(128, 128);
     }
 
     public File getTrackFile() {
-        return trackFile;
+        return mTrackFile;
     }
 
     public void setTrackFile(File trackFile) {
-        this.trackFile = trackFile;
+        this.mTrackFile = trackFile;
     }
 
     @Override
@@ -102,22 +128,16 @@ public class Track implements Serializable, Comparable{
         if (another == null) {
             return false;
         }
-        Track paramTrack = (Track)another;
-        if (paramTrack == null) {
+        if (!(another instanceof Track)) {
             return false;
         }
+        Track paramTrack = (Track)another;
         return this.getArtist().equals(paramTrack.getArtist()) && this.getTitle().equals(paramTrack.getTitle());
     }
 
     @Override
-    public int compareTo(Object another) {
-        if (another == null) {
-            return -1;
-        }
+    public int compareTo(@NonNull Object another) {
         Track paramTrack = (Track)another;
-        if (paramTrack == null) {
-            return -1;
-        }
         if (this.getArtist().compareTo(paramTrack.getArtist()) == 0)  {
             return this.getTitle().compareTo(paramTrack.getArtist());
         } else {

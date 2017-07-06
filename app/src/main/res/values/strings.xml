@@ -41,7 +41,7 @@
     </string>
     <string name="artist">Artist</string>
     <string name="title">Title</string>
-    <string name="tracks">Tracks</string>
+    <string name="tracks">Kappaleet</string>
     <string name="playback">Playback</string>
     <string name="no_lyrics">No lyrics</string>
     <string name="artists">Artists</string>
@@ -55,8 +55,8 @@
     <string name="play_all">Toista kaikki</string>
     <string name="search_lyrics">Etsi lyriikoita</string>
     <string name="could_not_find_lyrics">Lyriikoita ei löytynyt</string>
-    <string name="search_lyrics_extended">Etsi lyriikoita...</string>
-    <string name="title_activity_extended_lyric_searching">ExtendedLyricSearching</string>
+    <string name="search_lyrics_extended">Etsi lyriikoita…</string>
+    <string name="title_activity_extended_lyric_searching">Lyriikoiden etsintä</string>
     <string name="asset_lyric_api_config">lyricApiConfig.txt</string>
     <string name="search_results">Etsinnän tulokset</string>
     <string name="select_by_pressing">Valitse klikkaamalla</string>

@@ -78,7 +78,7 @@ public class ExtendedLyricSearching extends AppCompatActivity implements OnLyric
     }
 
     private void searchLyrics() {
-        Logger.log("Starting to search lyrics...");
+        Logger.log("Starting to search mLyrics...");
         String artist = tbArtistText.getText().toString();
         String title = tbTitleText.getText().toString();
         try {
@@ -130,7 +130,7 @@ public class ExtendedLyricSearching extends AppCompatActivity implements OnLyric
                 Logger.log("View didn't have a tag");
             }
         } else {
-            Logger.log("Found lyrics list was empty!");
+            Logger.log("Found mLyrics list was empty!");
         }
     }
 

@@ -4,19 +4,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RemoteViews;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.PlaybackBroadcastReceiver;
 import com.vp.mplayerl.misc.Track;
@@ -27,16 +19,16 @@ import com.vp.mplayerl.misc.Track;
 
 public class RemoteViewPlaybackNotification extends RemoteViews {
 
-    private Context context;
+    private Context mContext;
     private Button mPlayButton;
     private Button mPreviousButton;
     private Button mNextButton;
     private MediaPlayerService mediaPlayerService;
-    private Track track;
+    private Track mTrack;
 
     public RemoteViewPlaybackNotification(Context context, String packageName, int layoutId) {
         super(packageName, layoutId);
-        this.context = context;
+        this.mContext = context;
         Logger.log("RVPlaybackNotification: Notification initialized!");
     }
 
@@ -51,14 +43,15 @@ public class RemoteViewPlaybackNotification extends RemoteViews {
         setTextViewText(R.id.remote_view_title, mediaPlayerService.getCurrentTrack().getTitle());
         setTextViewText(R.id.remote_view_artist, mediaPlayerService.getCurrentTrack().getArtist());
         setImageViewResource(R.id.remote_view_play_button, playButtonResId);
+        setImageViewBitmap(R.id.remote_view_image, mediaPlayerService.getCurrentTrack().getLargeBitmap());
 
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 100, createBroadcastIntent(context, mediaPlayerService, MediaPlayerService.ACTION_PLAY_PAUSE), PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 100, createBroadcastIntent(mContext, mediaPlayerService, MediaPlayerService.ACTION_PLAY_PAUSE), PendingIntent.FLAG_UPDATE_CURRENT);
         setOnClickPendingIntent(R.id.remote_view_play_button, pendingIntent);
 
-        pendingIntent = PendingIntent.getBroadcast(context, 101, createBroadcastIntent(context, mediaPlayerService, MediaPlayerService.ACTION_PREVIOUS), PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(mContext, 101, createBroadcastIntent(mContext, mediaPlayerService, MediaPlayerService.ACTION_PREVIOUS), PendingIntent.FLAG_UPDATE_CURRENT);
         setOnClickPendingIntent(R.id.remote_view_previous_button, pendingIntent);
 
-        pendingIntent = PendingIntent.getBroadcast(context, 102, createBroadcastIntent(context, mediaPlayerService, MediaPlayerService.ACTION_NEXT), PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(mContext, 102, createBroadcastIntent(mContext, mediaPlayerService, MediaPlayerService.ACTION_NEXT), PendingIntent.FLAG_UPDATE_CURRENT);
         setOnClickPendingIntent(R.id.remote_view_next_button, pendingIntent);
 
     }
@@ -81,15 +74,15 @@ public class RemoteViewPlaybackNotification extends RemoteViews {
                 } else {
                     Log.d("RVPlaybackNotification", "Media is playing: " + mediaPlayerService.isMediaPlaying());
                     if (mediaPlayerService.isMediaPlaying()) {
-                        if (mediaPlayerService.getCurrentTrack().equals(track)) {
-                            mediaPlayerService.performAction(MediaPlayerService.ACTION_PAUSE, track);
-                            mPlayButton.setBackground(context.getDrawable(R.drawable.button_selector_play));
+                        if (mediaPlayerService.getCurrentTrack().equals(mTrack)) {
+                            mediaPlayerService.performAction(MediaPlayerService.ACTION_PAUSE, mTrack);
+                            mPlayButton.setBackground(mContext.getDrawable(R.drawable.button_selector_play));
                         } else {
-                            Log.d("RVPlaybackNotification", "Playback track is different than media player track");
+                            Log.d("RVPlaybackNotification", "Playback mTrack is different than media player mTrack");
                         }
                     } else {
-                        mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY, track);
-                        mPlayButton.setBackground(context.getDrawable(R.drawable.button_selector_pause));
+                        mediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY, mTrack);
+                        mPlayButton.setBackground(mContext.getDrawable(R.drawable.button_selector_pause));
                     }
                 }
             }
