@@ -8,7 +8,7 @@ package com.vp.parsers.mp3;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 
-public class Id3V2Frame {
+public class Id3V2Frame implements IIdFrame {
 
     private String frameID = "";
     private int size;
@@ -18,7 +18,7 @@ public class Id3V2Frame {
     private int textEncoding;
     private String language;
 
-    private int maxDataSize = 20 * 1024 * 1024;
+    private static int maxDataSize = 20 * 1024 * 1024;
 
     public Id3V2Frame(BufferedInputStream bInput) {
         this.bInput = bInput;
@@ -118,7 +118,7 @@ public class Id3V2Frame {
         this.language = language;
     }
 
-    public String getFrameID() {
+    public String getFrameId() {
         return frameID;
     }
 

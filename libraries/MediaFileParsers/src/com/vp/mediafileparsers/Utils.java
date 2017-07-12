@@ -163,4 +163,9 @@ public class Utils {
         }
         return result;
     }
+
+    public static void printException(Throwable t) {
+        if (t.getMessage() != null) System.err.println(t.getMessage());
+        t.printStackTrace(System.err);
+    }
 }

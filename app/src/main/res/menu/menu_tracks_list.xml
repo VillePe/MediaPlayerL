@@ -10,13 +10,13 @@
     <item
         android:id="@id/action_playback"
         android:orderInCategory="100"
-        android:icon="@mipmap/note_black_250x250"
+        android:icon="@mipmap/note_white_250x250"
         android:title="@string/action_settings"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_playlist"
         android:orderInCategory="99"
-        android:icon="@mipmap/ic_playlist_red_black"
+        android:icon="@mipmap/ic_playlist_white_red"
         android:title="@string/playlist_string"
         app:showAsAction="ifRoom" />
 </menu>

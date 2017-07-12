@@ -5,9 +5,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.vp.mplayerl.misc.Artist;
 import com.vp.mplayerl.misc.TrackAdapter;
@@ -19,6 +21,8 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -90,6 +94,20 @@ public class Utils {
             }
         }
         return AudioFileTypes.UNKNOWN;
+    }
+
+    public static void setTrackImageToImageView(Track currentTrack, ImageView imgView, boolean useSmallImage) {
+        Bitmap bitmap = null;
+        if (useSmallImage) {
+            bitmap = currentTrack.getSmallBitmap();
+        } else {
+            bitmap = currentTrack.getLargeBitmap();
+        }
+        if (bitmap != null) {
+            imgView.setImageBitmap(bitmap);
+        } else {
+            imgView.setImageResource(R.mipmap.noimagefound);
+        }
     }
 
     public enum AudioFileTypes {
@@ -175,12 +193,14 @@ public class Utils {
         return true;
     }
 
-    public static Bitmap getThumbnailBitmapFromPath(String s) {
+    public static Bitmap getThumbnailBitmapFromStream(InputStream s) {
         Logger.log("Decoding file " + s + " to bitmap...");
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = false;
         options.inSampleSize = 2;
-        Bitmap bMap = BitmapFactory.decodeFile(s, options);
+
+        Rect dummy = new Rect();
+        Bitmap bMap = BitmapFactory.decodeStream(s, dummy, options);
         if (bMap == null) {
             Logger.log("Something wrong with decoding! Decoded bitmap was null!");
             return null;
@@ -197,6 +217,12 @@ public class Utils {
         return bMapScaled;
     }
 
+    /**
+     * Creates an alert dialog with given title and message and shows it
+     * @param ctx
+     * @param title
+     * @param message
+     */
     public static void createAlertDialog(Context ctx, String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx)
                 .setTitle(title)

@@ -28,10 +28,10 @@ public class PlaylistActivity extends AppCompatActivity {
 
     public static final String PLAYLIST_INTENT_EXTRA_NAME = "parcelable_playlist";
 
-    TrackAdapter trackAdapter;
+    TrackAdapter mTrackAdapter;
     MediaPlayerService mediaPlayerService;
     MediaPlayerService.LocalBinder binder;
-    Playlist playlist = null;
+    Playlist mPlaylist = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +57,17 @@ public class PlaylistActivity extends AppCompatActivity {
             }
         }
 
-        if (playlist == null) {
-            playlist = mediaPlayerService.getPlaylist();
+        if (mPlaylist == null) {
+            mPlaylist = mediaPlayerService.getPlaylist();
         }
 
-        trackAdapter = new TrackAdapter(this, getLayoutInflater());
+        mTrackAdapter = new TrackAdapter(this, getLayoutInflater());
 
         ListView tracksListView = (ListView) findViewById(R.id.playlist_listview);
-        tracksListView.setAdapter(trackAdapter);
+        tracksListView.setAdapter(mTrackAdapter);
         setOnClickListener(tracksListView);
 
-        initializeTracksList(playlist);
+        initializeTracksList(mPlaylist);
     }
 
     public static Intent createPlaylistActivityIntent(Context ctx, MediaPlayerService service) {
@@ -126,7 +126,7 @@ public class PlaylistActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle serviceBundle = new Bundle();
 
-                Track t = (Track) trackAdapter.getItem(position);
+                Track t = (Track) mTrackAdapter.getItem(position);
 
                 serviceBundle.putBinder(MediaPlayerService.SERVICE_BINDER_KEY, mediaPlayerService.getBinder());
 
@@ -144,16 +144,17 @@ public class PlaylistActivity extends AppCompatActivity {
     private void initializeTracksList(Playlist playlist) {
         for (int i = 0; i < playlist.size(); i++) {
             Object track = playlist.getTrack(i);
-            if (track instanceof Track) {
-                trackAdapter.addTrack((Track) track);
+            if (track != null) {
+                mTrackAdapter.addTrack((Track) track);
             }
         }
+        TrackAdapter.putTrackImagesAsync(mTrackAdapter);
     }
 
     private void fillListWithArtist(Artist a ) {
         if (a.getTracks() != null && a.getTracks().size() > 0) {
             for (Track t : a.getTracks()) {
-                trackAdapter.addTrack(t);
+                mTrackAdapter.addTrack(t);
             }
         } else {
             Log.d("FillTracks", "Artist had no tracks!");

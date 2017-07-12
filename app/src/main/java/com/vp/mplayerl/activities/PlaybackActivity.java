@@ -39,6 +39,7 @@ import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import vp.lyrics.Lyric;
 import vp.lyrics.LyricApi;
 import vp.lyrics.LyricHandler;
 
@@ -198,6 +199,10 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
     }
 
     private void searchLyrics() {
+        searchLyrics(false);
+    }
+
+    private void searchLyrics(boolean silent) {
         int permissionInternet = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.INTERNET);
         Log.d("VP", "PERMISSION READ: " + permissionInternet);
@@ -213,6 +218,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         try {
             InputStream iStream = getAssets().open("lyricApiConfig.txt");
             AsyncLyricGetter searcher = new AsyncLyricGetter(getApplicationContext(), this.mLyricHandler, iStream, mTrack, mLyrics);
+            searcher.setSilence(silent);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             searcher.registerOutputStream(new PrintStream(baos), baos);
             searcher.execute();
@@ -229,7 +235,8 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
         for (int i = 0; i < handler.getLyricApis().size(); i++) {
             try {
                 sb.append("    - ").append(lyricApis.get(i).getApiName()).append("\n");
-            } catch (LyricApi.ApiException ignored) { }
+            } catch (LyricApi.ApiException ignored) {
+            }
         }
         sb.append("Search queries: ").append("\n");
         for (int i = 0; i < handler.getLyricSearchQueries().size(); i++) {
@@ -276,11 +283,12 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
             lyricsFound = false;
         }
         sb.append("Artist: ").append(track.getArtist()).append("\n")
-        .append("Album: ").append(track.getAlbum()).append("\n")
-        .append("Track title: ").append(track.getTitle()).append("\n")
-        .append("Track length: ").append(Utils.convertSecondsToMinutesString(track.getLengthInSeconds())).append("\n")
-        .append("Filetype: ").append(Utils.getTrackAudioFileType(getApplicationContext(), track)).append("\n")
-        .append("Lyrics found: ").append(lyricsFound);
+                .append("Album: ").append(track.getAlbum()).append("\n")
+                .append("Track title: ").append(track.getTitle()).append("\n")
+                .append("Track length: ").append(Utils.convertSecondsToMinutesString(track.getLengthInSeconds())).append("\n")
+                .append("Filetype: ").append(Utils.getTrackAudioFileType(getApplicationContext(), track)).append("\n")
+                .append("Lyrics found: ").append(lyricsFound).append("\n")
+                .append("File: ").append(track.getTrackFile().getAbsolutePath());
         AlertDialog.Builder builder = new AlertDialog.Builder(PlaybackActivity.this)
                 .setTitle("Kappaleen tiedot")
                 .setMessage(sb.toString());
@@ -316,6 +324,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
             mSeekBar.setMax(track.getLengthInSeconds());
         }
         initializeLyrics(track);
+        initializePicture(track);
         mCurrentTime.setText("0:00");
         startTimer();
     }
@@ -348,19 +357,27 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
     }
 
     private void initializeLyrics(Track track) {
+        if (!track.getLyrics().isEmpty()) {
+            mLyrics.setText(track.getLyrics());
+        }
         if (track.getLyrics() == null || track.getLyrics().isEmpty() || track.getLyrics().toLowerCase().equals("no lyrics")) {
             Logger.log("Parsing lyrics from file " + track.getTitle() + "...");
             String lyrics = ParseController.getLyricsFromFile(track.getTrackFile());
-            track.setLyrics(lyrics);
+            if (!lyrics.equals(getString(R.string.no_lyrics))) {
+                track.setLyrics(lyrics);
+            } else {
+                Logger.log("Could not get lyrics from file, trying to find from lyric apis...");
+                searchLyrics(true);
+            }
         }
-        mLyrics.setText(track.getLyrics());
     }
 
     private void initializePicture(Track track) {
-        Bitmap trackMap = track.getSmallBitmap();
+        Bitmap trackMap = track.getLargeBitmap();
         if (trackMap != null) {
             mTrackImage.setImageBitmap(trackMap);
         } else {
+            mTrackImage.setImageResource(R.mipmap.noimagefound);
             Logger.log("Could not initialize picture. Bitmap was null");
         }
     }
@@ -372,7 +389,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
                 mCurrentTime.setText(Utils.convertSecondsToMinutesString(progress));
                 MediaPlayer mPlayer = mMediaPlayerService.getMediaPlayer();
                 if (mPlayer != null && fromUser) {
-                    mPlayer.seekTo(progress*1000);
+                    mPlayer.seekTo(progress * 1000);
                     Logger.log("FROM USER!");
                 }
             }
@@ -472,7 +489,7 @@ public class PlaybackActivity extends AppCompatActivity implements OnMediaEventL
             int currentTimeInSeconds;
             if (mediaPlayerService.isMediaPlaying() && mediaPlayerService.isMediaPrepared()) {
                 MediaPlayer mPlayer = mediaPlayerService.getMediaPlayer();
-                if (mPlayer != null && seekBar != null ) {
+                if (mPlayer != null && seekBar != null) {
                     if (mTrack.equals(mediaPlayerService.getCurrentTrack())) {
                         currentTimeInSeconds = mPlayer.getCurrentPosition() / 1000;
                         seekBar.setProgress(currentTimeInSeconds);

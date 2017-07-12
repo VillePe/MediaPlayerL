@@ -3,11 +3,10 @@ package com.vp.mplayerl.async_task_handlers;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.widget.ImageView;
 
 import com.vp.mplayerl.R;
-import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.Track;
+import com.vp.mplayerl.misc.TrackAdapter;
 
 /**
  * Created by Ville on 6.7.2017.
@@ -15,14 +14,24 @@ import com.vp.mplayerl.misc.Track;
 
 public class AsyncImageSetter extends AsyncTask<Void, Void, Bitmap> {
 
-    private ImageView mImageView;
+    private TrackAdapter.ViewHolder mViewHolder;
+    private TrackAdapter mAdapter;
     private Context mContext;
     private Track mTrack;
+    private int mPosition;
 
-    public AsyncImageSetter(ImageView imageView, Context context, Track track) {
-        mImageView = imageView;
+    public AsyncImageSetter(TrackAdapter.ViewHolder viewHolder, int position, Context context, Track track, TrackAdapter adapter) {
         mContext = context;
         mTrack = track;
+        mPosition = position;
+        mViewHolder = viewHolder;
+        mAdapter = adapter;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        mViewHolder.imageView.setImageResource(R.mipmap.noimagefound);
     }
 
     @Override
@@ -33,10 +42,11 @@ public class AsyncImageSetter extends AsyncTask<Void, Void, Bitmap> {
     @Override
     protected void onPostExecute(Bitmap bitmap) {
         super.onPostExecute(bitmap);
-        if (bitmap != null) {
-            mImageView.setImageBitmap(bitmap);
+        if (bitmap != null && mViewHolder.position == mPosition) {
+            mViewHolder.imageView.setImageBitmap(bitmap);
+            mAdapter.putBitmapToArrayAsync(mPosition, bitmap);
         } else {
-            mImageView.setImageResource(R.mipmap.noimagefound);
+            mViewHolder.imageView.setImageResource(R.mipmap.noimagefound);
         }
     }
 }

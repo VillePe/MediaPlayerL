@@ -16,6 +16,7 @@ import com.vp.parsers.mp3.Mp3Parser;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 
 /**
  * Created by Ville on 9.10.2016.
@@ -106,7 +107,13 @@ public class Track implements Serializable, Comparable{
     public Bitmap getScaledBitmap(int width, int height) {
         Bitmap largeBitmap = getLargeBitmap();
         if (largeBitmap != null) {
-            return Bitmap.createScaledBitmap(largeBitmap, width, height, false);
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(largeBitmap, width, height, false);
+
+            // CreateScaledBitmap returns the same object if it does no scaling
+            if (scaledBitmap == largeBitmap) return largeBitmap;
+            largeBitmap.recycle();
+            largeBitmap = null;
+            return scaledBitmap;
         }
         return null;
     }

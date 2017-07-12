@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.vp.mplayerl.MediaPlayerService;
@@ -22,6 +23,10 @@ public class PlaybackBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        if (intent.getAction().equals(Intent.ACTION_MEDIA_BUTTON)) {
+            Logger.log("MEDIA BUTTON");
+        }
+        Logger.log("Playback broadcast receiver - action received: " + intent.getAction());
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             MediaPlayerService.LocalBinder binder = (MediaPlayerService.LocalBinder)bundle.getBinder(MediaPlayerService.SERVICE_BINDER_KEY);

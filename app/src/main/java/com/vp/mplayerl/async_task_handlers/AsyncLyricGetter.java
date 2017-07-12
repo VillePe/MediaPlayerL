@@ -7,6 +7,7 @@ import android.renderscript.ScriptGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vp.mplayerl.R;
 import com.vp.mplayerl.misc.Logger;
 import com.vp.mplayerl.misc.Track;
 
@@ -39,6 +40,7 @@ public class AsyncLyricGetter extends AsyncTask<String, Integer, Boolean> {
     private ArrayList<Lyric> foundLyrics = new ArrayList<>();
     private PrintStream outputStream;
     private ByteArrayOutputStream bArrayOutputStream;
+    private boolean mSilence;
 
     public AsyncLyricGetter(Context ctx, LyricHandler lyricHandler, InputStream inputStream, Track track, TextView textView) {
         this.lyricHandler = lyricHandler;
@@ -46,6 +48,10 @@ public class AsyncLyricGetter extends AsyncTask<String, Integer, Boolean> {
         this.inputStream = inputStream;
         this.textView = textView;
         this.ctx = ctx;
+    }
+
+    public void setSilence(boolean silence) {
+        mSilence = silence;
     }
 
     public void registerOutputStream(PrintStream stream, ByteArrayOutputStream baos) {
@@ -71,7 +77,7 @@ public class AsyncLyricGetter extends AsyncTask<String, Integer, Boolean> {
 
     @Override
     protected void onCancelled(Boolean aBoolean) {
-        Toast.makeText(ctx, "Etsintä peruutettu", Toast.LENGTH_SHORT).show();
+        if (!mSilence) Toast.makeText(ctx, R.string.search_canceled, Toast.LENGTH_SHORT).show();
         onPostExecute(aBoolean);
     }
 
@@ -85,9 +91,9 @@ public class AsyncLyricGetter extends AsyncTask<String, Integer, Boolean> {
         if (foundLyrics.size() > 0) {
             textView.setText(foundLyrics.get(0).getLyrics());
             track.setLyrics(foundLyrics.get(0).getLyrics());
-            Toast.makeText(ctx, "Lyriikat löydetty!", Toast.LENGTH_SHORT).show();
+            if (!mSilence) Toast.makeText(ctx, R.string.lyrics_found, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(ctx, "Lyriikoiden ei löytynyt tai etsiminen epäonnistui!", Toast.LENGTH_SHORT).show();
+            if (!mSilence) Toast.makeText(ctx, R.string.no_lyrics_found, Toast.LENGTH_SHORT).show();
         }
         super.onPostExecute(aBoolean);
     }

@@ -93,10 +93,6 @@ public class TracksListActivity extends AppCompatActivity {
         return super.onContextItemSelected(item);
     }
 
-    public void setMediaPlayerService(MediaPlayerService service) {
-        this.mediaPlayerService = service;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

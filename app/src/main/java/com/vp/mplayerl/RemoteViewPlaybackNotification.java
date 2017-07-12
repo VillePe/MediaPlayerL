@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,8 +33,6 @@ public class RemoteViewPlaybackNotification extends RemoteViews {
         Logger.log("RVPlaybackNotification: Notification initialized!");
     }
 
-
-
     public void onReceive(Context context, Intent intent) {
 
     }
@@ -41,9 +40,19 @@ public class RemoteViewPlaybackNotification extends RemoteViews {
     public void attachMediaPlayerService(MediaPlayerService mediaPlayerService, int playButtonResId) {
         this.mediaPlayerService = mediaPlayerService;
         setTextViewText(R.id.remote_view_title, mediaPlayerService.getCurrentTrack().getTitle());
-        setTextViewText(R.id.remote_view_artist, mediaPlayerService.getCurrentTrack().getArtist());
+        if (!mediaPlayerService.getCurrentTrack().getArtist().equals("<unknown>")) {
+            setTextViewText(R.id.remote_view_artist, mediaPlayerService.getCurrentTrack().getArtist());
+        } else {
+            setTextViewText(R.id.remote_view_artist, "");
+        }
         setImageViewResource(R.id.remote_view_play_button, playButtonResId);
-        setImageViewBitmap(R.id.remote_view_image, mediaPlayerService.getCurrentTrack().getLargeBitmap());
+
+        Bitmap bitmap = mediaPlayerService.getCurrentTrack().getSmallBitmap();
+        if (bitmap != null) {
+            setImageViewBitmap(R.id.remote_view_image, mediaPlayerService.getCurrentTrack().getLargeBitmap());
+        } else {
+            setImageViewResource(R.id.remote_view_image, R.mipmap.noimagefound);
+        }
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, 100, createBroadcastIntent(mContext, mediaPlayerService, MediaPlayerService.ACTION_PLAY_PAUSE), PendingIntent.FLAG_UPDATE_CURRENT);
         setOnClickPendingIntent(R.id.remote_view_play_button, pendingIntent);

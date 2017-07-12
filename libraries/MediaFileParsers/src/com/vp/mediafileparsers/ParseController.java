@@ -24,6 +24,7 @@ public class ParseController {
             } else if (c == 'm') {
                 com.vp.parsers.mp3.Mp3Parser mp3Parser = new com.vp.parsers.mp3.Mp3Parser(file);
                 String lyrics =  mp3Parser.getUnSyncedLyrics();
+                if (lyrics.isEmpty()) System.err.println("Parsecontroller: File had no lyrics or reading failed");
                 mp3Parser.close();
                 return lyrics;
             }

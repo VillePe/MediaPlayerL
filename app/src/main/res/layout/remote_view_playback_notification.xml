@@ -25,14 +25,14 @@
             android:layout_marginTop="8dp"
             android:textColor="#500000"
             android:layout_width="match_parent"
-            android:layout_height="30sp" />
+            android:layout_height="32sp" />
         <TextView
             android:id="@+id/remote_view_artist"
             android:textSize="15sp"
             android:text="@string/artist"
             android:textColor="#333311"
             android:layout_width="match_parent"
-            android:layout_height="22sp" />
+            android:layout_height="32sp" />
         <LinearLayout
             android:gravity="bottom"
             android:orientation="horizontal"

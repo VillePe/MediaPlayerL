@@ -6,9 +6,9 @@
 
 package com.vp.parsers.mp3;
 
+import com.vp.mediafileparsers.Utils;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Ville on 24.10.2016.
@@ -19,92 +19,13 @@ public class Mp3Parser {
 
     private boolean isFileValidFormat = true;
     private File file;
-    private Id3V2Header header;
-    private ArrayList<Id3V2Frame> frames;
     private FileInputStream fInput;
     private BufferedInputStream bInput;
+    private IIdCollection collection;
 
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
-    
-
-    public Mp3Parser(File file) throws IllegalArgumentException {
-        this.file = file;
-        frames = new ArrayList<>();
-        try {
-            fInput = new FileInputStream(file);
-            bInput = new BufferedInputStream(fInput);
-        } catch (IOException ex) {
-            Log.w("STREAM OPENING", ex.getMessage());
-        }
-        isFileValidFormat = getMetadataHeader();
-        if (isFileValidFormat) {
-            getFileMetadata();
-        } else {
-            throw new IllegalArgumentException("File format is not valid!");
-        }
-    }
-    
-    public String getUnSyncedLyrics() {
-        StringBuilder sb = new StringBuilder();
-        Id3V2Frame frame = getFrame("USLT");
-        if (frame != null) {
-            int[] bytes = frame.getData();
-            int textEncoding = bytes[0];
-            String language = "";
-            for (int i = 1; i < 4; i++) {
-                language += (char)bytes[i];
-            }
-            for (int i = 5; i < bytes.length; i++) {
-                sb.append((char)bytes[i]);
-            }
-            return sb.toString();
-        }
-        return "No lyrics";
-    }
-
-    public ByteArrayInputStream getAttachedPicture() {
-        ByteArrayInputStream resultStream = null;
-        Id3V2Frame frame = getFrame("APIC");
-        if (frame != null) {
-            int mimeLength = 0;
-            int descriptionLength = 0;
-            // Start from second byte because first was consumed by text encoding
-            for (int i = 1; frame.getData()[i] != 0 && i < frame.getData().length; i++) {
-                mimeLength++;
-            }
-            // Offset is three because the null terminator consumes one extra byte which is not taken into account in mime length
-            for (int i = 3 + mimeLength; frame.getData()[i] != 0 && i < frame.getData().length; i++) {
-                descriptionLength++;
-            }
-            // 2 bytes from text encoding and picture type, and 2 bytes from Mimes and descriptions text string null terminators
-            int offset = 4 + mimeLength + descriptionLength;
-            try {
-                byte[] byteArray = Arrays.copyOfRange(frame.getDataAsBytes(), offset, frame.getData().length - offset);
-                resultStream = new ByteArrayInputStream(byteArray);
-            } catch (IllegalArgumentException ex) {
-                if (ex.getMessage() != null) System.err.println(ex.getMessage());
-                ex.printStackTrace(System.err);
-            }
-
-        }
-        return resultStream;
-    }
-
-    public Id3V2Frame getFrame(String id) {
-        if (frames.size() > 0) {
-            for (Id3V2Frame frame : frames) {
-                if (frame.getFrameID().equals(id)) {
-                    return frame;
-                }
-            }
-        }
-        return null;
+    public Mp3Parser(File f) {
+        this.file = f;
+        collection = getMetadata(f);
     }
 
     public boolean close() {
@@ -127,44 +48,19 @@ public class Mp3Parser {
             }
         }
         return noExceptionThrown;
-
-    }
-    
-    private boolean getMetadataHeader() {
-        header = new Id3V2Header();
-        int[] bytes = new int[10];
-        for (int i = 0; i < 10; i++) {
-            bytes[i] = readOneByte();
-        }
-        return header.parseHeader(bytes);
     }
 
-    private void getFileMetadata() {
-
-        if (bInput == null) {
-            Log.w("STREAM", "Stream is NULL");
-        }
-        
-        // If header doesn't have Extended_Header included, go straight to parsing
-        // frames
-        if (header.getFlags()[Id3V2Header.Flags.EXT_HEADER.getIndex()] == false) {
-            Id3V2Frame frame = null;
-            do {                
-                frame = Id3V2Frame.FrameBuilder.createFrame(bInput);
-                if (frame != null) {
-                    frames.add(frame);
-                }
-            } while (frame != null);
-        }
-    }
-    
-    private int readOneByte() {
+    private IIdCollection getMetadata(File f) {
+        // TODO: implement more versions of MP3 metadata formats
         try {
-            return bInput.read();
-        } catch (IOException e) {
-            Log.w("ReadByte", e.getMessage());
+            fInput = new FileInputStream(f);
+            bInput = new BufferedInputStream(fInput);
+        } catch (FileNotFoundException e) {
+            Utils.printException(e);
         }
-        return -1;
+        Id3V2Collection collection = new Id3V2Collection(bInput);
+        if (!collection.isRightFileFormat()) throw new IllegalArgumentException("Could not parse metadata from file!");
+        return collection;
     }
 
     // Reads a 32 bit integer from the file
@@ -198,7 +94,15 @@ public class Mp3Parser {
         integer += byteArray[byteArray.length - 1];
         return integer;
     }
-    
+
+    public String getUnSyncedLyrics() {
+        return collection.getUnsyncedLyrics();
+    }
+
+    public ByteArrayInputStream getAttachedPicture() {
+        return collection.getAttachedPicture();
+    }
+
     private static class Log {
 
         public Log() {

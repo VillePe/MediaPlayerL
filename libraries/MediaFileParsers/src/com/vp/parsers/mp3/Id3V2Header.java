@@ -6,16 +6,30 @@
 
 package com.vp.parsers.mp3;
 
-public class Id3V2Header {
+import com.vp.mediafileparsers.Utils;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+
+public class Id3V2Header implements IIdHeader{
         private String fileIdentifier;
         private int versionMajor;
         private int versionMinor;
         private boolean[] flags = new boolean[8];
         private long size;
         
-        public Id3V2Header() {
-            
+        public Id3V2Header(BufferedInputStream bInput) {
+            int[] bytes = new int[10];
+            try {
+                for (int i = 0; i < 10; i++) {
+                    bytes[i] = bInput.read();
+                }
+                parseHeader(bytes);
+            } catch (IOException e) {
+                Utils.printException(e);
+            }
         }
+
         @Override
         public String toString() {
             StringBuilder sb = new StringBuilder();

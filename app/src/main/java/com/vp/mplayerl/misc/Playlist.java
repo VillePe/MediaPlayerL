@@ -3,13 +3,10 @@ package com.vp.mplayerl.misc;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.vp.mplayerl.misc.Track;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
+import java.util.Stack;
 
 /**
  * Created by Ville on 29.5.2017.
@@ -17,26 +14,27 @@ import java.util.Random;
 
 public class Playlist implements Parcelable{
 
-    private ArrayList trackList;
-    private Track previousTrack;
-    private boolean suffle;
-    private Random random;
-    private int currentTrackNumber = 0;
+    private ArrayList mTrackList;
+    private Track mPreviousTrack;
+    private boolean mSuffle;
+    private Random mRandom;
+    private int mCurrentTrackNumber = 0;
+    private Stack<Integer> mPreviousTracks = new Stack<>();
 
     public Playlist(Parcel in) {
-        this.trackList = (ArrayList) in.readSerializable();
-        this.currentTrackNumber = in.readInt();
-        this.suffle = in.readInt() == 1;
+        this.mTrackList = (ArrayList) in.readSerializable();
+        this.mCurrentTrackNumber = in.readInt();
+        this.mSuffle = in.readInt() == 1;
     }
 
     public Playlist() {
-        random = new Random();
-        this.trackList = new ArrayList();
+        mRandom = new Random();
+        this.mTrackList = new ArrayList();
     }
 
     public void addTrack(Track track) {
-        if (!trackList.contains(track)) {
-            trackList.add(track);
+        if (!mTrackList.contains(track)) {
+            mTrackList.add(track);
         }
     }
 
@@ -53,30 +51,36 @@ public class Playlist implements Parcelable{
     }
 
     public Track getNextTrack() {
-        currentTrackNumber++;
-        if (currentTrackNumber >= trackList.size()) {
-            currentTrackNumber = 0;
+        int nextTrackIndx = mCurrentTrackNumber;
+        nextTrackIndx++;
+        if (nextTrackIndx >= mTrackList.size()) {
+            nextTrackIndx = 0;
         }
-        return getTrack(currentTrackNumber);
+        return getTrack(nextTrackIndx);
     }
 
     public Track getPreviousTrack() {
-        currentTrackNumber--;
-        if (currentTrackNumber < 0) {
-            currentTrackNumber = 0;
+        int prevTrackIndx = mCurrentTrackNumber;
+        if (!mPreviousTracks.empty()) {
+            return (Track) mTrackList.get(mPreviousTracks.pop());
         }
-        return getTrack(currentTrackNumber);
+        prevTrackIndx--;
+        if (prevTrackIndx < 0) {
+            prevTrackIndx = 0;
+        }
+        return getTrack(prevTrackIndx);
     }
 
     public Track getRandomTrack() {
-        int randomNumber = random.nextInt(trackList.size());
+        int randomNumber = mRandom.nextInt(mTrackList.size());
         return getTrack(randomNumber);
     }
 
     public Track getTrack(int index) {
-        if (index < trackList.size()) {
-            Track track = (Track) trackList.get(index);
-            previousTrack = track;
+        if (index < mTrackList.size()) {
+            mPreviousTracks.push(getCurrentTrackNumber());
+            Track track = (Track) mTrackList.get(index);
+            setCurrentTrackNumber(index);
             return track;
         } else {
             return null;
@@ -84,26 +88,29 @@ public class Playlist implements Parcelable{
     }
 
     public void removeTrack(Track track) {
-        int indx = trackList.indexOf(track);
+        int indx = mTrackList.indexOf(track);
         if (indx != -1) {
-            trackList.remove(indx);
+            mTrackList.remove(indx);
+        }
+        if (mPreviousTracks.contains(track)) {
+            mPreviousTracks.remove(track);
         }
     }
 
     public int size() {
-        return trackList.size();
+        return mTrackList.size();
     }
 
     public ArrayList getTrackList() {
-        return trackList;
+        return mTrackList;
     }
 
     public boolean getSuffle() {
-        return suffle;
+        return mSuffle;
     }
 
     public void setSuffle(boolean suffle) {
-        this.suffle = suffle;
+        this.mSuffle = suffle;
     }
 
     @Override
@@ -113,9 +120,9 @@ public class Playlist implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeSerializable(trackList);
-        parcel.writeInt(currentTrackNumber);
-        parcel.writeInt(suffle ? 1 : 0);
+        parcel.writeSerializable(mTrackList);
+        parcel.writeInt(mCurrentTrackNumber);
+        parcel.writeInt(mSuffle ? 1 : 0);
     }
 
     public static final Parcelable.Creator<Playlist> CREATOR = new Parcelable.Creator<Playlist>() {
@@ -129,18 +136,18 @@ public class Playlist implements Parcelable{
     };
 
     public void clear() {
-        this.trackList.clear();
+        this.mTrackList.clear();
     }
 
     public int getCurrentTrackNumber() {
-        return currentTrackNumber;
+        return mCurrentTrackNumber;
     }
 
     public void setCurrentTrackNumber(int currentTrackNumber) {
-        if (currentTrackNumber > trackList.size()) {
+        if (currentTrackNumber > mTrackList.size()) {
             getNextTrack();
         } else {
-            this.currentTrackNumber = currentTrackNumber;
+            this.mCurrentTrackNumber = currentTrackNumber;
         }
     }
 }

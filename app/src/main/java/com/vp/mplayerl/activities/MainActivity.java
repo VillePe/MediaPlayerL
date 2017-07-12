@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 import com.vp.mplayerl.ArtistListMethods;
 import com.vp.mplayerl.MediaPlayerService;
 import com.vp.mplayerl.R;
+import com.vp.mplayerl.Utils;
 import com.vp.mplayerl.misc.Artist;
 import com.vp.mplayerl.misc.ArtistAdapter;
 import com.vp.mplayerl.misc.Logger;
@@ -103,12 +105,6 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        getMenuInflater().inflate(R.menu.context_menu_artist, menu);
     }
 
     @Override
@@ -199,6 +195,11 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
         }
     };
 
+    /**
+     * Opens the playback activity. Method gets the track for playback activity from mediaplayer service.
+     * If there is no track initialized in service, nothing will happen and method returns false
+     * @return True if opening was successful. False otherwise
+     */
     private boolean openPlaybackActivity() {
         if (mMediaPlayerService != null) {
             final Intent intentOpenPlaybackActivity = new Intent(this, PlaybackActivity.class);
@@ -210,6 +211,14 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
                 startActivity(intentOpenPlaybackActivity);
                 return true;
             }
+        }
+        return false;
+    }
+
+    private boolean openPlaybackActivity(Track track) {
+        if (mMediaPlayerService != null) {
+            mMediaPlayerService.setCurrentTrack(track);
+            return openPlaybackActivity();
         }
         return false;
     }
@@ -241,10 +250,6 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
             Toast.makeText(this, "Tiedostojen toistaminen ei onnistunut, koita hetken päästä uudelleen", Toast.LENGTH_LONG).show();
             Logger.log("Could not play all files. Mediaplayer was null or mTrack list had no items!");
         }
-    }
-
-    public void setMediaPlayerService(MediaPlayerService service) {
-        this.mMediaPlayerService = service;
     }
 
     private void bindToMPService(Intent serviceIntent, ServiceConnection sConnection) {
@@ -282,6 +287,8 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
             Track currentTrack = mMediaPlayerService.getCurrentTrack();
             TextView artistText = (TextView) findViewById(R.id.playback_popup__artist);
             TextView titleText = (TextView) findViewById(R.id.playback_popup__title);
+            ImageView imgView = (ImageView) findViewById(R.id.playback_popup_album_image);
+            Utils.setTrackImageToImageView(currentTrack, imgView, true);
             if (!currentTrack.getArtist().equals("<unknown>")) {
                 artistText.setText(currentTrack.getArtist());
             } else {
@@ -299,14 +306,6 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
             }
             Logger.log("Hiding popup!");
         }
-    }
-
-    private void showPlaybackPopup(Track track) {
-
-    }
-
-    private void setPlaybackPopupValues() {
-
     }
 
     @Override
@@ -366,6 +365,12 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
         }
 
         @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            getMenuInflater().inflate(R.menu.context_menu_artist, menu);
+        }
+
+        @Override
         public boolean onContextItemSelected(MenuItem item) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             Artist pickedArtist = (Artist)getListAdapter().getItem(info.position);
@@ -389,6 +394,12 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
         }
 
         @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            registerForContextMenu(getListView());
+        }
+
+        @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
             Bundle artistBundle = new Bundle();
             Bundle serviceBundle = new Bundle();
@@ -409,8 +420,37 @@ public class MainActivity extends AppCompatActivity implements OnMediaEventListe
         public ListAdapter getListAdapter() {
             TrackAdapter adapter = new TrackAdapter(getContext(), getLayoutInflater(null));
             adapter.fillWithArtistsList(mArtists);
+            TrackAdapter.putTrackImagesAsync(adapter);
             Logger.log("RETURNING ADAPTER");
             return adapter;
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            getMenuInflater().inflate(R.menu.context_menu_track, menu);
+        }
+
+        @Override
+        public boolean onContextItemSelected(MenuItem item) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            Track pickedTrack = (Track)getListAdapter().getItem(info.position);
+            switch (item.getItemId()) {
+                case R.id.action_add_track_to_playlist:
+                    mMediaPlayerService.getPlaylist().addTrack(pickedTrack);
+                    break;
+                case R.id.action_add_track_to_playlist_and_play:
+                    mMediaPlayerService.getPlaylist().addTrack(pickedTrack);
+                    mMediaPlayerService.performAction(MediaPlayerService.ACTION_PLAY_ON_PREPARED, pickedTrack);
+                    openPlaybackActivity(pickedTrack);
+            }
+            return super.onContextItemSelected(item);
+        }
+
+        @Override
+        public void onViewCreated(View view, Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+            registerForContextMenu(getListView());
         }
 
         @Override

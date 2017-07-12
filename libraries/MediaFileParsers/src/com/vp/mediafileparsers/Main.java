@@ -21,15 +21,28 @@ public class Main {
      */
     public static void main(String[] args) {
 //        File f = new File("C:/temp/01-Big Red Gun.flac");
-        File f = new File("C:/temp/01 - Monarchy Of Roses.mp3");
+        File f1 = new File("C:/temp/01 - Monarchy Of Roses.mp3");
+        File f2 = new File("C:/temp/01-Big Red Gun.flac");
+        File f3 = new File("C:/temp/3. Everywhere I Go.mp3");
 
+        File bf1 = new File("C:/temp/kuva1.jpeg");
+        File bf2 = new File("C:/temp/kuva2.jpeg");
+        File bf3 = new File("C:/temp/kuva3.jpeg");
 
-        ByteArrayInputStream image = ParseController.getPictureFromFile(f);
-        if (image == null) return;
+        File lf1 = new File("C:/temp/lyrics1.txt");
+        File lf2 = new File("C:/temp/lyrics2.txt");
+        File lf3 = new File("C:/temp/lyrics3.txt");
 
-        File bf = new File("C:/temp/kuva.jpeg");
+        writeImageAndLyrics(f1, bf1, lf1);
+        writeImageAndLyrics(f2, bf2, lf2);
+        writeImageAndLyrics(f3, bf3, lf3);
+    }
+
+    public static void writeImageAndLyrics(File in, File outImg, File outLyrics) {
         try {
-            FileOutputStream fOut = new FileOutputStream(bf);
+            ByteArrayInputStream image = ParseController.getPictureFromFile(in);
+            if (image == null) return;
+            FileOutputStream fOut = new FileOutputStream(outImg);
             byte[] buffer = new byte[1024];
             int read = 0;
             while (true) {
@@ -38,10 +51,15 @@ public class Main {
                 fOut.write(buffer);
             }
             fOut.flush();
+
+            FileWriter writer = new FileWriter(outLyrics);
+            writer.write(ParseController.getLyricsFromFile(in));
+            writer.flush();
+
             fOut.close();
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

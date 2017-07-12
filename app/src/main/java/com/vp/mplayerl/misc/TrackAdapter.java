@@ -2,6 +2,7 @@ package com.vp.mplayerl.misc;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,39 +23,40 @@ import java.util.Collections;
 
 public class TrackAdapter extends BaseAdapter {
 
-    Context context;
-    LayoutInflater layoutInflater;
-    ArrayList<Track> tracks;
+    private Context mContext;
+    private LayoutInflater mLayoutInflater;
+    private ArrayList<Track> mTracks;
+    private final SparseArray<Bitmap> mBitmapSparseArray = new SparseArray<>();
 
     public TrackAdapter(Context context, LayoutInflater inflater) {
-        this.context = context;
-        this.layoutInflater = inflater;
-        this.tracks = new ArrayList<>();
+        this.mContext = context;
+        this.mLayoutInflater = inflater;
+        this.mTracks = new ArrayList<>();
     }
 
-    public void addTrack(Track track) {
-        tracks.add(track);
+    public void addTrack(final Track track) {
+        mTracks.add(track);
         notifyDataSetChanged();
     }
 
     public void clearTracks() {
-        tracks.clear();
+        mTracks.clear();
         notifyDataSetChanged();
     }
 
     public void removeTrack(int position) {
-        tracks.remove(position);
+        mTracks.remove(position);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return tracks.size();
+        return mTracks.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return tracks.get(position);
+        return mTracks.get(position);
     }
 
     @Override
@@ -67,13 +69,12 @@ public class TrackAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-            convertView = layoutInflater.inflate(R.layout.row_track, null);
+            convertView = mLayoutInflater.inflate(R.layout.row_track, null);
 
             holder = new ViewHolder();
             holder.imageView = (ImageView) convertView.findViewById(R.id.row_track_img_thumbnail);
             holder.textView_artist = (TextView) convertView.findViewById(R.id.row_track_artist);
             holder.textView_title = (TextView) convertView.findViewById(R.id.row_track_title);
-
 
             convertView.setTag(holder);
         } else {
@@ -81,15 +82,35 @@ public class TrackAdapter extends BaseAdapter {
         }
 
         Track track = (Track) getItem(position);
-
-        AsyncImageSetter imageSetter = new AsyncImageSetter(holder.imageView, context, track);
-        imageSetter.execute();
+        if (mBitmapSparseArray.get(position) != null) {
+            Bitmap bitmap = getBitmapFromArrayAsync(position);
+            if (bitmap != null) {
+                holder.imageView.setImageBitmap(bitmap);
+            } else {
+                holder.imageView.setImageResource(R.mipmap.noimagefound);
+            }
+        } else {
+            AsyncImageSetter imageSetter = new AsyncImageSetter(holder, position, mContext, track, this);
+            imageSetter.execute();
+        }
+        holder.position = position;
         holder.textView_artist.setText(CutLongStrings(track.getArtist(), 25));
         holder.textView_title.setText(CutLongStrings(track.getTitle(), 25));
         return convertView;
     }
 
+    public void putBitmapToArrayAsync(int pos, Bitmap bMap) {
+        if (this.mBitmapSparseArray.get(pos) != null) return;
+        synchronized (mBitmapSparseArray) {
+            this.mBitmapSparseArray.put(pos, bMap);
+        }
+    }
 
+    public Bitmap getBitmapFromArrayAsync(int pos) {
+        synchronized (mBitmapSparseArray) {
+            return mBitmapSparseArray.get(pos);
+        }
+    }
 
     public void fillWithArtistsList(ArrayList<Artist> artists) {
         ArrayList<Track> tracksSorted = new ArrayList<>();
@@ -104,6 +125,19 @@ public class TrackAdapter extends BaseAdapter {
         }
     }
 
+    public static void putTrackImagesAsync(final TrackAdapter adapter) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ArrayList<Track> tracks = adapter.getTracks();
+                for (int i = 0; i < tracks.size(); i++) {
+                    adapter.putBitmapToArrayAsync(adapter.getTracks().indexOf(tracks.get(i)), tracks.get(i).getScaledBitmap(100, 100));
+                }
+            }
+        });
+        thread.start();
+    }
+
     private String CutLongStrings(String string, int length) {
         if (string == null) {
             return "NULL";
@@ -115,7 +149,12 @@ public class TrackAdapter extends BaseAdapter {
         }
     }
 
+    public ArrayList<Track> getTracks() {
+        return mTracks;
+    }
+
     public class ViewHolder {
+        public int position;
         public TextView textView_title;
         public TextView textView_artist;
         public ImageView imageView;

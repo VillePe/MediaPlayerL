@@ -62,4 +62,7 @@
     <string name="select_by_pressing">Valitse klikkaamalla</string>
     <string name="cancel">Peruuta</string>
     <string name="write_to_file">Kirjoita tiedostoon</string>
+    <string name="no_lyrics_found">Lyriikoita ei löytynyt tai etsiminen epäonnistui!</string>
+    <string name="lyrics_found">Lyriikat löydetty!</string>
+    <string name="search_canceled">Etsintä peruutettu</string>
 </resources>

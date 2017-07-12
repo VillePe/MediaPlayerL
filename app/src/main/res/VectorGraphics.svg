@@ -15,8 +15,11 @@
    viewBox="0 0 744.09448819 1052.3622047"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="VectorGraphics.svg">
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="VectorGraphics.svg"
+   inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_white_250x250.png"
+   inkscape:export-xdpi="281"
+   inkscape:export-ydpi="281">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -26,14 +29,14 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="503.72269"
-     inkscape:cy="674.01202"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="529.77448"
+     inkscape:cy="510.7965"
      inkscape:document-units="px"
-     inkscape:current-layer="g4338"
-     showgrid="true"
+     inkscape:current-layer="layer1"
+     showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1018"
+     inkscape:window-height="1017"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -41,7 +44,7 @@
      inkscape:guide-bbox="true"
      inkscape:snap-bbox="true"
      inkscape:bbox-paths="true"
-     inkscape:snap-bbox-edge-midpoints="false"
+     inkscape:snap-bbox-edge-midpoints="true"
      inkscape:bbox-nodes="true"
      inkscape:snap-global="true">
     <inkscape:grid
@@ -50,47 +53,58 @@
     <sodipodi:guide
        position="170,660.00001"
        orientation="1,0"
-       id="guide4268" />
+       id="guide4268"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="170.00001,645"
        orientation="0,1"
-       id="guide4274" />
+       id="guide4274"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="170.00001,580"
        orientation="0,1"
-       id="guide4276" />
+       id="guide4276"
+       inkscape:locked="false" />
     <sodipodi:guide
-       position="265.00001,645"
+       position="265.00001,496.875"
        orientation="1,0"
-       id="guide4278" />
+       id="guide4278"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="360.00001,645"
        orientation="1,0"
-       id="guide4280" />
+       id="guide4280"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="455.00001,645"
        orientation="1,0"
-       id="guide4282" />
+       id="guide4282"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="170,515.00001"
        orientation="0,1"
-       id="guide4375" />
+       id="guide4375"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="170,420.00001"
        orientation="0,1"
-       id="guide4377" />
+       id="guide4377"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="550,630.00001"
        orientation="1,0"
-       id="guide4226" />
+       id="guide4226"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="135,365.00001"
        orientation="0,1"
-       id="guide4251" />
+       id="guide4251"
+       inkscape:locked="false" />
     <sodipodi:guide
        position="185,710.00001"
        orientation="0,1"
-       id="guide4325" />
+       id="guide4325"
+       inkscape:locked="false" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -219,233 +233,322 @@
        height="59.334984"
        width="59.334984" />
     <g
-       id="g4338"
-       transform="matrix(0.58165618,0,0,0.58165618,152.24772,180.81264)"
-       style="fill:#550000">
-      <g
-         id="g4343"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note.png"
-         inkscape:export-xdpi="281"
-         inkscape:export-ydpi="281">
-        <path
-           style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#550000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-           d="m 121.51953,512.27932 c -0.34158,0.008 -0.67793,0.0856 -0.98828,0.22851 l -35.767578,9.87891 c -0.640013,0.0699 -1.228382,0.38405 -1.642578,0.87695 -0.0072,0.008 -0.01438,0.0169 -0.02148,0.0254 -0.02688,0.0325 -0.05293,0.0658 -0.07813,0.0996 -0.421021,0.54435 -0.599065,1.23816 -0.492187,1.91797 l -0.125,41.57615 c -0.05716,3.37948 5.036074,3.39537 5,0.0156 l 0.121094,-35.26449 31.564449,-8.36161 0.18555,32.39368 c -0.0256,3.37734 5.0625,3.34956 5,-0.0273 l -0.20117,-40.4531 c 0.13765,-0.89129 -0.21537,-1.78765 -0.92383,-2.34571 l -0.008,-0.006 c -0.0494,-0.039 -0.10018,-0.0761 -0.15235,-0.11133 l -0.002,-0.002 c -0.43126,-0.29736 -0.94502,-0.45176 -1.46875,-0.4414 z"
-           id="path4313"
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cccccccccccccccccccc" />
-        <ellipse
-           style="opacity:1;fill:#550000;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-           id="path4319"
-           cx="76.789543"
-           cy="567.49268"
-           rx="8.9651041"
-           ry="5.6821079" />
-        <ellipse
-           style="opacity:1;fill:#550000;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-           id="path4319-4"
-           cx="113.75"
-           cy="555.39795"
-           rx="8.9651041"
-           ry="5.6821079" />
-      </g>
-      <rect
-         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:4.88018084;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4210-7-8"
-         width="132.65811"
-         height="132.65811"
-         x="32.960316"
-         y="615.43036"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_black_250x250.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
-      <g
-         transform="matrix(1.514914,0,0,1.514914,-45.439832,-142.4779)"
-         style="fill:#000000"
-         id="g4343-1"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_black_250x250.png"
-         inkscape:export-xdpi="281"
-         inkscape:export-ydpi="281">
-        <path
-           style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-           d="m 121.51953,512.27932 c -0.34158,0.008 -0.67793,0.0856 -0.98828,0.22851 l -35.767578,9.87891 c -0.640013,0.0699 -1.228382,0.38405 -1.642578,0.87695 -0.0072,0.008 -0.01438,0.0169 -0.02148,0.0254 -0.02688,0.0325 -0.05293,0.0658 -0.07813,0.0996 -0.421021,0.54435 -0.599065,1.23816 -0.492187,1.91797 l -0.125,41.57615 c -0.05716,3.37948 5.036074,3.39537 5,0.0156 l 0.121094,-35.26449 31.564449,-8.36161 0.18555,32.39368 c -0.0256,3.37734 5.0625,3.34956 5,-0.0273 l -0.20117,-40.4531 c 0.13765,-0.89129 -0.21537,-1.78765 -0.92383,-2.34571 l -0.008,-0.006 c -0.0494,-0.039 -0.10018,-0.0761 -0.15235,-0.11133 l -0.002,-0.002 c -0.43126,-0.29736 -0.94502,-0.45176 -1.46875,-0.4414 z"
-           id="path4313-4"
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cccccccccccccccccccc" />
-        <ellipse
-           style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-           id="path4319-9"
-           cx="76.789543"
-           cy="567.49268"
-           rx="8.9651041"
-           ry="5.6821079" />
-        <ellipse
-           style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-           id="path4319-4-6"
-           cx="113.75"
-           cy="555.39795"
-           rx="8.9651041"
-           ry="5.6821079" />
-      </g>
-      <rect
-         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:4.88018084;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4210-7-8-5"
-         width="132.65811"
-         height="132.65811"
-         x="196.28706"
-         y="615.43036"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_black_w_backgr_250x250.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
-      <g
-         transform="matrix(1.514914,0,0,1.514914,117.88692,-142.47799)"
-         style="fill:#000000"
-         id="g4343-1-8"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_black_w_backgr_250x250.png"
-         inkscape:export-xdpi="281"
-         inkscape:export-ydpi="281">
-        <path
-           style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-           d="m 121.51953,512.27932 c -0.34158,0.008 -0.67793,0.0856 -0.98828,0.22851 l -35.767578,9.87891 c -0.640013,0.0699 -1.228382,0.38405 -1.642578,0.87695 -0.0072,0.008 -0.01438,0.0169 -0.02148,0.0254 -0.02688,0.0325 -0.05293,0.0658 -0.07813,0.0996 -0.421021,0.54435 -0.599065,1.23816 -0.492187,1.91797 l -0.125,41.57615 c -0.05716,3.37948 5.036074,3.39537 5,0.0156 l 0.121094,-35.26449 31.564449,-8.36161 0.18555,32.39368 c -0.0256,3.37734 5.0625,3.34956 5,-0.0273 l -0.20117,-40.4531 c 0.13765,-0.89129 -0.21537,-1.78765 -0.92383,-2.34571 l -0.008,-0.006 c -0.0494,-0.039 -0.10018,-0.0761 -0.15235,-0.11133 l -0.002,-0.002 c -0.43126,-0.29736 -0.94502,-0.45176 -1.46875,-0.4414 z"
-           id="path4313-4-5"
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cccccccccccccccccccc" />
-        <ellipse
-           style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-           id="path4319-9-9"
-           cx="76.789543"
-           cy="567.49268"
-           rx="8.9651041"
-           ry="5.6821079" />
-        <ellipse
-           style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-           id="path4319-4-6-2"
-           cx="113.75"
-           cy="555.39795"
-           rx="8.9651041"
-           ry="5.6821079" />
-      </g>
-      <rect
-         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:3.85418677;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4210-1-6"
-         width="133.68411"
-         height="82.107254"
-         x="685.75421"
-         y="391.41763"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\Stop.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
-      <rect
-         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:11.66035557;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4249"
-         width="39.916477"
-         height="39.916508"
-         x="732.63806"
-         y="412.51297"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\Stop.png"
-         inkscape:export-xdpi="281"
-         inkscape:export-ydpi="281" />
+       style="fill:#550000"
+       inkscape:export-ydpi="281"
+       inkscape:export-xdpi="281"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note.png"
+       id="g4343"
+       transform="matrix(0.58165618,0,0,0.58165618,152.24772,180.81264)">
       <path
-         style="fill:#ad0000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.64411604px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 82.932127,287.80073 57.636993,33.8283 -57.045853,32.07856 z"
-         id="path4138-8"
+         sodipodi:nodetypes="cccccccccccccccccccc"
          inkscape:connector-curvature="0"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\play_pressed.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
+         id="path4313"
+         d="m 121.51953,512.27932 c -0.34158,0.008 -0.67793,0.0856 -0.98828,0.22851 l -35.767578,9.87891 c -0.640013,0.0699 -1.228382,0.38405 -1.642578,0.87695 -0.0072,0.008 -0.01438,0.0169 -0.02148,0.0254 -0.02688,0.0325 -0.05293,0.0658 -0.07813,0.0996 -0.421021,0.54435 -0.599065,1.23816 -0.492187,1.91797 l -0.125,41.57615 c -0.05716,3.37948 5.036074,3.39537 5,0.0156 l 0.121094,-35.26449 31.564449,-8.36161 0.18555,32.39368 c -0.0256,3.37734 5.0625,3.34956 5,-0.0273 l -0.20117,-40.4531 c 0.13765,-0.89129 -0.21537,-1.78765 -0.92383,-2.34571 l -0.008,-0.006 c -0.0494,-0.039 -0.10018,-0.0761 -0.15235,-0.11133 l -0.002,-0.002 c -0.43126,-0.29736 -0.94502,-0.45176 -1.46875,-0.4414 z"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#550000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+      <ellipse
+         ry="5.6821079"
+         rx="8.9651041"
+         cy="567.49268"
+         cx="76.789543"
+         id="path4319"
+         style="opacity:1;fill:#550000;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <ellipse
+         ry="5.6821079"
+         rx="8.9651041"
+         cy="555.39795"
+         cx="113.75"
+         id="path4319-4"
+         style="opacity:1;fill:#550000;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <g
+       inkscape:export-ydpi="281"
+       inkscape:export-xdpi="281"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_black_cut_square_250x250.png"
+       id="g4343-1"
+       style="fill:#000000;fill-opacity:1"
+       transform="matrix(0.88115909,0,0,0.88115909,125.81736,97.939489)">
       <path
-         style="fill:#aa0000;fill-rule:evenodd;stroke:#1a1a1b;stroke-width:8.59614372;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 254.20232,286.33679 0,68.76915"
-         id="path4140-4"
+         sodipodi:nodetypes="cccccccccccccccccccc"
          inkscape:connector-curvature="0"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\pause_pressed.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
+         id="path4313-4"
+         d="m 121.51953,512.27932 c -0.34158,0.008 -0.67793,0.0856 -0.98828,0.22851 l -35.767578,9.87891 c -0.640013,0.0699 -1.228382,0.38405 -1.642578,0.87695 -0.0072,0.008 -0.01438,0.0169 -0.02148,0.0254 -0.02688,0.0325 -0.05293,0.0658 -0.07813,0.0996 -0.421021,0.54435 -0.599065,1.23816 -0.492187,1.91797 l -0.125,41.57615 c -0.05716,3.37948 5.036074,3.39537 5,0.0156 l 0.121094,-35.26449 31.564449,-8.36161 0.18555,32.39368 c -0.0256,3.37734 5.0625,3.34956 5,-0.0273 l -0.20117,-40.4531 c 0.13765,-0.89129 -0.21537,-1.78765 -0.92383,-2.34571 l -0.008,-0.006 c -0.0494,-0.039 -0.10018,-0.0761 -0.15235,-0.11133 l -0.002,-0.002 c -0.43126,-0.29736 -0.94502,-0.45176 -1.46875,-0.4414 z"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+      <ellipse
+         ry="5.6821079"
+         rx="8.9651041"
+         cy="567.49268"
+         cx="76.789543"
+         id="path4319-9"
+         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.00030952;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <ellipse
+         ry="5.6821079"
+         rx="8.9651041"
+         cy="555.39795"
+         cx="113.75"
+         id="path4319-4-6"
+         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <rect
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\Stop.png"
+       y="408.48312"
+       x="551.12091"
+       height="47.75819"
+       width="77.758194"
+       id="rect4210-1-6"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:2.24181151;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="281"
+       inkscape:export-xdpi="281"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\Stop.png"
+       y="420.75336"
+       x="578.39117"
+       height="23.217684"
+       width="23.217665"
+       id="rect4249"
+       style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:6.78231812;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\play_pressed.png"
+       inkscape:connector-curvature="0"
+       id="path4138-8"
+       d="m 200.4857,348.21371 33.52492,19.67644 -33.18108,18.6587 z"
+       style="fill:#ad0000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.95631027px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\pause_pressed.png"
+       inkscape:connector-curvature="0"
+       id="path4140-4"
+       d="m 300.10607,347.3622 v 40"
+       style="fill:#aa0000;fill-rule:evenodd;stroke:#1a1a1b;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\pause_pressed.png"
+       inkscape:connector-curvature="0"
+       id="path4140-6-0"
+       d="m 312.5,347.3622 v 40"
+       style="fill:#aa0000;fill-rule:evenodd;stroke:#1a1a1b;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\next_pressed.png"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path4138-2-2-7"
+       d="m 386.74562,386.88405 32.20717,-19.07546 -32.20717,-20.92454 h 5 l 32.95401,20.92454 -32.95401,19.07546 z"
+       style="fill:#7b0000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.95631027px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\previous_pressed.png"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path4138-2-2-4-4"
+       d="m 519.25438,386.88405 -32.20717,-19.07546 32.20717,-20.92454 h -4.99999 l -32.95401,20.92454 32.95401,19.07546 z"
+       style="fill:#7d0000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.95631027px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\play_pressed.png"
+       y="343.48309"
+       x="171.12091"
+       height="47.75819"
+       width="77.758194"
+       id="rect4210-2"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:2.24181151;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\pause_pressed.png"
+       y="343.48309"
+       x="266.12091"
+       height="47.75819"
+       width="77.758194"
+       id="rect4210-1-11"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:2.24181151;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\next_pressed.png"
+       y="343.48309"
+       x="361.12091"
+       height="47.75819"
+       width="77.758194"
+       id="rect4210-1-2-8"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:2.24181151;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\previous_pressed.png"
+       y="343.48309"
+       x="456.12091"
+       height="47.75819"
+       width="77.758194"
+       id="rect4210-1-1-9"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:2.24181151;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\stop_pressed.png"
+       y="343.48309"
+       x="551.12091"
+       height="47.75819"
+       width="77.758194"
+       id="rect4210-1-6-4"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:2.24181151;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       inkscape:export-ydpi="281"
+       inkscape:export-xdpi="281"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\stop_pressed.png"
+       y="355.75336"
+       x="581.39117"
+       height="23.217684"
+       width="23.217665"
+       id="rect4249-2"
+       style="opacity:1;fill:#222323;fill-opacity:1;fill-rule:nonzero;stroke:#222121;stroke-width:6.78231812;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <rect
+       style="opacity:1;fill:#999999;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:2.83858728;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect4596"
+       width="77.161407"
+       height="77.161407"
+       x="361.41931"
+       y="538.78149"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_white_250x250.png"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-ydpi="281.25" />
+    <g
+       transform="matrix(0.88115909,0,0,0.88115909,315.81738,97.939489)"
+       style="fill:#ffffff"
+       id="g4604"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_white_250x250.png"
+       inkscape:export-xdpi="281"
+       inkscape:export-ydpi="281">
       <path
-         style="fill:#aa0000;fill-rule:evenodd;stroke:#1a1a1b;stroke-width:8.59614372;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         d="m 275.51032,286.33679 0,68.76915"
-         id="path4140-6-0"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+         d="m 121.51953,512.27932 c -0.34158,0.008 -0.67793,0.0856 -0.98828,0.22851 l -35.767578,9.87891 c -0.640013,0.0699 -1.228382,0.38405 -1.642578,0.87695 -0.0072,0.008 -0.01438,0.0169 -0.02148,0.0254 -0.02688,0.0325 -0.05293,0.0658 -0.07813,0.0996 -0.421021,0.54435 -0.599065,1.23816 -0.492187,1.91797 l -0.125,41.57615 c -0.05716,3.37948 5.036074,3.39537 5,0.0156 l 0.121094,-35.26449 31.564449,-8.36161 0.18555,32.39368 c -0.0256,3.37734 5.0625,3.34956 5,-0.0273 l -0.20117,-40.4531 c 0.13765,-0.89129 -0.21537,-1.78765 -0.92383,-2.34571 l -0.008,-0.006 c -0.0494,-0.039 -0.10018,-0.0761 -0.15235,-0.11133 l -0.002,-0.002 c -0.43126,-0.29736 -0.94502,-0.45176 -1.46875,-0.4414 z"
+         id="path4598"
          inkscape:connector-curvature="0"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\pause_pressed.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
+         sodipodi:nodetypes="cccccccccccccccccccc" />
+      <ellipse
+         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="ellipse4600"
+         cx="76.789543"
+         cy="567.49268"
+         rx="8.9651041"
+         ry="5.6821079" />
+      <ellipse
+         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="ellipse4602"
+         cx="113.75"
+         cy="555.39795"
+         rx="8.9651041"
+         ry="5.6821079" />
+    </g>
+    <g
+       id="g4617"
+       style="paint-order:stroke fill markers;fill:#ffffff;fill-opacity:1"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_black_cut_square_250x250.png"
+       inkscape:export-xdpi="281"
+       inkscape:export-ydpi="281">
       <path
-         style="fill:#7b0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.64411604px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
-         d="m 403.15552,354.28388 55.3715,-32.79508 -55.3715,-35.97407 8.59615,0 56.65547,35.97407 -56.65547,32.79508 z"
-         id="path4138-2-2-7"
+         sodipodi:nodetypes="cccccccccccc"
          inkscape:connector-curvature="0"
-         sodipodi:nodetypes="ccccccc"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\next_pressed.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
+         id="path4606"
+         d="M 181.33465,615.94287 H 210 238.66535 m 9.91535,-9.91535 v -28.66534 -28.66535 m -9.91535,-9.91534 H 210 181.33465 m -9.91535,9.91534 v 28.66535 28.66534"
+         style="fill:#ffffff;stroke:#550000;stroke-width:2.81250001;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;paint-order:stroke fill markers;fill-opacity:1" />
+    </g>
+    <g
+       transform="matrix(0.88115909,0,0,0.88115909,410.80432,97.939489)"
+       style="fill:#000000;fill-opacity:1"
+       id="g4639"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_black_cut_square_250x250.png"
+       inkscape:export-xdpi="281"
+       inkscape:export-ydpi="281">
       <path
-         style="fill:#7d0000;fill-rule:evenodd;stroke:#000000;stroke-width:1.64411604px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
-         d="m 630.96839,354.28388 -55.37149,-32.79508 55.37149,-35.97407 -8.59614,0 -56.65547,35.97407 56.65547,32.79508 z"
-         id="path4138-2-2-4-4"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+         d="m 121.51953,512.27932 c -0.34158,0.008 -0.67793,0.0856 -0.98828,0.22851 l -35.767578,9.87891 c -0.640013,0.0699 -1.228382,0.38405 -1.642578,0.87695 -0.0072,0.008 -0.01438,0.0169 -0.02148,0.0254 -0.02688,0.0325 -0.05293,0.0658 -0.07813,0.0996 -0.421021,0.54435 -0.599065,1.23816 -0.492187,1.91797 l -0.125,41.57615 c -0.05716,3.37948 5.036074,3.39537 5,0.0156 l 0.121094,-35.26449 31.564449,-8.36161 0.18555,32.39368 c -0.0256,3.37734 5.0625,3.34956 5,-0.0273 l -0.20117,-40.4531 c 0.13765,-0.89129 -0.21537,-1.78765 -0.92383,-2.34571 l -0.008,-0.006 c -0.0494,-0.039 -0.10018,-0.0761 -0.15235,-0.11133 l -0.002,-0.002 c -0.43126,-0.29736 -0.94502,-0.45176 -1.46875,-0.4414 z"
+         id="path4633"
          inkscape:connector-curvature="0"
-         sodipodi:nodetypes="ccccccc"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\previous_pressed.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
-      <rect
-         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:3.85418677;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4210-2"
-         width="133.68411"
-         height="82.107254"
-         x="32.447319"
-         y="279.66772"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\play_pressed.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
-      <rect
-         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:3.85418677;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4210-1-11"
-         width="133.68411"
-         height="82.107254"
-         x="195.77405"
-         y="279.66772"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\pause_pressed.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
-      <rect
-         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:3.85418677;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4210-1-2-8"
-         width="133.68411"
-         height="82.107254"
-         x="359.10077"
-         y="279.66772"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\next_pressed.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
-      <rect
-         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:3.85418677;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4210-1-1-9"
-         width="133.68411"
-         height="82.107254"
-         x="522.42749"
-         y="279.66772"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\previous_pressed.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
-      <rect
-         style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:3.85418677;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4210-1-6-4"
-         width="133.68411"
-         height="82.107254"
-         x="685.75421"
-         y="279.66772"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\stop_pressed.png"
-         inkscape:export-xdpi="281.25"
-         inkscape:export-ydpi="281.25" />
-      <rect
-         style="opacity:1;fill:#222323;fill-opacity:1;fill-rule:nonzero;stroke:#222121;stroke-width:11.66035557;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-         id="rect4249-2"
-         width="39.916477"
-         height="39.916508"
-         x="737.79572"
-         y="300.76312"
-         inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\stop_pressed.png"
-         inkscape:export-xdpi="281"
-         inkscape:export-ydpi="281" />
+         sodipodi:nodetypes="cccccccccccccccccccc" />
+      <ellipse
+         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.00030947;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="ellipse4635"
+         cx="76.789543"
+         cy="567.49268"
+         rx="8.9651041"
+         ry="5.6821079" />
+      <ellipse
+         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         id="ellipse4637"
+         cx="113.75"
+         cy="555.39795"
+         rx="8.9651041"
+         ry="5.6821079" />
+    </g>
+    <g
+       inkscape:export-ydpi="281"
+       inkscape:export-xdpi="281"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_black_cut_square_250x250.png"
+       style="fill:#ffffff;fill-opacity:1;paint-order:stroke fill markers"
+       id="g4643"
+       transform="translate(284.98696)">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#550000;stroke-width:2.8125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+         d="M 181.33465,615.94287 H 210 238.66535 m 9.91535,-9.91535 v -28.66534 -28.66535 m -9.91535,-9.91534 H 210 181.33465 m -9.91535,9.91534 v 28.66535 28.66534"
+         id="path4641"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccccccccccc" />
     </g>
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Taso 2">
+    <rect
+       inkscape:export-ydpi="281.25"
+       inkscape:export-xdpi="281.25"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_black_w_backgr_250x250.png"
+       y="538.78149"
+       x="266.41931"
+       height="77.161407"
+       width="77.161407"
+       id="rect4210-7-8-5"
+       style="opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#550000;stroke-width:2.83858728;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <g
+       inkscape:export-ydpi="281"
+       inkscape:export-xdpi="281"
+       inkscape:export-filename="C:\Users\Ville\AndroidStudioProjects\MPlayer+L\app\src\main\res\mipmap-mdpi\note_black_w_backgr_250x250.png"
+       id="g4343-1-8"
+       style="fill:#000000"
+       transform="matrix(0.88115909,0,0,0.88115909,220.81738,97.939435)">
+      <path
+         sodipodi:nodetypes="cccccccccccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path4313-4-5"
+         d="m 121.51953,512.27932 c -0.34158,0.008 -0.67793,0.0856 -0.98828,0.22851 l -35.767578,9.87891 c -0.640013,0.0699 -1.228382,0.38405 -1.642578,0.87695 -0.0072,0.008 -0.01438,0.0169 -0.02148,0.0254 -0.02688,0.0325 -0.05293,0.0658 -0.07813,0.0996 -0.421021,0.54435 -0.599065,1.23816 -0.492187,1.91797 l -0.125,41.57615 c -0.05716,3.37948 5.036074,3.39537 5,0.0156 l 0.121094,-35.26449 31.564449,-8.36161 0.18555,32.39368 c -0.0256,3.37734 5.0625,3.34956 5,-0.0273 l -0.20117,-40.4531 c 0.13765,-0.89129 -0.21537,-1.78765 -0.92383,-2.34571 l -0.008,-0.006 c -0.0494,-0.039 -0.10018,-0.0761 -0.15235,-0.11133 l -0.002,-0.002 c -0.43126,-0.29736 -0.94502,-0.45176 -1.46875,-0.4414 z"
+         style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+      <ellipse
+         ry="5.6821079"
+         rx="8.9651041"
+         cy="567.49268"
+         cx="76.789543"
+         id="path4319-9-9"
+         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <ellipse
+         ry="5.6821079"
+         rx="8.9651041"
+         cy="555.39795"
+         cx="113.75"
+         id="path4319-4-6-2"
+         style="opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Taso 3" />
 </svg>

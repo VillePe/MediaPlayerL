@@ -134,7 +134,6 @@ public class FlacParser {
         long mimeLength = Utils.read32BitIntegerBE(block.getData(), offset);
         offset += 4;
 
-        System.out.printf("MIME (%d):%n", mimeLength);
         for (int i = 0; i < mimeLength; i++) {
         }
 
